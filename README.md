@@ -1,6 +1,8 @@
 Presentasjonsideer
 ==================
 
+PS! Ideer kan kun brukes individuelt dersom det er avklart med den som skrev ned ideen.
+
 JS: Tips og triks
 -----------------
 
@@ -13,13 +15,7 @@ JS: Tips og triks
 Hvordan bruke et Hypermedia API i JS (Backbone)
 ----------------------------------------------
 
-Hvordan kombinere forskjellige kommunikasjonsmekanismer med sever i en JavaScript app (WebSocket, REST)
-----------------------------------------------
+Kombinere flere kommunikasjonsmekanismer i en JS-app
+----------------------------------------------------
 
-
-
-
-
-
-
-PS: Om ideer skrevet ned her skal brukes individuelt må dette diskuteres med de som skrev ned ideen.
+(WebSocket, REST)
