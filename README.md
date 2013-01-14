@@ -19,3 +19,11 @@ Kombinere flere kommunikasjonsmekanismer i en JS-app
 ----------------------------------------------------
 
 (WebSocket, REST)
+
+Hva er WebSockets og Server-Sent Events?
+----------------------------------------
+
+* Intro til begge. Vise hvordan man kommer igang med for eksempel Socket.io, Now.js, Pusher, osv.
+* Hvordan er det å dra inn i Java-verden?
+* Hvilke problemer passer det godt å løse med disse teknologiene?
+* Nettleserstøtte.
