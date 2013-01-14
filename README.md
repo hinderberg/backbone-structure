@@ -15,3 +15,11 @@ Hvordan bruke et Hypermedia API i JS (Backbone)
 
 Hvordan kombinere forskjellige kommunikasjonsmekanismer med sever i en JavaScript app (WebSocket, REST)
 ----------------------------------------------
+
+
+
+
+
+
+
+PS: Om ideer skrevet ned her skal brukes individuelt må dette diskuteres med de som skrev ned ideen.
