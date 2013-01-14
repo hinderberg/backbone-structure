@@ -5,3 +5,4 @@ js-tips-and-tricks
 * Gjør så lite som mulig i konstruktøren. Det som new-es opp i konstruktøren er vanskelig å mocke i tester.
 * Composition over inheritance. Arv er sterk kobling. Man bør dra inn ny funksjonalitet istedenfor å arve inn funksjonalitet.
 * Singletons VS Constructor Injection
+* Tester: mocking av ajax, testing av HTML-en
