@@ -12,3 +12,6 @@ JS: Tips og triks
 
 Hvordan bruke et Hypermedia API i JS (Backbone)
 ----------------------------------------------
+
+Hvordan kombinere forskjellige kommunikasjonsmekanismer med sever i en JavaScript app (WebSocket, REST)
+----------------------------------------------
