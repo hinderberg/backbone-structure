@@ -6,3 +6,4 @@ js-tips-and-tricks
 * Composition over inheritance. Arv er sterk kobling. Man bør dra inn ny funksjonalitet istedenfor å arve inn funksjonalitet.
 * Singletons VS Constructor Injection
 * Tester: mocking av ajax, testing av HTML-en
+* Hvordan bruke et Hypermedia API i JS (Backbone)
