@@ -14,6 +14,7 @@ JS: Tips og triks
 * Hvordan strukturere JavaScript (Små egenstående moduler)
 * Deferred
 * Objekt kommunikasjon
+* Refaktorering, hvordan gjøre det effektivt i JavaScript?
 
 Hvordan bruke et Hypermedia API i JS (Backbone)
 ----------------------------------------------
