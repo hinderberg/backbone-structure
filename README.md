@@ -16,9 +16,24 @@ JS: Tips og triks
 * Objekt kommunikasjon
 * Refaktorering, hvordan gjøre det effektivt i JavaScript?
 
-JS: Lage en tullete backbone app og fiks den
+JS: Lage en tullete backbone app og fiks den (backbone bare som eksempel) (Usual problems in a JavaScript MVC applications)
 -----------------
-
+* Kompliserte url'er
+* Hvorfor er collections og models vanskelig og hvordan kan vi bruke dem?
+* Hvordan gjøre validering
+* Hvordan ikke knytte seg for mye backbone? Mulig å bytte ut
+* Bruk av base, gjenbrukbarhet
+* Minnehåndtering
+* Hva gjør ikke backbone for deg?
+* _.bindAll MÅ ikke brukes hele tiden
+* scoping go query
+* Få til diskusjon rundt dette
+* Tenke på både presentasjon, bloggpost og workshop
+* Testing og squire?
+* Backbone plugins is the new jQuery plugin. THEY ARE HUUUUUGE! Frameworks?
+* Ovverides of backbone functionality
+* Ugreadebility of backbone, Maintaining the app
+* 
 
 
 Hvordan bruke et Hypermedia API i JS (Backbone)
