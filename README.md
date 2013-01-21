@@ -11,6 +11,9 @@ JS: Tips og triks
 * Composition over inheritance. Arv er sterk kobling. Man bør dra inn ny funksjonalitet istedenfor å arve inn funksjonalitet.
 * Singletons VS Constructor Injection
 * Tester: mocking av ajax, testing av HTML-en
+* Hvordan strukturere JavaScript (Små egenstående moduler)
+* Deferred
+* Objekt kommunikasjon
 
 Hvordan bruke et Hypermedia API i JS (Backbone)
 ----------------------------------------------
@@ -27,3 +30,7 @@ Hva er WebSockets og Server-Sent Events?
 * Hvordan er det å dra inn i Java-verden?
 * Hvilke problemer passer det godt å løse med disse teknologiene?
 * Nettleserstøtte.
+
+
+Minnehåndtering i store javascript applikasjoner
+----------------------------------------
