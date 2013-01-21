@@ -16,6 +16,11 @@ JS: Tips og triks
 * Objekt kommunikasjon
 * Refaktorering, hvordan gjøre det effektivt i JavaScript?
 
+JS: Lage en tullete backbone app og fiks den
+-----------------
+
+
+
 Hvordan bruke et Hypermedia API i JS (Backbone)
 ----------------------------------------------
 
@@ -35,3 +40,22 @@ Hva er WebSockets og Server-Sent Events?
 
 Minnehåndtering i store javascript applikasjoner
 ----------------------------------------
+* Variable refferanser
+* Returverdier
+* Closures
+* Object Attributes and Methods
+* Callbacks
+* DOM events og events in general
+* Hvordan gjøre rent etter seg selv?
+
+
+Hvordan håndtere applikasjonsstate
+----------------------------------------
+* View-models
+
+
+Hvordan lagre data
+----------------------------------------
+* Localstorage
+* Sessionstorage
+* Backend
