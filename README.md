@@ -33,7 +33,7 @@ JS: Lage en tullete backbone app og fiks den (backbone bare som eksempel) (Usual
 * Backbone plugins is the new jQuery plugin. THEY ARE HUUUUUGE! Frameworks?
 * Ovverides of backbone functionality
 * Ugreadebility of backbone, Maintaining the app
-* 
+* Deferred, hvordan bestemme rekkefølge
 
 
 Hvordan bruke et Hypermedia API i JS (Backbone)
