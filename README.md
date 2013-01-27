@@ -1,10 +1,10 @@
 Presentasjonideer
-==================
+===
 
 PS! Ideer kan kun brukes individuelt dersom det er avklart med den som skrev ned ideen.
 
 JS: Tips og triks
------------------
+---
 
 * Templates og testbarhet. Ikke god idé å legge templates i index.html, skaper mange problemer.
 * Gjør så lite som mulig i konstruktøren. Det som new-es opp i konstruktøren er vanskelig å mocke i tester.
@@ -20,7 +20,7 @@ JS: Tips og triks
 * Serverside VS klientside validering
 
 JS: Vanlige problemstillinger i en Backbone application - (presentasjon, bloggpost og workshop)
------------------
+---
 * Kompliserte url'er
 * Hvorfor er collections og models vanskelig og hvordan kan vi bruke dem?
 * Hvordan gjøre validering
@@ -41,16 +41,16 @@ JS: Vanlige problemstillinger i en Backbone application - (presentasjon, bloggpo
 
 
 JS: Hvordan bruke et Hypermedia API i JS
-----------------------------------------------
+---
 
 JS: Kombinere flere kommunikasjonsmekanismer i en JS-app
-----------------------------------------------------
+---
 
 * WebSocket
 * REST
 
 JS: Hva er WebSockets og Server-Sent Events?
-----------------------------------------
+---
 
 * Intro til begge. Vise hvordan man kommer igang med for eksempel Socket.io, Now.js, Pusher, osv.
 * Hvordan er det å dra inn i Java-verden?
@@ -59,7 +59,7 @@ JS: Hva er WebSockets og Server-Sent Events?
 
 
 JS: Minnehåndtering i store javascript applikasjoner
-----------------------------------------
+---
 * Variable refferanser
 * Returverdier
 * Closures
@@ -67,3 +67,6 @@ JS: Minnehåndtering i store javascript applikasjoner
 * Callbacks
 * DOM events og events in general
 * Hvordan gjøre rent etter seg selv?
+
+JAVA: Hvordan lage et Hypermedia API med Jersey
+---
