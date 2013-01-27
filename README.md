@@ -1,4 +1,4 @@
-Presentasjonsideer
+Presentasjonideer
 ==================
 
 PS! Ideer kan kun brukes individuelt dersom det er avklart med den som skrev ned ideen.
@@ -15,8 +15,10 @@ JS: Tips og triks
 * Deferred
 * Objekt kommunikasjon
 * Refaktorering, hvordan gjøre det effektivt i JavaScript?
+* Testing og squire?
+* Deferred, hvordan bestemme rekkefølge
 
-JS: Lage en tullete backbone app og fiks den (backbone bare som eksempel) (Usual problems in a JavaScript MVC applications)
+JS: Vanlige problemstillinger i en Backbone application - (presentasjon, bloggpost og workshop)
 -----------------
 * Kompliserte url'er
 * Hvorfor er collections og models vanskelig og hvordan kan vi bruke dem?
@@ -25,26 +27,28 @@ JS: Lage en tullete backbone app og fiks den (backbone bare som eksempel) (Usual
 * Bruk av base, gjenbrukbarhet
 * Minnehåndtering
 * Hva gjør ikke backbone for deg?
-* _.bindAll MÅ ikke brukes hele tiden
-* scoping go query
-* Få til diskusjon rundt dette
-* Tenke på både presentasjon, bloggpost og workshop
-* Testing og squire?
-* Backbone plugins is the new jQuery plugin. THEY ARE HUUUUUGE! Frameworks?
-* Ovverides of backbone functionality
-* Ugreadebility of backbone, Maintaining the app
-* Deferred, hvordan bestemme rekkefølge
+* _.bindAll MÅ ikke brukes hele tiden, når bør det brukes?
+* scoping og jquery
+* Er Backbone plugins i ferd med å bli det samme som jQuery plugins. For store! Håndtere for mange problemer samtidig?
+* Hvordan overskrive backbone funksjonalitet?
+* Hvordan gjøre det lett å oppgradere Backbone og andre avhengigheter
+* Hvordan gjøre en Backbone app lett å videreutvikle, videreføre, lesbar, lett å bruke for andre utviklere. 
+* Hvordan håndtere dobbelklikk, flere fetch kall mot en singleton?
+* Hvordan håndtere applikasjonsstate (View-models)
+* Lagring av data (mellom lagring) (Localstorage, Minne, Sessionstorage, Backend)
+* Minnehåndtering
 
 
-Hvordan bruke et Hypermedia API i JS (Backbone)
+JS: Hvordan bruke et Hypermedia API i JS
 ----------------------------------------------
 
-Kombinere flere kommunikasjonsmekanismer i en JS-app
+JS: Kombinere flere kommunikasjonsmekanismer i en JS-app
 ----------------------------------------------------
 
-(WebSocket, REST)
+* WebSocket
+* REST
 
-Hva er WebSockets og Server-Sent Events?
+JS: Hva er WebSockets og Server-Sent Events?
 ----------------------------------------
 
 * Intro til begge. Vise hvordan man kommer igang med for eksempel Socket.io, Now.js, Pusher, osv.
@@ -53,7 +57,7 @@ Hva er WebSockets og Server-Sent Events?
 * Nettleserstøtte.
 
 
-Minnehåndtering i store javascript applikasjoner
+JS: Minnehåndtering i store javascript applikasjoner
 ----------------------------------------
 * Variable refferanser
 * Returverdier
@@ -62,15 +66,3 @@ Minnehåndtering i store javascript applikasjoner
 * Callbacks
 * DOM events og events in general
 * Hvordan gjøre rent etter seg selv?
-
-
-Hvordan håndtere applikasjonsstate
-----------------------------------------
-* View-models
-
-
-Hvordan lagre data
-----------------------------------------
-* Localstorage
-* Sessionstorage
-* Backend
