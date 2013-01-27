@@ -19,7 +19,7 @@ JS: Tips og triks
 * Deferred, hvordan bestemme rekkefølge
 * Serverside VS klientside validering
 
-JS: Vanlige problemstillinger i en Backbone application - (presentasjon, bloggpost og workshop)
+JS: Vanlige problemstillinger i en Backbone applikasjon - (presentasjon, bloggpost og workshop)
 ---
 * Kompliserte url'er
 * Hvorfor er collections og models vanskelig og hvordan kan vi bruke dem?
