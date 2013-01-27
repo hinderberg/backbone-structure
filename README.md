@@ -17,6 +17,7 @@ JS: Tips og triks
 * Refaktorering, hvordan gjøre det effektivt i JavaScript?
 * Testing og squire?
 * Deferred, hvordan bestemme rekkefølge
+* Serverside VS klientside validering
 
 JS: Vanlige problemstillinger i en Backbone application - (presentasjon, bloggpost og workshop)
 -----------------
