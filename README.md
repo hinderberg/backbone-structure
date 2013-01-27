@@ -24,8 +24,19 @@ JS: Vanlige problemstillinger i en Backbone applikasjon - (presentasjon, bloggpo
 
 Etter å ha jobbet med flere større Backbone-baserte JavaScript-applikasjoner
 har vi truffet på massevis av problemstillinger, gjort mye rart, og lært en god del. 
-I denne presentasjonen prøver vi å destillere det ned til noen enkle punkter det er
-viktig å tenke på når du jobber med større JavaScript-applikasjoner med Backbone.
+I denne presentasjonen prøver vi å destillere våre erfaringer ned til noen enkle punkter som det er
+viktig å tenke på når du jobber med større JavaScript-applikasjoner som bruker Backbone.
+
+Presentasjonen vil bruke Bakcbone som utgangspunkt men flere av problemstillingene kan relateres til alle slags JavaScript applikasjoner.
+
+Noen temaer som blir tatt opp er:
+Minnehåndtering i JavaScipt applikasjoner
+Vedlikeholdbarhet (skummelt med plugins, hold applikasjonen lett osv)
+Gjenbruk
+Sub views og håndtering av disse
+Dele modeller mellom views
+
+--------
 
 * Kompliserte url'er
 * Hvorfor er collections og models vanskelig og hvordan kan vi bruke dem?
@@ -43,7 +54,6 @@ viktig å tenke på når du jobber med større JavaScript-applikasjoner med Back
 * Hvordan håndtere dobbelklikk, flere fetch kall mot en singleton?
 * Hvordan håndtere applikasjonsstate (View-models)
 * Lagring av data (mellom lagring) (Localstorage, Minne, Sessionstorage, Backend)
-* Minnehåndtering
 
 
 JS: Hvordan bruke et Hypermedia API i JS
