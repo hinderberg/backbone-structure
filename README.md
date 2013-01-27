@@ -21,6 +21,12 @@ JS: Tips og triks
 
 JS: Vanlige problemstillinger i en Backbone applikasjon - (presentasjon, bloggpost og workshop)
 ---
+
+Etter å ha jobbet med flere større Backbone-baserte JavaScript-applikasjoner
+har vi truffet på massevis av problemstillinger, gjort mye rart, og lært en god del. 
+I denne presentasjonen prøver vi å destillere det ned til noen enkle punkter det er
+viktig å tenke på når du jobber med større JavaScript-applikasjoner med Backbone.
+
 * Kompliserte url'er
 * Hvorfor er collections og models vanskelig og hvordan kan vi bruke dem?
 * Hvordan gjøre validering
