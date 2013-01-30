@@ -19,7 +19,7 @@ JS: Tips og triks
 * Deferred, hvordan bestemme rekkefølge
 * Serverside VS klientside validering
 
-JS: Vanlige problemstillinger i en Backbone applikasjon - (presentasjon, bloggpost og workshop)
+JS: Backbone skal gi meg struktur, men alt er fortsatt bare rot - Vanlige problemstillinger i en Backbone applikasjon - (presentasjon, bloggpost og workshop)
 ---
 
 Etter å ha jobbet med flere større Backbone-baserte JavaScript-applikasjoner
