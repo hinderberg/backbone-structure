@@ -19,7 +19,7 @@ JS: Tips og triks
 * Deferred, hvordan bestemme rekkefølge
 * Serverside VS klientside validering
 
-JS: Backbone skal gi meg struktur, men alt er fortsatt bare rot - Vanlige problemstillinger i en Backbone applikasjon - (presentasjon, bloggpost og workshop)
+JS: Backbone skal gi meg struktur, men alt er fortsatt bare rot
 ---
 
 Etter å ha jobbet med flere større Backbone-baserte JavaScript-applikasjoner
@@ -31,7 +31,14 @@ Presentasjonen tar utgangspunkt i Backbone, men flere av problemstillingene er l
 større JavaScript-applikasjoner. Vi kommer blant annet til å prate om minnehåndtering, vedlikeholdbarhet,
 gjenbruk, plugins, og god bruk av modeller og views.
 
----
+Hvordan oppnå bedre struktur?
+
+- Alt trenger ikke være i Backbone. Bruk gjerne ren JavaScript.
+- Refaktorer, refaktorer, refaktorer. Backbone presser på for en litt annen måte å skrive JavaScript, det krever erfaring og øvelse
+- Diskuter mye i teamet. Man må finne teamet sin måte å kode på.
+- Testbar kode har gjerne mer struktur. Tar litt tid å komme hit, gir mye avkasning.
+
+Mulige temaer:
 
 * Kompliserte url'er
 * Hvorfor er collections og models vanskelig og hvordan kan vi bruke dem?
