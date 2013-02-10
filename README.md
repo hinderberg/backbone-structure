@@ -36,7 +36,10 @@ Hvordan oppnå bedre struktur?
 - Alt trenger ikke være i Backbone. Bruk gjerne ren JavaScript.
 - Refaktorer, refaktorer, refaktorer. Backbone presser på for en litt annen måte å skrive JavaScript, det krever erfaring og øvelse
 - Diskuter mye i teamet. Man må finne teamet sin måte å kode på.
-- Testbar kode har gjerne mer struktur. Tar litt tid å komme hit, gir mye avkasning.
+- Testbar kode har gjerne mer struktur. Tar litt tid å komme hit, gir mye avkastning.
+- Ikke dra inn for mye plugins og annet rot i begynnelsen. Forstå basiskonseptene.
+- Avlæring av hvordan man bruker jQuery "til vanlig". Ikke bruk av global `$` overalt.
+- Backbone-utvidelser er de nye jQuery-plugins.
 
 Mulige temaer:
 
