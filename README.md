@@ -40,6 +40,7 @@ Hvordan oppnå bedre struktur?
 - Ikke dra inn for mye plugins og annet rot i begynnelsen. Forstå basiskonseptene.
 - Avlæring av hvordan man bruker jQuery "til vanlig". Ikke bruk av global `$` overalt.
 - Backbone-utvidelser er de nye jQuery-plugins.
+- Fast navngivning: modeller (entall, `User`), collections (flertall, `Users`) og views (...View, `UserView`)
 
 Mulige temaer:
 
