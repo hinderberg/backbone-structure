@@ -192,7 +192,6 @@ Hver av komponentene har spesifikke ansvarsområder. Ikke endre DOM utenfor view
  	var TransactionsView = Backbone.View.extend({
         sortByDateAndType: function(e) {
             e.preventDefault();
-
             var $type = this.$('.transaction-type:selected').val();
             this.transactions.sortByDateAndType($type);
         }
