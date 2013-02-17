@@ -7,7 +7,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script src="https://github.com/downloads/kjbekkelund/remark-bekk/bekk-0.0.5.js" type="text/javascript"></script>
     <link href="https://github.com/downloads/kjbekkelund/remark-bekk/bekk-0.0.5.css" type="text/css" rel="stylesheet">
-    
+
   </head>
   <body>
     <textarea id="source">
@@ -55,11 +55,11 @@ Ansvarfordeling av DOM
     var HeaderView = Backbone.View.extend({
         initialize: function(options) {
           this.user = options.user;
-          this.listenTo(this.user, 'change:authLevel', this.authLevelChanged, this);  
+          this.listenTo(this.user, 'change:authLevel', this.authLevelChanged, this);
         },
-        authLevelChanged: function(user, authLevel) {        
+        authLevelChanged: function(user, authLevel) {
             if (authLevel === 0) {
-                this.$el.children.show();  
+                this.$el.children.show();
             }
         }
     });
@@ -129,13 +129,13 @@ Subviews
                 }
 
                 return timestamp;
-            });  
+            });
         }
     });
 
     var TransactionsView = Backbone.View.extend({
         events: {
-            'click .sortByDate': 'sortByDate'  
+            'click .sortByDate': 'sortByDate'
         },
         initialize: function(options) {
             this.transactions = options.transaction;
@@ -168,7 +168,7 @@ Subviews
         sortByDateAndType: function(e) {
             e.preventDefault();
 
-            var $type = this.$('.transaction-type:selected').val();        
+            var $type = this.$('.transaction-type:selected').val();
             this.transactions.sortByDateAndType($type);
         }
     });
