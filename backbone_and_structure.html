@@ -64,6 +64,8 @@ Hver av komponentene har spesifikke ansvarsområder. Ikke endre DOM utenfor view
 - Starter ajaxkallet når man new'er opp objektet, så hver gang noen sier new UserView vil det automagisk gå ett ajax request
 - Kaller render fra initialize via callbacket til success
 
+---
+
 # Problem 2 - Forslag til løsning
 
 	.javascript
@@ -78,11 +80,13 @@ Hver av komponentene har spesifikke ansvarsområder. Ikke endre DOM utenfor view
 	var userView = new UserView({user: user});
 	userView.render();
 	user.fetch();
+	
+## Dette er bedre fordi
+- 
 
+---
 
 # Problem 3 - Bruk av samme DOM element i flere Views
-
-Ansvarfordeling av DOM
 
     .javascript
     var HeaderView = Backbone.View.extend({
@@ -112,20 +116,27 @@ Ansvarfordeling av DOM
     var headerView = new HeaderView({el: $("#header")});
     var logoutView = new LogoutView({el: $("#header")});
 
-Hva kan skje her? To utviklere, lager hvert sitt view eller en utvikler som
-ikke har oversikt over hele appen. Han/hun begynner å gjøre kodeendringer i
-logoutView også begynner headerView å bugge. Tenkt deg at det da er enda flere
-view som gjør dette. Problemer? Ja!
+---
+    
+# Problem 3 - Forklar problemet
 
-Subviews
+- Deler ansvarsområdet i stedet for å ha sitt eget
+	- Flere utviklere kan da sitte å lage bugs i hverandres views
+
+---
+
+# Problem 3 - Forslag til løsning
+
+
+## Dette er bedre fordi
+
+- Ansvarfordeling av DOM
 
 ---
 
 # Problem 4 - For mye logikk i viewene
 
     .javascript
-    //Eksempel
-
     var Transaction = Backbone.Model.extend({
         defaults: {
             sum: undefined,
@@ -136,18 +147,58 @@ Subviews
         }
     });
 
-    var TransactionView = Backbone.View.extend({
-        initialize: function(options) {
-            this.transaction = options.transaction;
-        },
-        render: function() {
+    var Transactions = Backbone.Collection.extend({
+        model: Transaction
+    });
 
+---
+
+# Problem 4 - For mye logikk i viewene
+    
+    .javascript
+
+    var TransactionsView = Backbone.View.extend({
+        events: {
+            'click .sortByDate': 'sortByDate'
+        },
+        initialize: function(options) {
+            this.transactions = options.transaction;
+        },
+        sortByDateAndType: function(e) {
+            e.preventDefault();
+
+            var $type = this.$('.transaction-type:selected').val();
+            this.transactions.sortBy(function(transaction) {
+                var timestamp = Date.parse(transaction.get('createdAt')) * 1000;
+
+                if ($type === 'something') {
+                    timestamp += "A";
+                } else if ($type === 'somethingElse') {
+                    timestamp += "B";
+                } else if ($type === 'someOtherThing') {
+                    timestamp += "C";
+                }
+
+                return timestamp;
+            });
         }
     });
 
-    var Transactions = Backbone.Collection.extend({
-        model: Transaction,
-        //Løsning
+---
+
+# Problem 4 - Forslag til løsning
+
+ 	.javascript
+ 	var TransactionsView = Backbone.View.extend({
+        sortByDateAndType: function(e) {
+            e.preventDefault();
+
+            var $type = this.$('.transaction-type:selected').val();
+            this.transactions.sortByDateAndType($type);
+        }
+    });
+ 	
+ 	var Transactions = Backbone.Collection.extend({
         sortByDateAndType: function(type) {
             this.sortBy(function(transaction) {
 
@@ -164,47 +215,8 @@ Subviews
                 return timestamp;
             });
         }
-    });
+   	});
 
-    var TransactionsView = Backbone.View.extend({
-        events: {
-            'click .sortByDate': 'sortByDate'
-        },
-        initialize: function(options) {
-            this.transactions = options.transaction;
-        },
-        render: function() {
-
-        },
-        //Problem
-        sortByDateAndType: function(e) {
-            e.preventDefault();
-
-            var $type = this.$('.transaction-type:selected').val();
-
-            this.transactions.sortBy(function(transaction) {
-
-                var timestamp = Date.parse(transaction.get('createdAt')) * 1000;
-
-                if ($type === 'something') {
-                    timestamp += "A";
-                } else if ($type === 'somethingElse') {
-                    timestamp += "B";
-                } else if ($type === 'someOtherThing') {
-                    timestamp += "C";
-                }
-
-                return timestamp;
-            });
-        }
-        //Løsning
-        sortByDateAndType: function(e) {
-            e.preventDefault();
-
-            var $type = this.$('.transaction-type:selected').val();
-            this.transactions.sortByDateAndType($type);
-        }
-    });
 
 ---
 
