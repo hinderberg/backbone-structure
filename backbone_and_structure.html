@@ -14,106 +14,268 @@
 
 .front-page
 
-<!--
-
-
-Etter å ha jobbet med flere større Backbone-baserte JavaScript-applikasjoner har vi truffet på massevis av problemstillinger, gjort mye rart, og lært en god del. I denne presentasjonen prøver vi å destillere våre erfaringer ned til noen enkle punkter som det er viktig å tenke på når du jobber med større JavaScript-applikasjoner basert på Backbone.
-
-Presentasjonen tar utgangspunkt i Backbone, men flere av problemstillingene er like aktuelle i alle større JavaScript-applikasjoner. Vi kommer blant annet til å prate om minnehåndtering, vedlikeholdbarhet, gjenbruk, plugins, og god bruk av modeller og views.
-
--->
-
 # Backbone skal gi meg struktur, men alt er fortsatt bare rot
 
 ## Presentasjon ??DATO??
-
 
 ---
 
 # Hva skal vi snakke om i dag?
 
+---
 
+# Problem 1 - Alt skjer overalt
 
-# Eksempel på en typisk Backbone app
+Backbone-komponentene har spesifikke ansvarsområder. Ikke endre DOM utenfor viewet, iallefall ikke bruk $ i modeller.
 
+---
 
+# Problem 2 - For mye skjer i `initialize`
 
+    .javascript
+    var UserView = Backbone.View.extend({
+      initialize: function() {
+        var user = new User();
+        var self = this;
+        user.fetch({
+            success: function() {
+                self.render();
+            }
+        });
+      }
+    });
 
+---
 
-# Problem 1
+# Problem 3 - Bruk av samme DOM element i flere Views
 
+Ansvarfordeling av DOM
 
-# Problem 1 - Forslag til løsning
+    .javascript
+    var HeaderView = Backbone.View.extend({
+        initialize: function(options) {
+          this.user = options.user;
+          this.listenTo(this.user, 'change:authLevel', this.authLevelChanged, this);  
+        },
+        authLevelChanged: function(user, authLevel) {        
+            if (authLevel === 0) {
+                this.$el.children.show();  
+            }
+        }
+    });
 
+    var LogoutView = Backbone.View.extend({
+        initialize: function(options) {
+            this.user = options.user;
+            this.listenTo(this.user, 'change:authLevel', this.authLevelChanged, this);
+        },
+        authLevelChanged: function(user, authLevel) {
+            if (authLevel === 0) {
+                this.$(".logout-button").hide();
+            }
+        }
+    });
 
-# Problem 2 - Minnehåndtering
+    var headerView = new HeaderView({el: $("#header")});
+    var logoutView = new LogoutView({el: $("#header")});
 
-# Problem 2 - Forslag til løsning
+Hva kan skje her? To utviklere, lager hvert sitt view eller en utvikler som
+ikke har oversikt over hele appen. Han/hun begynner å gjøre kodeendringer i
+logoutView også begynner headerView å bugge. Tenkt deg at det da er enda flere
+view som gjør dette. Problemer? Ja!
 
-# Problem 3 - Dele Modeller, Collections
+Subviews
 
-# Problem 3 - Forslag til løsning
+---
 
-# Problem 4
+# Problem 4 - For mye logikk i viewene
 
-# Problem 4 - Forslag til løsning
+    .javascript
+    //Eksempel
 
+    var Transaction = Backbone.Model.extend({
+        defaults: {
+            sum: undefined,
+            from: undefined,
+            to: undefined,
+            createdAt: undefined,
+            type: undefined
+        }
+    });
 
+    var TransactionView = Backbone.View.extend({
+        initialize: function(options) {
+            this.transaction = options.transaction;
+        },
+        render: function() {
 
+        }
+    });
 
+    var Transactions = Backbone.Collection.extend({
+        model: Transaction,
+        //Løsning
+        sortByDateAndType: function(type) {
+            this.sortBy(function(transaction) {
 
+                var timestamp = Date.parse(transaction.get('createdAt')) * 1000;
 
+                if (type === 'something') {
+                    timestamp += "A";
+                } else if (type === 'somethingElse') {
+                    timestamp += "B";
+                } else if (type === 'someOtherThing') {
+                    timestamp += "C";
+                }
 
+                return timestamp;
+            });  
+        }
+    });
 
+    var TransactionsView = Backbone.View.extend({
+        events: {
+            'click .sortByDate': 'sortByDate'  
+        },
+        initialize: function(options) {
+            this.transactions = options.transaction;
+        },
+        render: function() {
 
+        },
+        //Problem
+        sortByDateAndType: function(e) {
+            e.preventDefault();
 
+            var $type = this.$('.transaction-type:selected').val();
 
+            this.transactions.sortBy(function(transaction) {
 
+                var timestamp = Date.parse(transaction.get('createdAt')) * 1000;
 
+                if ($type === 'something') {
+                    timestamp += "A";
+                } else if ($type === 'somethingElse') {
+                    timestamp += "B";
+                } else if ($type === 'someOtherThing') {
+                    timestamp += "C";
+                }
 
+                return timestamp;
+            });
+        }
+        //Løsning
+        sortByDateAndType: function(e) {
+            e.preventDefault();
 
+            var $type = this.$('.transaction-type:selected').val();        
+            this.transactions.sortByDateAndType($type);
+        }
+    });
 
+---
 
+# Problem 5 - Håndtering av templates
 
+Mustache.to_html(..., ...) overalt. Kan legge i BaseView eller noe lignende.
 
+---
 
-# Hva er Backbone
-Hva får du når du bruker backbone
+# Problem 6 - Backbone-plugins er de nye jQuery-plugins
 
-# Hvordan bruke views
+Mange tar over kode som ligger på Backbone, for eksempel Backbone.localStorage som tar over Backbone.sync.
 
-# Subviews
+Sjekk kodekvaliteten. Ikke gjør det for avhengig.
 
-# Hvordan bruke collections
+---
 
-Hvilke oppgave skal modellene løse?
+# Problem 7 - Filer ligger overalt
 
+Mappestruktur. Ikke lag egne views, models og collections mapper. Samle moduler
+i egen mappe. Dette gjør det faktisk enklere å få rask oversikt over hva app-en
+gjør (se på mappenavnene i modules-mappa)
 
-# Hvordan bruke modeller
+- component
+- module
+- external
 
-Hvilke oppgave skal modellene løse?
+Eller?
 
-# Hvordan bruke routers
+- model
+- collections
+- views
+- router
+- external
 
-Hvilke ansvar har routeren?
+Tilhørlighet
 
-# Dele modeller og collections mellom views
+---
 
-# Minnehåndtering
+# Problem 8 - Backbone brukes der det ikke trengs
 
-# Overskrive rammeverk funksjonalitet
+Bruk Backbone kun der det trengs. Det trenger ikke være overalt i kodebasen.
+Introduser komponenter. Hva er det? Hvorfor er det kult?
 
-# Scoping
+---
 
-# Applikasjonsstate og lagring av data
+# Problem 9 - Bruker store plugins når det kan løses enkelt i Backbone
 
-Bruke minne cache, localstorage, Sessionstorage, Backend
-Abstraksjoner, kalle fetch, bruke sync? 
-Hvordan håndtere dobbelklikk, flere fetch kall mot en singleton?
+Det kan være godt dokumenterte plugins med masse oppdateringer og followers.
+Men store avhengigheter er mer kompleksitet som alle må forstå. Eksempel:
+https://github.com/thedersen/backbone.validation og
+http://backbonerelational.org/
 
-# Backbone plugins ===? jQuery plugins
+Eksempel på enkel løsning:
 
+    .javascript
+    var Inbox = Backbone.Model.extend({
 
+      initialize: function() {
+        this.messages = new Messages();
+      },
+
+      parse: function(resp) {
+        this.messages.update(_.clone(resp.messages), { parse: true });
+        delete resp.messages;
+        return resp;
+      },
+
+      toJSON: function() {
+        var json = _.clone(this.attributes);
+        json.messages = this.messages.toJSON();
+        return json;
+      }
+
+    });
+
+---
+
+# Problem 10 - Ny i kodebasen
+
+Ikke gjør for masse magi. Gjør det enkelt og forståelig. Ha en overordnet
+"filosofi". Her passer kanskje MVP og sånt.
+
+---
+
+# Problem 11 - Koden min er vanskelig å teste
+
+---
+
+# Problem 12 - Jeg dupliserer ofte kode
+
+---
+
+# Problem 13 - View'ene mine blir alt for store
+
+---
+
+# Problem 14 - View'ene mine skal dele modell (singleton)
+
+---
+
+.middle.center
+
+Er det noe vi ikke har nevnt?
 
     </textarea>
     <div id="slideshow" class="white"></div>
