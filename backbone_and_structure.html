@@ -22,11 +22,22 @@
 
 # Hva skal vi snakke om i dag?
 
+I dag skal vi ta for oss ett sett med problemer og missforståelser som er lett å gjøre med Backbone.js
+
 ---
 
 # Problem 1 - Alt skjer overalt
 
-Backbone-komponentene har spesifikke ansvarsområder. Ikke endre DOM utenfor viewet, iallefall ikke bruk $ i modeller.
+<!-- Litt usikker på hva vi skal bruke dette problemet til, litt for stort problem kanskje? -->
+
+Det er viktig å fordele ansvar i en stor JavaScript applikasjon. I Backbone.js er det på helt overordnet nivå delt inn i:
+
+- Modeller
+- Collections
+- Views
+- Router
+
+Hver av komponentene har spesifikke ansvarsområder. Ikke endre DOM utenfor viewet, iallefall ikke bruk $ i modeller.
 
 ---
 
@@ -46,6 +57,28 @@ Backbone-komponentene har spesifikke ansvarsområder. Ikke endre DOM utenfor vie
     });
 
 ---
+
+# Problem 2 - Forklar problemet
+
+- Vanskelig å mock bort user
+- Starter ajaxkallet når man new'er opp objektet, så hver gang noen sier new UserView vil det automagisk gå ett ajax request
+- Kaller render fra initialize via callbacket til success
+
+# Problem 2 - Forslag til løsning
+
+	.javascript
+	var UserView = Backbone.View.extend({
+		initialize: function(options) {
+			this.user = options.user;
+			this.listenTo(this.user, 'reset', this.render, this);
+		}
+	}); 
+	
+	var user = new User();
+	var userView = new UserView({user: user});
+	userView.render();
+	user.fetch();
+
 
 # Problem 3 - Bruk av samme DOM element i flere Views
 
