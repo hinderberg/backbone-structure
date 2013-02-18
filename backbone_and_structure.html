@@ -30,7 +30,7 @@ I dag skal vi ta for oss ett sett med problemer og missforståelser som er lett 
 
 <!-- Litt usikker på hva vi skal bruke dette problemet til, litt for stort problem kanskje? -->
 
-Det er viktig å fordele ansvar i en stor JavaScript applikasjon. I Backbone.js er det på helt overordnet nivå delt inn i:
+Det er viktig å fordele ansvar i en stor JavaScript applikasjon. I Backbone.js er det på helt overordnet nivå delt inn i
 
 - Modeller
 - Collections
@@ -136,6 +136,11 @@ Hver av komponentene har spesifikke ansvarsområder. Ikke endre DOM utenfor view
 
 # Problem 4 - For mye logikk i viewene
 
+- Her er et eksempel på en model `Transaction` og en collection `Transactions`
+- Vi skal lage et view som presenterer en liste med `Transactions`
+
+
+
     .javascript
     var Transaction = Backbone.Model.extend({
         defaults: {
@@ -153,10 +158,9 @@ Hver av komponentene har spesifikke ansvarsområder. Ikke endre DOM utenfor view
 
 ---
 
-# Problem 4 - For mye logikk i viewene
+# Problem 4 - Hva er problemet her?
     
     .javascript
-
     var TransactionsView = Backbone.View.extend({
         events: {
             'click .sortByDate': 'sortByDate'
@@ -184,37 +188,39 @@ Hver av komponentene har spesifikke ansvarsområder. Ikke endre DOM utenfor view
         }
     });
 
+
 ---
+
 
 # Problem 4 - Forslag til løsning
 
- 	.javascript
- 	var TransactionsView = Backbone.View.extend({
-        sortByDateAndType: function(e) {
-            e.preventDefault();
-            var $type = this.$('.transaction-type:selected').val();
-            this.transactions.sortByDateAndType($type);
-        }
-    });
- 	
- 	var Transactions = Backbone.Collection.extend({
-        sortByDateAndType: function(type) {
-            this.sortBy(function(transaction) {
 
-                var timestamp = Date.parse(transaction.get('createdAt')) * 1000;
+	.javascript
+	var TransactionsView = Backbone.View.extend({
+    	sortByDateAndType: function(e) {
+        	e.preventDefault();
+        	var $type = this.$('.transaction-type:selected').val();
+        	this.transactions.sortByDateAndType($type);
+    	}
+	});
 
-                if (type === 'something') {
-                    timestamp += "A";
-                } else if (type === 'somethingElse') {
-                    timestamp += "B";
-                } else if (type === 'someOtherThing') {
-                    timestamp += "C";
-                }
+	var Transactions = Backbone.Collection.extend({
+    	sortByDateAndType: function(type) {
+        	this.sortBy(function(transaction) {
+            	var timestamp = Date.parse(transaction.get('createdAt')) * 1000;
 
-                return timestamp;
-            });
-        }
-   	});
+            	if (type === 'something') {
+                	timestamp += "A";
+            	} else if (type === 'somethingElse') {
+                	timestamp += "B";
+            	} else if (type === 'someOtherThing') {
+                	timestamp += "C";
+            	}
+
+            	return timestamp;
+        	});
+    	}
+	});
 
 
 ---
@@ -265,19 +271,29 @@ Tilhørlighet
 
 # Problem 8 - Backbone brukes der det ikke trengs
 
-Bruk Backbone kun der det trengs. Det trenger ikke være overalt i kodebasen.
-Introduser komponenter. Hva er det? Hvorfor er det kult?
+- I mange tilfeller er det ingen grunn til å bruke Backbone
+- Backbone modeller og collections brukes der man trenger å hente data
+- Views brukes til å vise dataen
+- Alle komponentene rundt trenger ikke vœre knyttet til rammeverket
+- Komponenter skal vœre lette, løse små problemer og ha få avhengigheter
+- Vi vil gå igjennom noen eksempler på komponenter
 
 ---
 
 # Problem 9 - Bruker store plugins når det kan løses enkelt i Backbone
 
-Det kan være godt dokumenterte plugins med masse oppdateringer og followers.
-Men store avhengigheter er mer kompleksitet som alle må forstå. Eksempel:
-https://github.com/thedersen/backbone.validation og
-http://backbonerelational.org/
+- I mange tilfeller er det lett å ta inn plugins
+- Det kan være godt dokumenterte plugins med masse oppdateringer og followers
+- Man bør da tenke, hvilke problem ønsker jeg å løse og løser pluginen akkurat det problemet og ikke det pluss alt annet?
+- Store avhengigheter er mer kompleksitet som alle må forstå. Ta for eksempel:
+	- [Backbone.Validation](https://github.com/thedersen/backbone.validation)
+	- [Backbone-relational.js](http://backbonerelational.org/)
+	
 
-Eksempel på enkel løsning:
+---
+
+# Problem 9 - Et eksempel på en litt enklere løsning
+
 
     .javascript
     var Inbox = Backbone.Model.extend({
@@ -304,8 +320,35 @@ Eksempel på enkel løsning:
 
 # Problem 10 - Ny i kodebasen
 
+- Når man er ny i en kodebase, selv med god kjennskap til rammeverkene, møter man nye måter å bruke rammeverkene på. 
+- En huskeregel når man koder kan vœre å ikke overkomplisere enkle problemer, eller løse fremtidige problemer
+- Følg rammeverket man har valgt og ikke kjemp mot det
+- En annen viktig ting kan vœre å hele tiden tenke på at det kommer en etter deg
+
+
+	.javascript
+	var Transaction = Backbone.Model.extend({
+		
+	});
+	
+mot
+	
+	.javascript
+	var Transaction = Backbone.Model.extend({
+		defaults: {
+ 			sum: undefined,
+            from: undefined,
+            to: undefined,
+            createdAt: undefined,
+            type: undefined
+		}	
+	});
+	
+
+<!--
 Ikke gjør for masse magi. Gjør det enkelt og forståelig. Ha en overordnet
 "filosofi". Her passer kanskje MVP og sånt.
+ -->
 
 ---
 
@@ -318,6 +361,9 @@ Ikke gjør for masse magi. Gjør det enkelt og forståelig. Ha en overordnet
 ---
 
 # Problem 13 - View'ene mine blir alt for store
+
+view med details view
+
 SubViews
 
 ---
