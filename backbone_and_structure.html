@@ -362,13 +362,77 @@ Ikke gjør for masse magi. Gjør det enkelt og forståelig. Ha en overordnet
 
 # Problem 13 - View'ene mine blir alt for store
 
-view med details view
-
-SubViews
+- Når man begynner å lage et view så er de ofte små og løser enkle problemer
+- Med tiden så kan mange views løse for mange problemer
 
 ---
 
-# Problem 14 - View'ene mine skal dele modell (singleton)
+
+# Problem 13 - Forslag til løsning
+
+- For å gjøre det enklere å håndtere store views kan man bruke sub-views
+- Sub-views har som hensikt å løse ett enkelt problem for et overordnet view
+- De skal kunne flyttes rundt uten konsekvenser
+- De skal kunne gjenbrukes på tvers av parent views
+- Si man for eksempel har et view som skal vise personalia
+	- Personalia kan for eksempel inneholde: Navn, Alder, Addresse
+
+
+	.javascript	
+	var PersonView = Backbone.View.extend({});
+	var AddressView = Backbone.View.extend({});
+	var PersonalInformationView = Backbone.View.extend({
+		initialize: function(options) {
+			this.addressView = new AddressView({address: options.address});
+			this.personView = new PersonView({person: options.person});
+		},
+		render: function() {
+			this.render();
+			this.personView.setElement(this.$('#person'));
+			this.personView.render();
+			this.addressView.setElement(this.$('#address'));
+			this.addressView.render();
+			return this;
+		}
+	});
+
+
+---
+
+# Problem 14 - Koden min skal dele data
+
+- I mange tilfeller så ønsker man å dele data mellom flere objekter i applikasjonen
+- Se for deg at man for eksempel har et collection som henter ett sett med regler som styrer hva som er mulig å gjøre i applikasjonen, her er det naturlig å velge å bruke en singleton
+- De som ofte skjer med singletons er:
+	- Blir for store
+	- Vet for mye
+	- Brukt for direkte
+	- De blir vanskelig å teste
+	- Inneholder masse state
+
+---
+
+# Problem 14 - Forslag til løsning
+- Gjør det slik at en singleton ikke kan new'es opp på noen annen måte
+	- Dette gjør at man ikke vil få situasjoner der man ikke vet om man påvirker andre når man endrer den
+- Bruk konstruktør injection når man bruker singletons, slik at de blir enkle å mocke bort under testing
+- Begrens antall singletons, se etter andre mekanismer, som for eksempel minne-cash, session-storage, local-storage
+
+	
+	.javascript
+	define([
+		'Backbone', 
+		'modules/rule/rule'
+	], function(
+		Backbone,
+		Rule
+	) {
+		var Rules = Backbone.Collection.extend({
+			model: Rule
+		}); 
+	
+		return new Rules();
+ 	});
 
 ---
 
