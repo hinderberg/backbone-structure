@@ -327,9 +327,7 @@ Tilhørlighet
 
 
 	.javascript
-	var Transaction = Backbone.Model.extend({
-		
-	});
+	var Transaction = Backbone.Model.extend({});
 	
 mot
 	
@@ -398,10 +396,33 @@ Ikke gjør for masse magi. Gjør det enkelt og forståelig. Ha en overordnet
 		}
 	});
 
+---
+
+# Problem 14 - Oppdatere markup er ett mareritt
+
+- Det kan mange ganger vœre kjipt å endre en header eller lignende som er vanlig å ha på de fleste sider
+- For eksempel så vil man bruke h2 i stedet for h1
+- Det vil virke litt overkill å lage et subView for en liten header go det vil genere litt mye kode i hvert view man ønsker den også
+- Her kan det vœre fint å bruke partials. 
+- Partials er deler av templates som kan dyttes inn hvor de trengs. Et eksempel med handlebars.js kan vœre
+
+
+	.html
+	<h1>{{title}}</h1>
+	<h2 class="sub-title">{{subTitle}}</h2>
+
+	.html
+	{{>header}}
+	{{person.firstname}} {{person.lastname}}
+	
+	.html
+	{{>header}}
+	{{address.postal}}
+	{{address.cordinates}}
 
 ---
 
-# Problem 14 - Koden min skal dele data
+# Problem 15 - Koden min skal dele data
 
 - I mange tilfeller så ønsker man å dele data mellom flere objekter i applikasjonen
 - Se for deg at man for eksempel har et collection som henter ett sett med regler som styrer hva som er mulig å gjøre i applikasjonen, her er det naturlig å velge å bruke en singleton
@@ -414,7 +435,7 @@ Ikke gjør for masse magi. Gjør det enkelt og forståelig. Ha en overordnet
 
 ---
 
-# Problem 14 - Forslag til løsning
+# Problem 15 - Forslag til løsning
 - Gjør det slik at en singleton ikke kan new'es opp på noen annen måte
 	- Dette gjør at man ikke vil få situasjoner der man ikke vet om man påvirker andre når man endrer den
 - Bruk konstruktør injection når man bruker singletons, slik at de blir enkle å mocke bort under testing
