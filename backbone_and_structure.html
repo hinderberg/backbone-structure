@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title></title>
+    <title>Backbone skal gi meg struktur, men alt er fortsatt bare rot</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <script src="https://github.com/downloads/gnab/remark/remark-0.3.5.min.js" type="text/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
@@ -20,28 +20,32 @@
 
 ---
 
-# Hva skal vi snakke om i dag?
+.middle.center
+# Hvem er vi og hva skal vi snakke om i dag?
 
-I dag skal vi ta for oss ett sett med problemer og missforståelser som er lett å gjøre med Backbone.js
+I dag skal vi gå systematisk igjennom ett sett med problemer og misforståelser som er lett å gjøre med Backbone.js
+
 
 ---
 
-# Struktur
+# Kort om Backbone
 
-.pushed
-![image](backbone_structure.png)
+- Ett lite JavaScript rammeverk på omtrent 1500 linjer med kommentarer (6,3kb pakket og gzip'et)
+- Blitt svært populært i løpet av de siste årene
+- Målet er å gi utviklere stuktur ved hjelp av byggeklossene 
+	- Model
+	- Collection
+	- Views
+	- Router
 
-# Problem - Jeg vil huske state ved refresh
-Bruke problemet til kim joar eller min oversikt. Applikasjonen er i en state og man vil at brukeren skal havne der når man trykker refresh. Hva gjør man? Bruker man url, bruker man session storage?
+---
 
-Eksempel med 
+.middle.center
+# Problemer og misforståelser
 
-Man har en liste og trykker på ett element. Et subview blir renderet. Man trykker refresh. Hvordan skal man komme tilbake til den staten?
+---
 
-
-# Problem 1 - Alt skjer overalt
-
-<!-- Litt usikker på hva vi skal bruke dette problemet til, litt for stort problem kanskje? -->
+# Alt skjer overalt #1
 
 Det er viktig å fordele ansvar i en stor JavaScript applikasjon. I Backbone.js er det på helt overordnet nivå delt inn i
 
@@ -54,9 +58,14 @@ Hver av komponentene har spesifikke ansvarsområder. Ikke endre DOM utenfor view
 
 ---
 
+# Alt skjer overalt #2
 
+.pushed
+![image](backbone_structure.png)
 
-# Problem 2 - For mye skjer i `initialize`
+---
+
+# For mye skjer i `initialize` #1
 
     .javascript
     var UserView = Backbone.View.extend({
@@ -70,18 +79,19 @@ Hver av komponentene har spesifikke ansvarsområder. Ikke endre DOM utenfor view
         });
       }
     });
-
----
-
-# Problem 2 - Forklar problemet
+   
+<!-- 
+Notes:
 
 - Vanskelig å mock bort user
 - Starter ajaxkallet når man new'er opp objektet, så hver gang noen sier new UserView vil det automagisk gå ett ajax request
 - Kaller render fra initialize via callbacket til success
 
+-->
+
 ---
 
-# Problem 2 - Forslag til løsning
+# For mye skjer i `initialize` #2
 
 	.javascript
 	var UserView = Backbone.View.extend({
@@ -101,7 +111,22 @@ Hver av komponentene har spesifikke ansvarsområder. Ikke endre DOM utenfor view
 
 ---
 
-# Problem 3 - Bruk av samme DOM element i flere Views
+# Jeg vil huske state ved refresh #1
+Bruke problemet til kim joar eller min oversikt. Applikasjonen er i en state og man vil at brukeren skal havne der når man trykker refresh. Hva gjør man? Bruker man url, bruker man session storage?
+
+Eksempel med 
+
+Man har en liste og trykker på ett element. Et subview blir renderet. Man trykker refresh. Hvordan skal man komme tilbake til den staten?
+
+---
+
+# Jeg vil huske state ved refresh #2
+
+## Dette er bedre fordi
+
+---
+
+# Bruk av samme DOM element i flere Views #1
 
     .javascript
     var HeaderView = Backbone.View.extend({
@@ -131,16 +156,19 @@ Hver av komponentene har spesifikke ansvarsområder. Ikke endre DOM utenfor view
     var headerView = new HeaderView({el: $("#header")});
     var logoutView = new LogoutView({el: $("#header")});
 
----
-    
-# Problem 3 - Forklar problemet
+
+<!-- 
+Notes:
 
 - Deler ansvarsområdet i stedet for å ha sitt eget
 	- Flere utviklere kan da sitte å lage bugs i hverandres views
 
+-->
+
+
 ---
 
-# Problem 3 - Forslag til løsning
+# Bruk av samme DOM element i flere Views #2
 
 
 ## Dette er bedre fordi
@@ -149,7 +177,7 @@ Hver av komponentene har spesifikke ansvarsområder. Ikke endre DOM utenfor view
 
 ---
 
-# Problem 4 - For mye logikk i viewene
+# For mye logikk i viewene #1
 
 - Her er et eksempel på en model `Transaction` og en collection `Transactions`
 - Vi skal lage et view som presenterer en liste med `Transactions`
@@ -173,7 +201,7 @@ Hver av komponentene har spesifikke ansvarsområder. Ikke endre DOM utenfor view
 
 ---
 
-# Problem 4 - Hva er problemet her?
+# For mye logikk i viewene #2
     
     .javascript
     var TransactionsView = Backbone.View.extend({
@@ -206,8 +234,7 @@ Hver av komponentene har spesifikke ansvarsområder. Ikke endre DOM utenfor view
 
 ---
 
-
-# Problem 4 - Forslag til løsning
+# For mye logikk i viewene #3
 
 
 	.javascript
@@ -240,13 +267,13 @@ Hver av komponentene har spesifikke ansvarsområder. Ikke endre DOM utenfor view
 
 ---
 
-# Problem 5 - Håndtering av templates
+# Håndtering av templates
 
 Mustache.to_html(..., ...) overalt. Kan legge i BaseView eller noe lignende.
 
 ---
 
-# Problem 6 - Backbone-plugins er de nye jQuery-plugins
+# Backbone-plugins er de nye jQuery-plugins
 
 Mange tar over kode som ligger på Backbone, for eksempel Backbone.localStorage som tar over Backbone.sync.
 
@@ -262,7 +289,7 @@ samle logikk, gjenbruk
 
 ---
 
-# Problem 7 - Filer ligger overalt
+# Filer ligger overalt
 
 Mappestruktur. Ikke lag egne views, models og collections mapper. Samle moduler
 i egen mappe. Dette gjør det faktisk enklere å få rask oversikt over hva app-en
@@ -284,7 +311,7 @@ Tilhørlighet
 
 ---
 
-# Problem 8 - Backbone brukes der det ikke trengs
+# Backbone brukes der det ikke trengs
 
 - I mange tilfeller er det ingen grunn til å bruke Backbone
 - Backbone modeller og collections brukes der man trenger å hente data
@@ -295,7 +322,7 @@ Tilhørlighet
 
 ---
 
-# Problem 9 - Bruker store plugins når det kan løses enkelt i Backbone
+# Bruker store plugins når det kan løses enkelt i Backbone #1
 
 - I mange tilfeller er det lett å ta inn plugins
 - Det kan være godt dokumenterte plugins med masse oppdateringer og followers
@@ -307,7 +334,7 @@ Tilhørlighet
 
 ---
 
-# Problem 9 - Et eksempel på en litt enklere løsning
+# Bruker store plugins når det kan løses enkelt i Backbone #2
 
 
     .javascript
@@ -333,7 +360,7 @@ Tilhørlighet
 
 ---
 
-# Problem 10 - Ny i kodebasen
+# Ny i kodebasen
 
 - Når man er ny i en kodebase, selv med god kjennskap til rammeverkene, møter man nye måter å bruke rammeverkene på. 
 - En huskeregel når man koder kan vœre å ikke overkomplisere enkle problemer, eller løse fremtidige problemer
@@ -365,17 +392,17 @@ Ikke gjør for masse magi. Gjør det enkelt og forståelig. Ha en overordnet
 
 ---
 
-# Problem 11 - Koden min er vanskelig å teste
+# Koden min er vanskelig å teste
 - Kanskje bedre å blande inn i alle diskusjoner?
 
 ---
 
-# Problem 12 - Jeg dupliserer ofte kode
+# Jeg dupliserer ofte kode
 - Compoents
 
 ---
 
-# Problem 13 - View'ene mine blir alt for store
+# View'ene mine blir alt for store #1
 
 - Når man begynner å lage et view så er de ofte små og løser enkle problemer
 - Med tiden så kan mange views løse for mange problemer
@@ -383,7 +410,7 @@ Ikke gjør for masse magi. Gjør det enkelt og forståelig. Ha en overordnet
 ---
 
 
-# Problem 13 - Forslag til løsning
+# View'ene mine blir alt for store #2
 
 - For å gjøre det enklere å håndtere store views kan man bruke sub-views
 - Sub-views har som hensikt å løse ett enkelt problem for et overordnet view
@@ -413,7 +440,7 @@ Ikke gjør for masse magi. Gjør det enkelt og forståelig. Ha en overordnet
 
 ---
 
-# Problem 14 - Oppdatere markup er ett mareritt
+# Oppdatere markup er ett mareritt
 
 - Det kan mange ganger vœre kjipt å endre en header eller lignende som er vanlig å ha på de fleste sider
 - For eksempel så vil man bruke h2 i stedet for h1
@@ -437,7 +464,7 @@ Ikke gjør for masse magi. Gjør det enkelt og forståelig. Ha en overordnet
 
 ---
 
-# Problem 15 - Koden min skal dele data
+# Koden min skal dele data #1
 
 - I mange tilfeller så ønsker man å dele data mellom flere objekter i applikasjonen
 - Se for deg at man for eksempel har et collection som henter ett sett med regler som styrer hva som er mulig å gjøre i applikasjonen, her er det naturlig å velge å bruke en singleton
@@ -450,7 +477,8 @@ Ikke gjør for masse magi. Gjør det enkelt og forståelig. Ha en overordnet
 
 ---
 
-# Problem 15 - Forslag til løsning
+# Koden min skal dele data #2
+
 - Gjør det slik at en singleton ikke kan new'es opp på noen annen måte
 	- Dette gjør at man ikke vil få situasjoner der man ikke vet om man påvirker andre når man endrer den
 - Bruk konstruktør injection når man bruker singletons, slik at de blir enkle å mocke bort under testing
@@ -479,6 +507,6 @@ Ikke gjør for masse magi. Gjør det enkelt og forståelig. Ha en overordnet
 Er det noe vi ikke har nevnt?
 
     </textarea>
-    <div id="slideshow" class="white"></div>
+    <div id="slideshow" class="black"></div>
   </body>
 </html>
