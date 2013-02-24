@@ -27,6 +27,7 @@ define([
     'jquery', 
     'backbone',
 
+    'modules/transaction/transactionType',
     'modules/transaction/transaction',
     'modules/transaction/transactions',
     'modules/transaction/transactionsView'
@@ -34,6 +35,7 @@ define([
     $, 
     Backbone,
 
+    transactionType,
     Transaction,
     Transactions,
     TransactionsView
@@ -47,6 +49,7 @@ define([
         },
         transactions: function() {
             var transaction1 = new Transaction({
+                type: transactionType.ONE_TYPE,
                 sum: "10",
                 from: "Ola",
                 to: "Gunn",
@@ -54,6 +57,7 @@ define([
             });
     
             var transaction2 = new Transaction({
+                type: transactionType.ANOTHER_TYPE,
                 sum: "20",
                 from: "Geir",
                 to: "Ove",
