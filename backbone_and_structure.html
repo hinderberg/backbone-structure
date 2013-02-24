@@ -153,7 +153,7 @@ Backbone har et sett med byggeklosser som skal hjelpe til:
 
 # Model
 
-Databærer som utvider `Backbone.Model`
+Databærer som arver fra `Backbone.Model`
 
 Kommuniserer med server ved hjelp av for eksempel ajax
 
@@ -260,6 +260,27 @@ var Router = Backbone.Router.extend({
 ---
 
 # Events
+
+Events er en måte å de-koble kommunikasjon mellom JavaScript objekter
+
+`Backbone.Events` er en komponent som kan mikses inn i hvilke som helst objekt
+
+Gir komponenten egenskpen å `binde` til events og `trigge` events
+
+Alle komponentene i Backbone bruker events
+
+Store deler av kommunikasjonen i applikasjonen gjøres ved hjelp av events
+
+```javascript
+this.model.on(eventNavn, callback, context);
+
+
+var doSomething = function() {
+  
+};
+
+this.transactions.on("reset", doSomething, this);
+```
 
 ---
 
