@@ -4,7 +4,12 @@ requirejs.config({
     paths: {
         'jquery': '../libs/jquery',
         'underscore': '../libs/underscore',
-        'backbone': '../libs/backbone'
+        'backbone': '../libs/backbone',
+
+         'text': '../libs/text',
+
+        'handlebars': '../libs/hb/customHandlebars',
+        'hb': '../libs/hb/hb'
     },
 
     shim: {
@@ -41,8 +46,19 @@ define([
             'transactions': 'transactions'
         },
         transactions: function() {
-            var transaction1 = new Transaction({});
-            var transaction2 = new Transaction({});
+            var transaction1 = new Transaction({
+                sum: "10",
+                from: "Ola",
+                to: "Gunn",
+                createdAt: new Date()
+            });
+    
+            var transaction2 = new Transaction({
+                sum: "20",
+                from: "Geir",
+                to: "Ove",
+                createdAt: new Date()
+            });
 
             var transactions = new Transactions([transaction1, transaction2]);
 

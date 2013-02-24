@@ -5,7 +5,8 @@ var Transaction = Backbone.Model.extend({
         sum: undefined,
         from: undefined,
         to: undefined,
-        createdAt: undefined
+        createdAt: undefined,
+        type: undefined
     }
 });
 

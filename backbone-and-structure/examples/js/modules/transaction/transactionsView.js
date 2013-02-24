@@ -1,11 +1,19 @@
-define(['backbone'], function(Backbone) {
+define(['backbone', 'hb!./transactions'], function(Backbone, transactionsTemplate) {
 
 var TransactionsView = Backbone.View.extend({
     events: {
         'click .sortByDate': 'sortByDateAndType'
     },
     initialize: function(options) {
-        this.transactions = options.transaction;
+        this.transactions = options.transactions;
+    },
+    render: function() {
+
+		var json = this.transactions.toJSON();
+		this.$el.html(transactionsTemplate(json));
+
+		return this;
+
     },
     sortByDateAndType: function(e) {
         e.preventDefault();
