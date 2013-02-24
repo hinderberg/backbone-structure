@@ -349,7 +349,7 @@ var TransactionsView = Backbone.View.extend({
         'click .sortByDate': 'sortByDateAndType'
     },
     initialize: function(options) {
-        this.transactions = options.transaction;
+        this.transactions = options.transactions;
     },
     sortByDateAndType: function(e) {
         e.preventDefault();
