@@ -499,8 +499,38 @@ De skal kunne gjenbrukes på tvers av parent views
 # View'ene mine blir alt for store
 
 ```javascript
-var PersonView = Backbone.View.extend({});
+var Products = Backbone.Collection.extend({});
+var ProductView = Backbone.View.extend({
+    tagName: 'li'
+});
 
+var ProductsView = Backbone.View.extend({
+
+    initialize: function(options) {
+        this.products = options.products;
+        this.products.on('reset', this.render, this);
+    },
+
+    render: function() {
+        this.renderTemplate(); // hjelpemetode for å rendre viewet
+
+        this.products.each(function(product) {
+            var productView = new ProductView({ product: product });
+            this.$('.products').append(productView.render().el);
+        }, this);
+
+        return this;
+    }
+
+});
+```
+
+---
+
+# View'ene mine blir alt for store
+
+```javascript
+var PersonView = Backbone.View.extend({});
 var AddressView = Backbone.View.extend({});
 
 var PersonalInformationView = Backbone.View.extend({
@@ -513,10 +543,10 @@ var PersonalInformationView = Backbone.View.extend({
     render: function() {
         this.renderTemplate();
 
-        this.personView.setElement(this.$('#person'));
+        this.personView.setElement(this.$('.person'));
         this.personView.render();
 
-        this.addressView.setElement(this.$('#address'));
+        this.addressView.setElement(this.$('.address'));
         this.addressView.render();
 
         return this;
@@ -528,15 +558,65 @@ var PersonalInformationView = Backbone.View.extend({
 
 class: middle, center
 
-# Arv
+# Jeg repeterer samme kode overalt
 
 ---
 
-# Arv
+# Jeg repeterer samme kode overalt
 
-`BaseView` osv
+Slik ser ofte `render` ut:
 
-`Mustache.to_html(..., ...)` overalt. Kan legge i BaseView eller noe lignende.
+```javascript
+var UserView = Backbone.View.extend({
+
+    render: function() {
+        var data = this.user.toJSON();
+        this.$el.html(Mustache.to_html(this.template, data));
+        return this;
+    }
+
+});
+```
+
+Denne ser ofte helt lik ut:
+
+```javascript
+this.$el.html(Mustache.to_html(this.template, data));
+```
+
+Er ikke dette bedre?
+
+```javascript
+this.renderTemplate(data);
+```
+
+---
+
+# Jeg repeterer samme kode overalt
+
+Kan bruke arv og lage et delt `BaseView`:
+
+```javascript
+var BaseView = Backbone.View.extend({
+    renderTemplate: function(data) {
+        this.$el.html(Mustache.to_html(this.template, data));
+        return this;
+    }
+});
+```
+
+Nå lager vi nye views fra `BaseView`:
+
+```javascript
+var UserView = BaseView.extend({
+
+    this.render: function() {
+        var data = this.user.toJSON();
+        return this.renderTemplate(data);
+    }
+
+});
+```
 
 ---
 
@@ -744,6 +824,8 @@ Vi vil gå igjennom noen eksempler på komponenter
 class: middle, center
 
 # Filer ligger overalt
+
+Require.js?
 
 ---
 
