@@ -18,7 +18,21 @@ requirejs.config({
     }
 });
 
-define(['jquery', 'backbone'], function($, Backbone) {  
+define([
+    'jquery', 
+    'backbone',
+
+    'modules/transaction/transaction',
+    'modules/transaction/transactions',
+    'modules/transaction/transactionsView'
+], function(
+    $, 
+    Backbone,
+
+    Transaction,
+    Transactions,
+    TransactionsView
+) {  
 
     var $body = $("body");
 
@@ -27,7 +41,14 @@ define(['jquery', 'backbone'], function($, Backbone) {
             'transactions': 'transactions'
         },
         transactions: function() {
-            $body.html("hHfhfhf");
+            var transaction1 = new Transaction({});
+            var transaction2 = new Transaction({});
+
+            var transactions = new Transactions([transaction1, transaction2]);
+
+            var transactionsView = new TransactionsView({ transactions: transactions });
+
+            $body.html(transactionsView.render().el);
         }
     });
 
