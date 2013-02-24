@@ -77,17 +77,30 @@
   <body>
     <textarea id="source">
 
-# Backbone skal gi meg struktur, men alt er fortsatt bare rot
+class: middle, center
 
-## Fagdag 1.mars 2013
+# Backbone skal gi meg struktur, 
+## men alt er fortsatt bare rot
+
+### Fagdag 1.mars 2013
 
 ---
 
 class: middle, center
 
-# Hvem er vi og hva skal vi snakke om i dag?
+# Hvem er vi?
 
-I dag skal vi gå systematisk igjennom ett sett med problemstillinger og misforståelser som er lett å gjøre med Backbone.js
+Kim Joar Bekkelund
+
+Hans Magnus Inderberg
+
+---
+
+class: middle, center
+
+# Hva skal vi snakke om i dag?
+
+Problemstillinger og misforståelser som er lett å gjøre med Backbone.js
 
 ---
 
@@ -98,6 +111,12 @@ Lite JavaScript rammeverk på omtrent 1000 linjer (6,3kb pakket og gzip-et)
 Blitt svært populært i løpet av de siste årene
 
 Målet er å gi utviklere stuktur ved hjelp av et sett med byggeklosser
+
+> Greier ikke helt å komme i land med målet, hvorfor ellers skulle vi snakket i dag?
+  
+&nbsp;
+
+**Blitt er rammeverk som er mye brukt på prosjekter i BEKK**
 
 ---
 
@@ -115,36 +134,128 @@ class: middle, center
 
 # Hvem har ansvar for hva?
 
-Fort blir mye som skjer overalt i en stor JavaScript-applikasjon
+Kan fort bli mye som skjer overalt i en stor JavaScript-applikasjon
 
 Det blir vanskelig å få oversikt og det er lett å innføre "bugs"
 
-Backbone sine byggeklosser er laget for å hjelpe til:
+Backbone har et sett med byggeklosser som skal hjelpe til:
 
 - Modeller
 - Collections
 - Views
 - Router
 
-Hver byggekloss har sine spesifikke ansvarsområder
+&nbsp;
+
+** Hver byggekloss har sine spesifikke ansvarsområder **
 
 ---
 
 # Model
 
+Databærer som utvider `Backbone.Model`
+
+Kommuniserer med server ved hjelp av for eksempel ajax
+
+Logikk for å behandle og validere data
+
+** Ingen forståelse eller kjenskap om DOM **
+
+&nbsp;
+
+```javascript
+var Transaction = Backbone.Model.extend({
+  defaults: {
+    from: undefined,
+    to: undefined,
+    sum: undefined
+  }
+});
+
+var transaction = new Transaction({
+  from: "Gunnar"
+  to: "Jens"
+  sum: "1500.00"
+});
+
+```
+
 ---
 
 # Collection
+
+Enkel komponent som har til hensik å holde på en samling av modeller
+
+Inneholder blant annet logikk for å sortere og få et gitt utdrag av modeller
+
+** Ingen forståelse eller kjenskap om DOM **
+
+&nbsp;
+
+```javascript
+var Transactions = Backbone.Collection.extend({
+    model: Transaction
+});
+
+var transactions = new Transactions([transaction1, transaction2]);
+```
 
 ---
 
 # View
 
-template
+Deles inn i logiske deler som brukeren skal få presentert
+
+Skal ** ikke ** inneholde business logikk
+
+Inneholder logikk for animasjoner og annen jQuery magi
+
+Har ikke lov å gå utover sin egen DOM element
+
+Kontrollerer alt innenfor sitt DOM element
+
+```javascript
+var TransactionsView = Backbone.View.extend({
+  events: { ... },
+  initialize: function() { ... },
+  render: function() { ... }
+});
+
+var transactionsView = new TransactionView({ transactions: transactions });
+```
+
+## template
+
+Viewene har ansvar for å bygge templates og legge del inn i sitt eget DOM element `$el`
 
 ---
 
 # Router
+
+Bestemmer staten til applikasjonen
+
+Bytter ut views ved navigering
+
+Lytter på URL endringer
+
+Sender modeller og collections inn til view'ene
+
+Sørger for å starte hentingen av data'en view'et er avhengig av
+
+```javascript
+var Router = Backbone.Router.extend({
+  routes: {
+    'transactions': 'transactions' 
+  },
+  transactions: function() {
+      var transactions = new Transactions();
+      var transactionsView = new TransactionView({ 
+        transactions: transactions 
+      });
+      transactions.fetch();
+  }
+});
+```
 
 ---
 
