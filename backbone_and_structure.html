@@ -3,20 +3,79 @@
   <head>
     <title>Backbone skal gi meg struktur, men alt er fortsatt bare rot</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <script src="https://github.com/downloads/gnab/remark/remark-0.3.5.min.js" type="text/javascript"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-    <script src="https://github.com/downloads/kjbekkelund/remark-bekk/bekk-0.0.5.js" type="text/javascript"></script>
-    <link href="https://github.com/downloads/kjbekkelund/remark-bekk/bekk-0.0.5.css" type="text/css" rel="stylesheet">
+    <script src="remark-0.4.4.min.js" type="text/javascript"></script>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300italic,400|Dosis:300,400|Source+Code+Pro:200,300,400,400bold' rel='stylesheet' type='text/css'>
 
-	<style>
-	.gap {
-	}
+    <style type="text/css" media="screen">
+        h1, h2, h3 { font-family: 'Dosis', sans-serif; }
+        h1 { font-weight: 300; font-size: 50px; }
+        p, li { font-family: 'Source Sans Pro', sans-serif; font-weight: 300; }
+        code { font-family: 'Source Code Pro', sans-serif !important; }
+        pre code { background-color: #fff; border-top: 5px solid #ddd; border-bottom: 5px solid #ddd; }
+        h1 code { font-weight: 300; font-size: 1em !important; background-color: #eee; padding: 0px 5px; border-radius: 5px; }
+        img { max-width: 100%; }
+        blockquote { font-style: italic; font-weight: 300; }
+
+        .red       { background-color: #E8664E; color: #fff; }
+        .green     { background-color: #79A700; color: #fff; }
+        .blue      { background-color: #449BB5; color: #fff; }
+        .dark-blue { background-color: #043D5D; color: #fff; }
+        .yellow    { background-color: #F5E653; color: #fff; }
+        .black     { background-color: #000000; color: #fff; }
+
+        .position { display: none; }
+
+        .codercat img {
+          position: absolute;
+          top: -50px;
+          left: 0;
+          margin-left: 20%;
+        }
+        .codercat .me {
+          position: absolute;
+          top: 155px;
+          width: 300px;
+          text-align: center;
+          left: 40px;
+          font-size: 50px;
+          font-family: 'Dosis', sans-serif;
+        }
+
+        #slideshow .slide .html5 {
+          padding: 0;
+        }
+        .html5 img {
+          width: 70%;
+        }
+
+        .mega { background-color: #1D6D8E; color: #fff; }
+        .mega h1 { font-size: 6em; }
+
+        .cols {}
+        .col1-3 { width: 33.3333%; float: left; }
+
+        .ie10 img {
+          position: absolute;
+          top: 15%;
+          left: 16%;
+          width: 17%;
+        }
+        .ie10-desc {
+          position: absolute;
+          top: 36%;
+          left: 25%;
+        }
+        .chrome img {
+          position: absolute;
+          top: 60%;
+          left: 16%;
+          width: 17%;
+        }
+
 	</style>
   </head>
   <body>
     <textarea id="source">
-
-.front-page
 
 # Backbone skal gi meg struktur, men alt er fortsatt bare rot
 
@@ -24,7 +83,8 @@
 
 ---
 
-.middle.center
+class: middle, center
+
 # Hvem er vi og hva skal vi snakke om i dag?
 
 I dag skal vi gå systematisk igjennom ett sett med problemstillinger og misforståelser som er lett å gjøre med Backbone.js
@@ -33,58 +93,106 @@ I dag skal vi gå systematisk igjennom ett sett med problemstillinger og misfors
 
 # Kort om Backbone
 
-- Ett lite JavaScript rammeverk på omtrent 1500 linjer med kommentarer (6,3kb pakket og gzip'et)
-- Blitt svært populært i løpet av de siste årene
-- Målet er å gi utviklere stuktur ved hjelp av et sett med byggeklosser
+Lite JavaScript rammeverk på omtrent 1000 linjer (6,3kb pakket og gzip-et)
+
+Blitt svært populært i løpet av de siste årene
+
+Målet er å gi utviklere stuktur ved hjelp av et sett med byggeklosser
 
 ---
 
-.middle.center
+class: middle, center
+
 # Et sett med problemstillinger og misforståelser
 
 ---
 
-# Hvem har ansvar for hva? #1
+class: middle, center
 
-- Det er en kjent sak at det fort blir mye som skjer overalt i en stor JavaScript applikasjon
-- Det blir vanskelig å få oversikt og det er lett å innføre `bugs`
-
-
-
-- Det er her Backbone kan vœre til stor hjelp og følgende byggeklosser er laget for å hjelpe til:
-	- Modeller
-	- Collections
-	- Views
-	- Router
-	
-- Hver komponent spesifikke ansvarsområder
+# Hvem har ansvar for hva?
 
 ---
 
-# Hvem har ansvar for hva? #2
+# Hvem har ansvar for hva?
 
-.pushed
-![image](backbone_structure.png)
+Fort blir mye som skjer overalt i en stor JavaScript-applikasjon
 
+Det blir vanskelig å få oversikt og det er lett å innføre "bugs"
+
+Backbone sine byggeklosser er laget for å hjelpe til:
+
+- Modeller
+- Collections
+- Views
+- Router
+
+Hver byggekloss har sine spesifikke ansvarsområder
 
 ---
 
-# For mye skjer i `initialize` #1
+# Model
 
+---
 
-    .javascript
-    var UserView = Backbone.View.extend({
-      initialize: function() {
+# Collection
+
+---
+
+# View
+
+template
+
+---
+
+# Router
+
+---
+
+# Events
+
+---
+
+# Hvem har ansvar for hva?
+
+Kommunikasjon
+
+![](backbone_structure.png)
+
+---
+
+class: middle, center
+
+# For mye skjer i `initialize`
+
+---
+
+# For mye skjer i `initialize`
+
+```javascript
+var UserView = Backbone.View.extend({
+
+    initialize: function() {
+
+        // lager en modell
         var user = new User();
+
         var self = this;
+
+        // henter data
         user.fetch({
+
             success: function() {
+                // rendrer view når data er mottatt
                 self.render();
             }
+
         });
-      }
-    });
-   
+
+    }
+
+});
+```
+
 <!-- 
 Notes:
 
@@ -96,321 +204,343 @@ Notes:
 
 ---
 
-# For mye skjer i `initialize` #2
+# For mye skjer i `initialize`
 
-- Viewet skal helst ikke hente sin egen data, det skal få data
-- Viewet skal respondere på data endringer
+Viewet skal helst ikke hente sin egen data, det skal få data
 
+Viewet skal respondere på data-endringer
 
-	.javascript
-	var UserView = Backbone.View.extend({
-		initialize: function(options) {
-			this.user = options.user;
-			this.listenTo(this.user, 'reset', this.render, this);
-		}
-	}); 
-	
-	var user = new User();
-	var userView = new UserView({user: user});
-	userView.render();
-	user.fetch();
+```javascript
+var UserView = Backbone.View.extend({
+
+    initialize: function(options) {
+        this.user = options.user;
+        this.user.on('change', this.render, this);
+    }
+
+});
+
+var user = new User();
+var userView = new UserView({ user: user });
+user.fetch();
+```
 
 ---
 
-# Bruk av samme DOM element i flere Views #1
+class: middle, center
 
-    .javascript
-    var HeaderView = Backbone.View.extend({
-        initialize: function(options) {
-          this.user = options.user;
-          this.listenTo(this.user, 'change:authLevel', this.authLevelChanged, this);
-        },
-        authLevelChanged: function(user, authLevel) {
-            if (authLevel === 0) {
-                this.$el.children.show();
+# For mye logikk i viewene
+
+---
+
+# For mye logikk i viewene
+
+Her er et eksempel på en model `Transaction` og en collection `Transactions`
+
+Vi skal lage et view som presenterer en liste med `Transactions`
+
+```javascript
+var Transaction = Backbone.Model.extend({
+    defaults: {
+        sum: undefined,
+        from: undefined,
+        to: undefined,
+        createdAt: undefined,
+        type: undefined
+    }
+});
+
+var Transactions = Backbone.Collection.extend({
+    model: Transaction
+});
+```
+
+---
+
+# For mye logikk i viewene
+
+```javascript
+var TransactionsView = Backbone.View.extend({
+    events: {
+        'click .sortByDate': 'sortByDateAndType'
+    },
+    initialize: function(options) {
+        this.transactions = options.transaction;
+    },
+    sortByDateAndType: function(e) {
+        e.preventDefault();
+
+        var type = this.$('.transaction-type:selected').val();
+        this.transactions.sortBy(function(transaction) {
+            var timestamp = Date.parse(transaction.get('createdAt')) * 1000;
+            if (type === 'something') {
+                timestamp += "A";
+            } else if (type === 'somethingElse') {
+                timestamp += "B";
+            } else if (type === 'someOtherThing') {
+                timestamp += "C";
             }
-        }
-    });
-
-    var LogoutView = Backbone.View.extend({
-        initialize: function(options) {
-            this.user = options.user;
-            this.listenTo(this.user, 'change:authLevel', this.authLevelChanged, this);
-        },
-        authLevelChanged: function(user, authLevel) {
-            if (authLevel === 0) {
-                this.$(".logout-button").hide();
-            }
-        }
-    });
-
-    var headerView = new HeaderView({el: $("#header")});
-    var logoutView = new LogoutView({el: $("#header")});
-
-
-<!-- 
-Notes:
-
-- Deler ansvarsområdet i stedet for å ha sitt eget
-	- Flere utviklere kan da sitte å lage bugs i hverandres views
-
--->
-
+            return timestamp;
+        });
+    }
+});
+```
 
 ---
 
-# Bruk av samme DOM element i flere Views #2
+# For mye logikk i viewene
 
-- Ansvarfordeling av DOM
+Flytt logikk til `model` og `collection`:
 
----
+```javascript
+var TransactionsView = Backbone.View.extend({
 
-# For mye logikk i viewene #1
+    events: {
+        'click .sortByDate': 'sortByDateAndType'
+    },
 
-- Her er et eksempel på en model `Transaction` og en collection `Transactions`
-- Vi skal lage et view som presenterer en liste med `Transactions`
+    initialize: function(options) {
+        this.transactions = options.transaction;
+    },
 
+    sortByDateAndType: function(e) {
+        e.preventDefault();
 
+        var type = this.$('.transaction-type:selected').val();
+        this.transactions.sortByDateAndType(type);
+    }
 
-    .javascript
-    var Transaction = Backbone.Model.extend({
-        defaults: {
-            sum: undefined,
-            from: undefined,
-            to: undefined,
-            createdAt: undefined,
-            type: undefined
-        }
-    });
-
-    var Transactions = Backbone.Collection.extend({
-        model: Transaction
-    });
+});
+```
 
 ---
 
-# For mye logikk i viewene #2
-    
-    .javascript
-    var TransactionsView = Backbone.View.extend({
-        events: {
-            'click .sortByDate': 'sortByDate'
-        },
-        initialize: function(options) {
-            this.transactions = options.transaction;
-        },
-        sortByDateAndType: function(e) {
-            e.preventDefault();
+class: middle, center
 
-            var $type = this.$('.transaction-type:selected').val();
-            this.transactions.sortBy(function(transaction) {
-                var timestamp = Date.parse(transaction.get('createdAt')) * 1000;
+Kim tar over
 
-                if ($type === 'something') {
-                    timestamp += "A";
-                } else if ($type === 'somethingElse') {
-                    timestamp += "B";
-                } else if ($type === 'someOtherThing') {
-                    timestamp += "C";
-                }
-
-                return timestamp;
-            });
-        }
-    });
-
+# View'ene mine blir alt for store
 
 ---
 
-# For mye logikk i viewene #3
+# View'ene mine blir alt for store
 
+SCREENSHOT
 
-	.javascript
-	var TransactionsView = Backbone.View.extend({
-    	sortByDateAndType: function(e) {
-        	e.preventDefault();
-        	var $type = this.$('.transaction-type:selected').val();
-        	this.transactions.sortByDateAndType($type);
-    	}
-	});
+Når man begynner å lage et view så er de ofte små og løser enkle problemer
 
-	var Transactions = Backbone.Collection.extend({
-    	sortByDateAndType: function(type) {
-        	this.sortBy(function(transaction) {
-            	var timestamp = Date.parse(transaction.get('createdAt')) * 1000;
+Med tiden så kan hvert enkelt view løse for mange problemer
 
-            	if (type === 'something') {
-                	timestamp += "A";
-            	} else if (type === 'somethingElse') {
-                	timestamp += "B";
-            	} else if (type === 'someOtherThing') {
-                	timestamp += "C";
-            	}
+De blir store og klumpete
 
-            	return timestamp;
-        	});
-    	}
-	});
+Vanskelig å få oversikt
 
-
+Vanskelig å teste
 
 ---
 
-# View'ene mine blir alt for store #1
+# View'ene mine blir alt for store
 
-- Når man begynner å lage et view så er de ofte små og løser enkle problemer
-- Med tiden så kan hvert enkelt view løse for mange problemer
-- De blir store og klumpete
-- Vanskelig å få oversikt
-- Vanskelig å teste
+For å gjøre det enklere å håndtere store views kan man bruke sub-views
+
+Sub-views har som hensikt å løse ett enkelt problem for et overordnet view
+
+De skal kunne flyttes rundt uten konsekvenser
+
+De skal kunne gjenbrukes på tvers av parent views
 
 ---
 
+# View'ene mine blir alt for store
 
-# View'ene mine blir alt for store #2
+```javascript
+var PersonView = Backbone.View.extend({});
 
-- For å gjøre det enklere å håndtere store views kan man bruke sub-views
-- Sub-views har som hensikt å løse ett enkelt problem for et overordnet view
-- De skal kunne flyttes rundt uten konsekvenser
-- De skal kunne gjenbrukes på tvers av parent views
-- Si man for eksempel har et view som skal vise personalia
-	- Personalia kan for eksempel inneholde: Navn, Alder, Addresse
+var AddressView = Backbone.View.extend({});
 
+var PersonalInformationView = Backbone.View.extend({
 
-	.javascript	
-	var PersonView = Backbone.View.extend({});
-	var AddressView = Backbone.View.extend({});
-	var PersonalInformationView = Backbone.View.extend({
-		initialize: function(options) {
-			this.addressView = new AddressView({address: options.address});
-			this.personView = new PersonView({person: options.person});
-		},
-		render: function() {
-			this.render();
-			this.personView.setElement(this.$('#person'));
-			this.personView.render();
-			this.addressView.setElement(this.$('#address'));
-			this.addressView.render();
-			return this;
-		}
-	});
+    initialize: function(options) {
+        this.addressView = new AddressView({ address: options.address });
+        this.personView = new PersonView({ person: options.person });
+    },
+
+    render: function() {
+        this.renderTemplate();
+
+        this.personView.setElement(this.$('#person'));
+        this.personView.render();
+
+        this.addressView.setElement(this.$('#address'));
+        this.addressView.render();
+
+        return this;
+    }
+});
+```
+
+---
+
+class: middle, center
+
+# Arv
+
+---
+
+# Arv
+
+`BaseView` osv
+
+`Mustache.to_html(..., ...)` overalt. Kan legge i BaseView eller noe lignende.
 
 ---
 
 # Oppdatere markup er ett mareritt
 
-- Det kan mange ganger vœre kjipt å endre en header eller lignende som er vanlig å ha på de fleste sider
-- For eksempel så vil man bruke h2 i stedet for h1
-- Det vil virke litt overkill å lage et subView for en liten header go det vil genere litt mye kode i hvert view man ønsker den også
-- Her kan det vœre fint å bruke partials. 
-- Partials er deler av templates som kan dyttes inn hvor de trengs. Et eksempel med handlebars.js kan vœre
+kjipt å endre en header som er vanlig å ha på de fleste sider
 
+For eksempel så vil man bruke `h2` i stedet for `h1`
 
-	.html
-	<h1>{{title}}</h1>
-	<h2 class="sub-title">{{subTitle}}</h2>
-
-	.html
-	{{>header}}
-	{{person.firstname}} {{person.lastname}}
-	
-	.html
-	{{>header}}
-	{{address.postal}}
-	{{address.cordinates}}
+Kan være overkill å lage et subview for en liten header
 
 ---
 
-# Håndtering av templates
+# Oppdatere markup er ett mareritt
 
-Mustache.to_html(..., ...) overalt. Kan legge i BaseView eller noe lignende.
+Mulig løsning: Partials!
 
----
+Partials er deler av templates som kan dyttes inn hvor de trengs.
 
-# Koden min skal dele data #1
+```html
+<h1>{{title}}</h1>
+<h2 class="sub-title">{{subTitle}}</h2>
+```
 
-- I mange tilfeller så ønsker man å dele data mellom flere objekter i applikasjonen
-- Se for deg at man for eksempel har et collection som henter ett sett med regler som styrer hva som er mulig å gjøre i applikasjonen, her er det naturlig å velge å bruke en singleton
-- De som ofte skjer med singletons er:
-	- Blir for store
-	- Vet for mye
-	- Brukt for direkte
-	- De blir vanskelig å teste
-	- Inneholder masse state
+```html
+{{>header}}
 
----
+<p>{{person.firstname}} {{person.lastname}}</p>
+```
 
-# Koden min skal dele data #2
+```html
+{{>header}}
 
-- Gjør det slik at en singleton ikke kan new'es opp på noen annen måte
-	- Dette gjør at man ikke vil få situasjoner der man ikke vet om man påvirker andre når man endrer den
-- Bruk konstruktør injection når man bruker singletons, slik at de blir enkle å mocke bort under testing
-- Begrens antall singletons, se etter andre mekanismer, som for eksempel minne-cash, session-storage, local-storage
-
-	
-	.javascript
-	define([
-		'Backbone', 
-		'modules/rule/rule'
-	], function(
-		Backbone,
-		Rule
-	) {
-		var Rules = Backbone.Collection.extend({
-			model: Rule
-		}); 
-	
-		return new Rules();
- 	});
+<p>{{address.postal}}</p>
+<p>{{address.cordinates}}<p>
+```
 
 ---
 
-# Backbone-plugins er de nye jQuery-plugins #1
+class: middle, center
 
-- Plugins skal i teorien vœre komponenter som løser et problem som et rammeverk ikke ønsker å ta stilling til
-- Problemet med mange plugins er at de tar over kode som ligger på Backbone
-	- Eksemplet på dette er Backbone.localStorage som tar over Backbone.sync.
+# Koden min skal dele data
+
+# Mulig nytt fokus: Det er viktig at det bare finnes én
+
+---
+
+# Koden min skal dele data
+
+!! DENNE ER VANSKELIG Å FORSTÅ
+
+- Hva er en singleton?
+
+I mange tilfeller så ønsker man å dele data mellom flere objekter i applikasjonen
+
+Se for deg at man for eksempel har et collection som henter ett sett med regler som styrer hva som er mulig å gjøre i applikasjonen, her er det naturlig å velge å bruke en singleton
+
+---
+
+# Koden min skal dele data
+
+Gjør det slik at en singleton ikke kan new'es opp på noen annen måte
+
+- Dette gjør at man ikke vil få situasjoner der man ikke vet om man påvirker andre når man endrer den
+
+Bruk konstruktør injection når man bruker singletons, slik at de blir enkle å mocke bort under testing
+
+Begrens antall singletons, se etter andre mekanismer, som for eksempel minne-cash, session-storage, local-storage
+
+```javascript
+define(['Backbone', 'modules/rule/rule'], function(Backbone, Rule) {
+    var Rules = Backbone.Collection.extend({
+        model: Rule
+    });
+
+    return new Rules();
+});
+```
+
+Singletons kan være positivt, men det er noen problemer:
+
+- Blir for store
+- Vet for mye
+- Brukt for direkte
+- De blir vanskelig å teste
+- Inneholder masse state
+
+---
+
+class: middle, center
+
+# Backbone-plugins = jQuery-plugins
+
+---
+
+# Backbone-plugins = jQuery-plugins
+
+Shitty kvalitet på det meste
+
+Plugins skal i teorien vœre komponenter som løser et problem som et rammeverk ikke ønsker å ta stilling til
+
+Mange plugins tar over kode som ligger på `Backbone`
+
+Eksempel fra `Backbone.localStorage`:
+
+```javascript
+// Override 'Backbone.sync' to default to localSync,
+// the original 'Backbone.sync' is still available in 'Backbone.ajaxSync'
+
+Backbone.sync = function(method, model, options) {
+    return Backbone.getSyncMethod(model).apply(this, [method, model, options]);
+};
+```
+
+---
+
+# Backbone-plugins = jQuery-plugins
 
 ## Tips
 
 - Sjekk kodekvaliteten på pluginen du ønsker å dra inn
 - Ikke gjør applikasjonen din for avhengig, utvikling på pluginen kan plutselig slutte
 - Plugins kan vœre kult og gjøre mye magi, men husk at magien blir fort ødelagt om man ønsker å gjøre små endringer
-- Prøve å finn plugins som følger prinsippet: "don't call me, i'll call you"
+
+Følg Hollywood-prinsippet:
+
+> Don't call me, I'll call you
 
 ---
 
+# Trenger du egentlig denne plugin-en?
 
-# Backbone brukes der det ikke trengs
+Lett å dra inn — potensielt masse kompleksitet
 
-- Komponenter som vi har valgt å kalle dem er et forsøk på å bidra til å gjøre plugins mer håndterbare
-- De skal vœre små
-- Løse enkle problemer
-- Hindre duplisering av kode
+Det kan være godt dokumenterte plugins med masse oppdateringer og followers
 
-- I mange tilfeller er det ingen grunn til å bruke Backbone
-- Backbone modeller og collections brukes der man trenger å hente data
-- Views brukes til å vise dataen
-- Alle komponentene rundt trenger ikke vœre knyttet til rammeverket
-- Komponenter skal vœre lette, løse små problemer og ha få avhengigheter
-- Vi vil gå igjennom noen eksempler på komponenter
+Man bør da tenke, hvilke problem ønsker jeg å løse og løser pluginen akkurat det problemet og ikke det pluss alt annet?
 
----
+Store avhengigheter er mer kompleksitet som alle må forstå.
 
-# Bruker store plugins når det kan løses enkelt i Backbone #1
+For eksempel:
 
-- I mange tilfeller er det lett å ta inn plugins
-- Det kan være godt dokumenterte plugins med masse oppdateringer og followers
-- Man bør da tenke, hvilke problem ønsker jeg å løse og løser pluginen akkurat det problemet og ikke det pluss alt annet?
-- Store avhengigheter er mer kompleksitet som alle må forstå. Ta for eksempel:
-	- [Backbone.Validation](https://github.com/thedersen/backbone.validation)
-	- [Backbone-relational.js](http://backbonerelational.org/)
-	
+- [Backbone-relational.js](http://backbonerelational.org/) er større enn Backbone selv
 
 ---
 
-# Bruker store plugins når det kan løses enkelt i Backbone #2
+# Trenger du egentlig denne plugin-en?
 
+Enkelt å la en modell inneholde en collection:
 
     .javascript
     var Inbox = Backbone.Model.extend({
@@ -433,13 +563,48 @@ Mustache.to_html(..., ...) overalt. Kan legge i BaseView eller noe lignende.
 
     });
 
+
 ---
 
+class: middle, center
+
+# Backbone brukes der det ikke trengs
+
+---
+
+# Backbone brukes der det ikke trengs
+
+!! Komponenter
+
+Komponenter som vi har valgt å kalle dem er et forsøk på å bidra til å gjøre plugins mer håndterbare
+
+De skal vœre små
+
+Løse enkle problemer
+
+Hindre duplisering av kode
+
+Backbone modeller og collections brukes der man trenger å hente data
+
+Views brukes til å vise dataen
+
+Alle komponentene rundt trenger ikke vœre knyttet til rammeverket
+
+Komponenter skal vœre lette, løse små problemer og ha få avhengigheter
+
+Vi vil gå igjennom noen eksempler på komponenter
+
+---
+
+class: middle, center
 
 # Filer ligger overalt
 
-- Kan virke banalt å tenke på, men er utrolig viktig
-- 
+---
+
+# Filer ligger overalt
+
+Kan virke banalt, men det er utrolig viktig
 
 Mappestruktur. Ikke lag egne views, models og collections mapper. Samle moduler
 i egen mappe. Dette gjør det faktisk enklere å få rask oversikt over hva app-en
@@ -461,13 +626,57 @@ Tilhørlighet
 
 ---
 
+# Filer ligger overalt
 
-# Ny i kodebasen
+```sh
+$ tree
+.
+├── app.js
+├── components
+│   ├── subViewHandler.js
+│   └── validation.js
+├── index.html
+├── libs
+│   ├── backbone-0.9.10.js
+│   ├── jquery-1.9.1.js
+│   └── underscore-1.4.4.js
+└── modules
+    └── payments
+        ├── payment.js
+        ├── payment.mustache
+        ├── paymentView.js
+        └── payments.js
 
-- Når man er ny i en kodebase, selv med god kjennskap til rammeverkene, møter man nye måter å bruke rammeverkene på. 
-- En huskeregel når man koder kan vœre å ikke overkomplisere enkle problemer, eller løse fremtidige problemer
-- Følg rammeverket man har valgt og ikke kjemp mot det
-- En annen viktig ting kan vœre å hele tiden tenke på at det kommer en etter deg
+4 directories, 11 files
+```
+
+---
+
+# Filer ligger overalt
+
+Require.js-eksempel. Trenger ikke lengre "full path".
+
+---
+
+class: middle, center
+
+# Huskeliste
+
+---
+
+# Huskeliste
+
+Testbarhet ≈ struktur
+
+Ny i kodebasen
+
+Når man er ny i en kodebase, selv med god kjennskap til rammeverkene, møter man nye måter å bruke rammeverkene på. 
+
+En huskeregel når man koder kan vœre å ikke overkomplisere enkle problemer, eller løse fremtidige problemer
+
+Følg rammeverket man har valgt og ikke kjemp mot det
+
+En annen viktig ting kan vœre å hele tiden tenke på at det kommer en etter deg
 
 
 	.javascript
@@ -494,41 +703,13 @@ Ikke gjør for masse magi. Gjør det enkelt og forståelig. Ha en overordnet
 
 ---
 
+class: middle, center, black
 
-# Jeg vil huske state ved refresh #1
-Bruke problemet til kim joar eller min oversikt. Applikasjonen er i en state og man vil at brukeren skal havne der når man trykker refresh. Hva gjør man? Bruker man url, bruker man session storage?
+# Spørsmål?
 
-Eksempel med 
-
-Man har en liste og trykker på ett element. Et subview blir renderet. Man trykker refresh. Hvordan skal man komme tilbake til den staten?
-
----
-
-# Jeg vil huske state ved refresh #2
-
-## Huskeliste
-
----
-
-# Koden min er vanskelig å teste
-- Kanskje bedre å blande inn i alle diskusjoner?
-
----
-
-
-# Huskelisten
-
-- Ikke endre DOM utenfor views, iallefall ikke bruk jQuery i modeller og andre databærere
-
----
-
-
-.middle.center
-
-Spørsmål? <br/>
-Tid til en liten diskusjon?
+# Uenig?
 
     </textarea>
-    <div id="slideshow" class="black"></div>
+    <div id="slideshow"></div>
   </body>
 </html>
