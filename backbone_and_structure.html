@@ -72,7 +72,7 @@
           width: 17%;
         }
 
-	</style>
+  </style>
   </head>
   <body>
     <textarea id="source">
@@ -377,8 +377,7 @@ var Transaction = Backbone.Model.extend({
         sum: undefined,
         from: undefined,
         to: undefined,
-        createdAt: undefined,
-        type: undefined
+        createdAt: undefined
     }
 });
 
@@ -455,27 +454,41 @@ Kim tar over
 
 ---
 
-# View'ene mine blir alt for store
+class: middle, center
 
-SCREENSHOT
+![](images/store-views.png)
 
-Når man begynner å lage et view så er de ofte små og løser enkle problemer
+---
 
-Med tiden så kan hvert enkelt view løse for mange problemer
+class: middle, center
 
-De blir store og klumpete
+![](images/store-views2.png)
 
-Vanskelig å få oversikt
+---
 
-Vanskelig å teste
+class: middle, center
+
+Bildet med markering på hvor viewene er
 
 ---
 
 # View'ene mine blir alt for store
 
-For å gjøre det enklere å håndtere store views kan man bruke sub-views
+Starter alltid små
 
-Sub-views har som hensikt å løse ett enkelt problem for et overordnet view
+… men de vokser og vokser
+
+… og blir mer og mer komplekse
+
+… og det blir vanskelig å få oversikt
+
+… og det blir vanskelig å teste dem
+
+---
+
+# View'ene mine blir alt for store
+
+Løsningen? Del viewet inn i **subviews**!
 
 De skal kunne flyttes rundt uten konsekvenser
 
@@ -802,36 +815,34 @@ Testbarhet ≈ struktur
 
 Ny i kodebasen
 
-Når man er ny i en kodebase, selv med god kjennskap til rammeverkene, møter man nye måter å bruke rammeverkene på. 
-
-En huskeregel når man koder kan vœre å ikke overkomplisere enkle problemer, eller løse fremtidige problemer
+Når man er ny i en kodebase, selv med god kjennskap til rammeverkene, møter man nye måter å bruke rammeverkene på
 
 Følg rammeverket man har valgt og ikke kjemp mot det
 
 En annen viktig ting kan vœre å hele tiden tenke på at det kommer en etter deg
 
+```javascript
+var Transaction = Backbone.Model.extend({});
+```
 
-	.javascript
-	var Transaction = Backbone.Model.extend({});
-	
-mot
-	
-	.javascript
-	var Transaction = Backbone.Model.extend({
-		defaults: {
- 			sum: undefined,
-            from: undefined,
-            to: undefined,
-            createdAt: undefined,
-            type: undefined
-		}	
-	});
-	
+vs
 
-<!--
-Ikke gjør for masse magi. Gjør det enkelt og forståelig. Ha en overordnet
-"filosofi". Her passer kanskje MVP og sånt.
- -->
+```javascript
+var Transaction = Backbone.Model.extend({
+    defaults: {
+        sum: undefined,
+        from: undefined,
+        to: undefined,
+        createdAt: undefined,
+        type: undefined
+    }
+});
+
+Ikke gjør for masse magi
+
+Gjør det enkelt og forståelig
+
+Ha en overordnet "filosofi"
 
 ---
 
