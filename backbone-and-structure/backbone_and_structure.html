@@ -16,6 +16,8 @@
         img { max-width: 100%; }
         blockquote { font-style: italic; font-weight: 300; }
 
+        .huge { font-size: 3em; font-family: 'Dosis', sans-serif; }
+
         .red       { background-color: #E8664E; color: #fff; }
         .green     { background-color: #79A700; color: #fff; }
         .blue      { background-color: #449BB5; color: #fff; }
@@ -845,7 +847,7 @@ class: middle, center
 
 Shitty kvalitet på det meste
 
-Plugins skal i teorien vœre komponenter som løser et problem som et rammeverk ikke ønsker å ta stilling til
+Ikke dra inn for store plugins for tidlig — forstå verdien de tilfører
 
 Mange plugins tar over kode som ligger på `Backbone`
 
@@ -864,37 +866,43 @@ Backbone.sync = function(method, model, options) {
 
 # Backbone-plugins = jQuery-plugins
 
-## Tips
-
-- Sjekk kodekvaliteten på pluginen du ønsker å dra inn
-- Ikke gjør applikasjonen din for avhengig, utvikling på pluginen kan plutselig slutte
-- Plugins kan vœre kult og gjøre mye magi, men husk at magien blir fort ødelagt om man ønsker å gjøre små endringer
-
-Følg Hollywood-prinsippet:
-
-> Don't call me, I'll call you
-
----
-
-# Trenger du egentlig denne plugin-en?
+Sjekk kodekvaliteten på pluginen du ønsker å dra inn
 
 Lett å dra inn — potensielt masse kompleksitet
 
-Det kan være godt dokumenterte plugins med masse oppdateringer og followers
+Ikke gjør applikasjonen din for avhengig, utvikling på pluginen kan plutselig slutte
 
-Man bør da tenke, hvilke problem ønsker jeg å løse og løser pluginen akkurat det problemet og ikke det pluss alt annet?
+Plugins kan magisk, men husk at magien blir fort ødelagt
 
-Store avhengigheter er mer kompleksitet som alle må forstå.
+---
 
-For eksempel:
+class: middle, center
 
-- [Backbone-relational.js](http://backbonerelational.org/) er større enn Backbone selv
+Husk Hollywood-prinsippet:
+
+.huge[Don't call me, I'll call you]
 
 ---
 
 # Trenger du egentlig denne plugin-en?
 
-Enkelt å la en modell inneholde en collection:
+Backbone-relational er for eksempel større enn Backbone selv
+
+---
+
+# Trenger du egentlig denne plugin-en?
+
+Backbone-relational er for eksempel større enn Backbone selv
+
+Du trenger én-til-mange-relasjon?
+
+---
+
+# Trenger du egentlig denne plugin-en?
+
+Backbone-relational er for eksempel større enn Backbone selv
+
+Du trenger én-til-mange-relasjon?
 
     .javascript
     var Inbox = Backbone.Model.extend({
