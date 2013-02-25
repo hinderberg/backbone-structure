@@ -646,89 +646,192 @@ var UserView = BaseView.extend({
 
 ---
 
-# Oppdatere markup er ett mareritt
-
-kjipt å endre en header som er vanlig å ha på de fleste sider
-
-For eksempel så vil man bruke `h2` i stedet for `h1`
-
-Kan være overkill å lage et subview for en liten header
-
----
-
-# Oppdatere markup er ett mareritt
-
-Mulig løsning: Partials!
-
-Partials er deler av templates som kan dyttes inn hvor de trengs.
-
-```html
-<h1>{{title}}</h1>
-<h2 class="sub-title">{{subTitle}}</h2>
-```
-
-```html
-{{>header}}
-
-<p>{{person.firstname}} {{person.lastname}}</p>
-```
-
-```html
-{{>header}}
-
-<p>{{address.postal}}</p>
-<p>{{address.cordinates}}<p>
-```
-
----
-
 class: middle, center
 
-# Koden min skal dele data
-
-# Mulig nytt fokus: Det er viktig at det bare finnes én
+# Det er viktig at det bare finnes én
 
 ---
 
-# Koden min skal dele data
+# Det er viktig at det bare finnes én
 
-!! DENNE ER VANSKELIG Å FORSTÅ
-
-- Hva er en singleton?
-
-I mange tilfeller så ønsker man å dele data mellom flere objekter i applikasjonen
-
-Se for deg at man for eksempel har et collection som henter ett sett med regler som styrer hva som er mulig å gjøre i applikasjonen, her er det naturlig å velge å bruke en singleton
-
----
-
-# Koden min skal dele data
-
-Gjør det slik at en singleton ikke kan new'es opp på noen annen måte
-
-- Dette gjør at man ikke vil få situasjoner der man ikke vet om man påvirker andre når man endrer den
-
-Bruk konstruktør injection når man bruker singletons, slik at de blir enkle å mocke bort under testing
-
-Begrens antall singletons, se etter andre mekanismer, som for eksempel minne-cash, session-storage, local-storage
+Vi har en handlekurv for app-en:
 
 ```javascript
-define(['Backbone', 'modules/rule/rule'], function(Backbone, Rule) {
-    var Rules = Backbone.Collection.extend({
-        model: Rule
+var Cart = Backbone.Model.extend({
+    url: '/api/cart'
+});
+
+```
+
+---
+
+# Det er viktig at det bare finnes én
+
+Vi har en handlekurv for app-en:
+
+```javascript
+var Cart = Backbone.Model.extend({
+    url: '/api/cart'
+});
+
+```
+
+Vi lager en instans for handlekurv-siden
+
+```javascript
+var cart = new Cart();
+var cartView = new CartView({ cart: cart });
+```
+
+---
+
+# Det er viktig at det bare finnes én
+
+Vi har en handlekurv for app-en:
+
+```javascript
+var Cart = Backbone.Model.extend({
+    url: '/api/cart'
+});
+
+```
+
+Vi lager en instans for handlekurv-siden
+
+```javascript
+var cart = new Cart();
+var cartView = new CartView({ cart: cart });
+```
+
+Og en instans for menyen
+
+```javascript
+var cart = new Cart();
+var menuView = new MenuView({ cart: cart });
+```
+
+---
+
+# Det er viktig at det bare finnes én
+
+Vi har en handlekurv for app-en:
+
+```javascript
+var Cart = Backbone.Model.extend({
+    url: '/api/cart'
+});
+
+```
+
+Vi lager en instans for handlekurv-siden
+
+```javascript
+var cart = new Cart();
+var cartView = new CartView({ cart: cart });
+```
+
+Og en instans for menyen
+
+```javascript
+var cart = new Cart();
+var menuView = new MenuView({ cart: cart });
+```
+
+Hva skjer nå?
+
+```javascript
+cart.add({ ... })
+```
+
+---
+
+# Det er viktig at det bare finnes én
+
+En mulig løsning når man bruker Require.js:
+
+```javascript
+define(['Backbone'], function(Backbone) {
+
+    var Cart = Backbone.Model.extend({
+        url: '/api/cart'
     });
 
-    return new Rules();
+    return new Cart();
+
 });
 ```
 
-Singletons kan være positivt, men det er noen problemer:
+---
 
-- Blir for store
-- Vet for mye
-- Brukt for direkte
-- De blir vanskelig å teste
-- Inneholder masse state
+# Det er viktig at det bare finnes én
+
+En mulig løsning når man bruker Require.js:
+
+```javascript
+define(['Backbone'], function(Backbone) {
+
+    var Cart = Backbone.Model.extend({
+        url: '/api/cart'
+    });
+
+    return new Cart();
+
+});
+```
+
+Vi returnerer en *singleton*
+
+Nå vet vi at det bare finnes én
+
+---
+
+# Det er viktig at det bare finnes én
+
+En mulig løsning når man bruker Require.js:
+
+```javascript
+define(['Backbone'], function(Backbone) {
+
+    var Cart = Backbone.Model.extend({
+        url: '/api/cart'
+    });
+
+    return new Cart();
+
+});
+```
+
+Vi returnerer en *singleton*
+
+Nå vet vi at det bare finnes én
+
+… men pass på: blir fort store, med for mye tilstand og liten testbarhet
+
+---
+
+# Det er viktig at det bare finnes én
+
+En mulig løsning når man bruker Require.js:
+
+```javascript
+define(['Backbone'], function(Backbone) {
+
+    var Cart = Backbone.Model.extend({
+        url: '/api/cart'
+    });
+
+    return new Cart();
+
+});
+```
+
+Vi returnerer en *singleton*
+
+Nå vet vi at det bare finnes én
+
+… men pass på: blir fort store, med for mye tilstand og liten testbarhet
+
+Send den helst inn som en avhengighet til views
 
 ---
 
