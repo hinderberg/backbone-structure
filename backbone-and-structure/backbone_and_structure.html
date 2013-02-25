@@ -598,10 +598,12 @@ Kan bruke arv og lage et delt `BaseView`:
 
 ```javascript
 var BaseView = Backbone.View.extend({
+
     renderTemplate: function(data) {
         this.$el.html(Mustache.to_html(this.template, data));
         return this;
     }
+
 });
 ```
 
@@ -611,8 +613,26 @@ Nå lager vi nye views fra `BaseView`:
 var UserView = BaseView.extend({
 
     this.render: function() {
-        var data = this.user.toJSON();
-        return this.renderTemplate(data);
+        return this.renderTemplate(this.user.toJSON());
+    }
+
+});
+```
+
+---
+
+# Jeg repeterer samme kode overalt
+
+Og det er veldig enkelt å legge til litt ekstra funksjonalitet:
+
+```javascript
+var UserView = BaseView.extend({
+
+    this.render: function() {
+        return this.renderTemplate(this.user.toJSON(), {
+            company: 'BEKK',
+            is: 'the best'
+        });
     }
 
 });
