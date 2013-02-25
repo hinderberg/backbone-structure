@@ -166,11 +166,11 @@ var transactions = new Transactions([transaction1, transaction2]);
 
 Deles inn i logiske deler som brukeren skal få presentert
 
-Skal ** ikke ** inneholde business logikk
+Skal ** ikke ** inneholde logikk for endring og manipulering av data
 
 Inneholder logikk for animasjoner og annen jQuery magi
 
-Har ikke lov å gå utover sin egen DOM element
+Har ikke lov å gå utover sitt egen DOM element
 
 Kontrollerer alt innenfor sitt DOM element
 
@@ -186,7 +186,7 @@ var transactionsView = new TransactionView({ transactions: transactions });
 
 ## template
 
-Viewene har ansvar for å bygge templates og legge del inn i sitt eget DOM element `$el`
+Viewene har ansvar for å bygge templates og legge de inn i sitt eget DOM element `$el`
 
 ---
 
@@ -194,9 +194,9 @@ Viewene har ansvar for å bygge templates og legge del inn i sitt eget DOM eleme
 
 Bestemmer staten til applikasjonen
 
-Bytter ut views ved navigering
-
 Lytter på URL endringer
+
+Bytter ut views ved navigering
 
 Sender modeller og collections inn til view'ene
 
@@ -221,11 +221,11 @@ var Router = Backbone.Router.extend({
 
 # Events
 
-Events er en måte å de-koble kommunikasjon mellom JavaScript objekter
+Events er en teknikk som kan brukes for kommunikasjon mellom objekter
 
 `Backbone.Events` er en komponent som kan mikses inn i hvilke som helst objekt
 
-Gir komponenten egenskpen å `binde` til events og `trigge` events
+Gir komponenten egenskapen å `binde` til events og `trigge` events
 
 Alle komponentene i Backbone bruker events
 
@@ -234,14 +234,15 @@ Store deler av kommunikasjonen i applikasjonen gjøres ved hjelp av events
 ```javascript
 this.model.on(eventNavn, callback, context);
 
-
-var doSomething = function() {
-  
-};
+var doSomething = function() {};
 
 this.transactions.on("reset", doSomething, this);
 ```
 
+Ett event objekt kan brukes for å de-koble forskjellige deler/moduler av applikasjonen 
+```javascript
+var eventBus = _.clone(Backbone.Events)
+```
 ---
 
 # Hvem har ansvar for hva?
@@ -369,11 +370,10 @@ var TransactionsView = Backbone.View.extend({
 
             return timestamp;
         });
-
-        this.transactions.reset(sortedTransactions);
-        var json = this.transactions.toJSON();
+        var json = _.map(sortedTransactions, function(transaction){ 
+          return transaction.toJSON(); 
+        });
         this.$el.html(transactionsTemplate(json));
-
         return this;
     }
 });
@@ -393,8 +393,9 @@ var TransactionsView = Backbone.View.extend({
     },
 
     render: function() {
-        this.transactions.sortByDateAndType();
-        var json = this.transactions.toJSON();
+        var json = this.transactions.
+          getTransactionsSortedByDateAndType().toJSON();
+
         this.$el.html(transactionsTemplate(json));
 
         return this;
