@@ -982,35 +982,23 @@ class: middle, center
 
 # Filer ligger overalt
 
-Require.js?
-
 ---
 
 # Filer ligger overalt
 
-Kan virke banalt, men det er utrolig viktig
+Kan virke banalt, men mappestruktur er viktig
 
-Mappestruktur. Ikke lag egne views, models og collections mapper. Samle moduler
-i egen mappe. Dette gjør det faktisk enklere å få rask oversikt over hva app-en
-gjør (se på mappenavnene i modules-mappa)
+Ha feature-mapper istedenfor egne views-, models- og collections- mapper
 
-- component
-- module
-- external
+`=>` Samle moduler i egne mapper
 
-Eller?
+Veldig enkelt å få rask oversikt over hva app-en gjør (se på mappenavnene)
 
-- model
-- collections
-- views
-- router
-- external
-
-Tilhørlighet
+Kode som hører sammen bør ligge sammen!
 
 ---
 
-# Filer ligger overalt
+class: middle
 
 ```sh
 $ tree
@@ -1029,16 +1017,30 @@ $ tree
         ├── payment.js
         ├── payment.mustache
         ├── paymentView.js
-        └── payments.js
+        ├── payments.js
+        └── paymentsView.js
 
-4 directories, 11 files
+4 directories, 12 files
 ```
 
 ---
 
 # Filer ligger overalt
 
-Require.js-eksempel. Trenger ikke lengre "full path".
+Nå ser det veldig fint ut med Require.js, for eksempel `paymentsView`:
+
+```javascript
+define([
+    'backbone',
+    './payments',
+    './paymentView',
+    'mustache!./payment'
+], function(Backbone, Payments, PaymentView, paymentTemplate) {
+
+    // ...
+
+});
+```
 
 ---
 
