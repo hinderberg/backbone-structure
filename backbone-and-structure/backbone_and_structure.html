@@ -417,12 +417,6 @@ class: middle, center
 
 ---
 
-class: middle, center
-
-Bildet med markering på hvor viewene er
-
----
-
 # View'ene mine blir alt for store
 
 Starter alltid små
@@ -437,24 +431,52 @@ Starter alltid små
 
 ---
 
-# View'ene mine blir alt for store
+# Hvilken modell skal brukes?
 
-Løsningen? Del viewet inn i **subviews**!
+```javascript
+var ProductsView = Backbone.View.extend({
 
-De skal kunne flyttes rundt uten konsekvenser
+    events: {
+        'click .choose': 'chooseProduct'
+    },
 
-De skal kunne gjenbrukes på tvers av parent views
+    initialize: function(options) {
+        this.products = options.products;
+        this.products.on('reset', this.render, this);
+    },
+
+    render: function() {
+        // masse kode her
+    },
+
+    chooseProduct: function(e) {
+        e.preventDefault();
+        // her må vi lete rundt i DOM-en
+        var productId = $(e.target).attr('data-product-id');
+        var product = this.products.get(productId);
+        product.doSomething();
+    }
+
+});
+```
 
 ---
 
-# View'ene mine blir alt for store
+class: middle, center
+
+Løsningen? Del viewet inn i **subviews**!
+
+---
+
+class: middle, center
+
+Bildet med markering på hvor viewene er
+
+---
+
+# Et view per model i en collection?
 
 ```javascript
-var Products = Backbone.Collection.extend({});
-var ProductView = Backbone.View.extend({
-    tagName: 'li'
-});
-
 var ProductsView = Backbone.View.extend({
 
     initialize: function(options) {
@@ -478,7 +500,34 @@ var ProductsView = Backbone.View.extend({
 
 ---
 
-# View'ene mine blir alt for store
+# Et view per model i en collection?
+
+Nå kan `ProductView` gjøres veldig enkel:
+
+```javascript
+var ProductView = Backbone.View.extend({
+
+    tagName: 'li',
+
+    events: {
+        'click .choose': 'chooseProduct'
+    },
+
+    initialize: function(options) {
+        this.product = options.product;
+    },
+
+    chooseProduct: function(e) {
+        e.preventDefault();
+        this.product.doSomething();
+    }
+
+});
+```
+
+---
+
+# Fordel ansvar
 
 ```javascript
 var PersonView = Backbone.View.extend({});
