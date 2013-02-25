@@ -121,8 +121,6 @@ Logikk for å behandle og validere data
 
 ** Ingen forståelse eller kjenskap om DOM **
 
-&nbsp;
-
 ```javascript
 var Transaction = Backbone.Model.extend({
   defaults: {
@@ -174,6 +172,8 @@ Har ikke lov å gå utover sitt egen DOM element
 
 Kontrollerer alt innenfor sitt DOM element
 
+&nbsp;
+
 ```javascript
 var TransactionsView = Backbone.View.extend({
   events: { ... },
@@ -184,6 +184,9 @@ var TransactionsView = Backbone.View.extend({
 var transactionsView = new TransactionView({ transactions: transactions });
 ```
 
+---
+
+class: middle, center
 ## template
 
 Viewene har ansvar for å bygge templates og legge de inn i sitt eget DOM element `$el`
