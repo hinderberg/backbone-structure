@@ -258,6 +258,8 @@ Kommunikasjon
 
 class: middle, center
 
+# \#2
+
 # For mye skjer i `initialize`
 
 ---
@@ -294,7 +296,7 @@ Notes:
 
 - Vanskelig å mock bort user
 - Starter ajaxkallet når man new'er opp objektet, så hver gang noen sier new UserView vil det automagisk gå ett ajax request
-- Kaller render fra initialize via callbacket til success
+- Kaller render fra initialize via callbacket til success, når vil render kalles igjen om noen andre gjør endringer? 
 
 -->
 
@@ -302,9 +304,11 @@ Notes:
 
 # For mye skjer i `initialize`
 
-Viewet skal helst ikke hente sin egen data, det skal få data
+Viewet skal helst ikke hente sin egen data
 
 Viewet skal respondere på data-endringer
+
+Viewet skal kunne rendres ** uendelig ** mange ganger, til en hver tid
 
 ```javascript
 var UserView = Backbone.View.extend({
@@ -325,6 +329,8 @@ user.fetch();
 
 class: middle, center
 
+# \#3
+
 # For mye logikk i viewene
 
 ---
@@ -333,7 +339,9 @@ class: middle, center
 
 Her er et eksempel på en model `Transaction` og en collection `Transactions`
 
-Vi skal lage et view som presenterer en liste med `Transactions`
+Vi skal lage et view som presenterer en liste med `Transactions` 
+
+Sortert på `createdAt` og `type`
 
 ```javascript
 var Transaction = Backbone.Model.extend({
