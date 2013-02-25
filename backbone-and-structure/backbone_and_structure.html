@@ -1046,18 +1046,43 @@ class: middle, center
 
 Testbarhet ≈ struktur
 
-Ny i kodebasen
+Følg rammeverket, ikke kjemp mot det
 
-Når man er ny i en kodebase, selv med god kjennskap til rammeverkene, møter man nye måter å bruke rammeverkene på
+Gjør det enkelt og forståelig
 
-Følg rammeverket man har valgt og ikke kjemp mot det
+Ikke gjør for masse magi, magi er kult,  ** men vanskelig å forstå **
 
-En annen viktig ting kan vœre å hele tiden tenke på at det kommer en etter deg
+Ha en overordnet "filosofi"
 
-```javascript
+---
+
+# Backbone
+
+Ikke bruk View-ets `initialize` til noe annet enn å:
+
+  - sette instans variabler (modeller, collections, subViews)
+  - bind til events 
+
+Minst mulig data manipulering i views
+
+Bruk ARV eller MIXINS for gjenbrukbarhet
+
+Håndtering og endring av data gjøres i egne componenter, modeller eller collections
+
+---
+
+# Du er ikke alene 
+
+Bruk tid på å lage beskrivende kode
+
+Skriv tester
+
+Selv med god kjennskap til Backbone, må det hintes for å få kjapt oversikt
+
+ ```javascript
+//Enkle ting som
 var Transaction = Backbone.Model.extend({});
 ```
-
 vs
 
 ```javascript
@@ -1070,12 +1095,7 @@ var Transaction = Backbone.Model.extend({
         type: undefined
     }
 });
-
-Ikke gjør for masse magi
-
-Gjør det enkelt og forståelig
-
-Ha en overordnet "filosofi"
+```
 
 ---
 
