@@ -94,167 +94,131 @@ class: middle, center, blue
 
 ---
 
-# Hvem har ansvar for hva?
+class: middle, center
 
 Kan fort bli mye som skjer overalt i en stor JavaScript-applikasjon
 
-Det blir vanskelig å få oversikt og det er lett å innføre "bugs"
-
-Backbone har et sett med byggeklosser som skal hjelpe til:
-
-- Modeller
-- Collections
-- Views
-- Router
-
-&nbsp;
-
-** Hver byggekloss har sine spesifikke ansvarsområder **
+Det blir vanskelig å få oversikt og det er lett å innføre bugs
 
 ---
+
+class: middle, center
+
+Backbone har et sett med byggeklosser som skal hjelpe til.
+
+** Hver byggekloss har sitt spesifikke ansvarsområde **
+
+---
+
+class: middle, center
 
 # Model
 
-Databærer som arver fra `Backbone.Model`
-
-Kommuniserer med server ved hjelp av for eksempel ajax
-
-Logikk for å behandle og validere data
-
-** Ingen forståelse eller kjenskap om DOM **
-
-```javascript
-var Transaction = Backbone.Model.extend({
-  defaults: {
-    from: undefined,
-    to: undefined,
-    sum: undefined
-  }
-});
-
-var transaction = new Transaction({
-  from: "Gunnar"
-  to: "Jens"
-  sum: "1500.00"
-});
-
-```
+Kommunikasjon med server + holde på og manipulere data
 
 ---
+
+class: middle, center
+
+** Altså: Ingen forståelse eller kjennskap til DOM-en **
+
+---
+
+class: middle, center
+
+Flytt tilstand fra `data`-attributter i DOM-en til modellen
+
+---
+
+class: middle, center
 
 # Collection
 
-Enkel komponent som har til hensik å holde på en samling av modeller
-
-Inneholder blant annet logikk for å sortere og få et gitt utdrag av modeller
-
-** Ingen forståelse eller kjenskap om DOM **
-
-&nbsp;
-
-```javascript
-var Transactions = Backbone.Collection.extend({
-    model: Transaction
-});
-
-var transactions = new Transactions([transaction1, transaction2]);
-```
+Ansvarlig for en liste med modeller
 
 ---
 
+class: middle, center
+
+Har funksjoner som jobber på sine modeller
+
+Legg til, sorter, fjern, og finn modeller
+
+---
+
+class: middle, center
+
+** Altså: Ingen forståelse eller kjennskap til DOM-en **
+
+---
+
+class: middle, center
+
 # View
 
-Deles inn i logiske deler som brukeren skal få presentert
+Ansvarlig for ett HTML-element og alt det inneholder
+
+---
+
+class: middle, center
+
+Presenterer og oppdaterer data i HTML-elementet sitt
+
+Jobber med modeller, collection og DOM-en
+
+---
+
+class: middle, center
 
 Skal ** ikke ** inneholde logikk for endring og manipulering av data
 
-Inneholder logikk for animasjoner og annen jQuery magi
+Det gjøres i modell eller collection
 
-Har ikke lov å gå utover sitt egen DOM element
+---
 
-Kontrollerer alt innenfor sitt DOM element
+class: middle, center
 
-&nbsp;
+# Router
+
+Ansvarlig for håndtering av URL-er
+
+---
+
+class: middle, center
+
+Syr sammen applikasjonen
+
+"Tilstandsmaskin" for applikasjonen
+
+---
+
+class: middle, center
+
+# Events
+
+Kraftig teknikk for kommunikasjon mellom objekter
+
+---
+
+class: middle
 
 ```javascript
-var TransactionsView = Backbone.View.extend({
-  events: { ... },
-  initialize: function() { ... },
-  render: function() { ... }
-});
+var user = new User();
 
-var transactionsView = new TransactionView({ transactions: transactions });
+// kall funksjonen på hver endring
+user.on('change', function() { console.log('endring!'); }, this);
+
+// fjern alle eventer på user
+user.off()
 ```
 
 ---
 
 class: middle, center
-## template
-
-Viewene har ansvar for å bygge templates og legge de inn i sitt eget DOM element `$el`
-
----
-
-# Router
-
-Bestemmer staten til applikasjonen
-
-Lytter på URL endringer
-
-Bytter ut views ved navigering
-
-Sender modeller og collections inn til view'ene
-
-Sørger for å starte hentingen av data'en view'et er avhengig av
-
-```javascript
-var Router = Backbone.Router.extend({
-  routes: {
-    'transactions': 'transactions' 
-  },
-  transactions: function() {
-      var transactions = new Transactions();
-      var transactionsView = new TransactionView({ 
-        transactions: transactions 
-      });
-      transactions.fetch();
-  }
-});
-```
-
----
-
-# Events
-
-Events er en teknikk som kan brukes for kommunikasjon mellom objekter
-
-`Backbone.Events` er en komponent som kan mikses inn i hvilke som helst objekt
-
-Gir komponenten egenskapen å `binde` til events og `trigge` events
 
 Alle komponentene i Backbone bruker events
 
-Store deler av kommunikasjonen i applikasjonen gjøres ved hjelp av events
-
-```javascript
-this.model.on(eventNavn, callback, context);
-
-var doSomething = function() {};
-
-this.transactions.on("reset", doSomething, this);
-```
-
-Ett event objekt kan brukes for å de-koble forskjellige deler/moduler av applikasjonen 
-```javascript
-var eventBus = _.clone(Backbone.Events)
-```
----
-
-# Hvem har ansvar for hva?
-
-Kommunikasjon
-
-![](images/backbone_structure.png)
+Mye av kommunikasjonen i applikasjonen kan gjøres med events
 
 ---
 
@@ -266,7 +230,7 @@ class: middle, center, orange
 
 ---
 
-# For mye skjer i `initialize`
+class: middle
 
 ```javascript
 var UserView = Backbone.View.extend({
@@ -274,12 +238,12 @@ var UserView = Backbone.View.extend({
     initialize: function() {
 
         // lager en modell
-        var user = new User();
+        this.user = new User();
 
         var self = this;
 
         // henter data
-        user.fetch({
+        this.user.fetch({
 
             success: function() {
                 // rendrer view når data er mottatt
@@ -293,24 +257,96 @@ var UserView = Backbone.View.extend({
 });
 ```
 
-<!-- 
-Notes:
+---
 
-- Vanskelig å mock bort user
-- Starter ajaxkallet når man new'er opp objektet, så hver gang noen sier new UserView vil det automagisk gå ett ajax request
-- Kaller render fra initialize via callbacket til success, når vil render kalles igjen om noen andre gjør endringer? 
+class: middle
 
--->
+```javascript
+var UserView = Backbone.View.extend({
+
+    initialize: function(options) {
+
+
+        this.user = options.user;
+
+        var self = this;
+
+        // henter data
+        this.user.fetch({
+
+            success: function() {
+                // rendrer view når data er mottatt
+                self.render();
+            }
+
+        });
+
+    }
+
+});
+```
 
 ---
 
-# For mye skjer i `initialize`
+class: middle
 
-Viewet skal helst ikke hente sin egen data
+```javascript
+var UserView = Backbone.View.extend({
 
-Viewet skal respondere på data-endringer
+    initialize: function(options) {
 
-Viewet skal kunne rendres ** uendelig ** mange ganger, til en hver tid
+
+        this.user = options.user;
+
+        var self = this;
+        this.user.on('change', this.render, this);
+        // henter data
+        this.user.fetch(
+
+
+
+
+
+
+        );
+
+    }
+
+});
+```
+
+---
+
+class: middle
+
+```javascript
+var UserView = Backbone.View.extend({
+
+    initialize: function(options) {
+
+
+        this.user = options.user;
+
+
+        this.user.on('change', this.render, this);
+
+
+
+
+
+
+
+
+
+
+    }
+
+});
+```
+
+---
+
+class: middle
 
 ```javascript
 var UserView = Backbone.View.extend({
@@ -321,10 +357,21 @@ var UserView = Backbone.View.extend({
     }
 
 });
+```
 
-var user = new User();
-var userView = new UserView({ user: user });
-user.fetch();
+```javascript
+var Router = Backbone.Router.extend({
+    routes: {
+      'user': 'user' 
+    },
+    user: function() {
+        var user = new User();
+        var userView = new UserView({ 
+            user: user 
+        });
+        user.fetch(); // hent data utenfor viewet!
+    }
+});
 ```
 
 ---
@@ -337,39 +384,16 @@ class: middle, center, brown
 
 ---
 
-# For mye logikk i viewene
-
-Her er et eksempel på en model `Transaction` og en collection `Transactions`
-
-Vi skal lage et view som presenterer en liste med `Transactions` 
-
-Sortert på `createdAt` og `type`
-
-```javascript
-var Transaction = Backbone.Model.extend({
-    defaults: {
-        sum: undefined,
-        from: undefined,
-        to: undefined,
-        createdAt: undefined,
-        type: undefined
-    }
-});
-
-var Transactions = Backbone.Collection.extend({
-    model: Transaction
-});
-```
-
----
-
-# For mye logikk i viewene
+class: middle
 
 ```javascript
 var TransactionsView = Backbone.View.extend({
+
     initialize: function(options) {
         this.transactions = options.transactions;
+        this.transactions.on('reset', this.render, this);
     },
+
     render: function() {
         var sortedTransactions = this.transactions.sortBy(
           function(transaction) {
@@ -383,10 +407,13 @@ var TransactionsView = Backbone.View.extend({
 
             return timestamp;
         });
+
         var json = _.map(sortedTransactions, function(transaction){ 
           return transaction.toJSON(); 
         });
-        this.$el.html(transactionsTemplate(json));
+
+        this.renderTemplate(json); // hjelpemetode
+
         return this;
     }
 });
@@ -394,22 +421,20 @@ var TransactionsView = Backbone.View.extend({
 
 ---
 
-# For mye logikk i viewene
-
-Flytt logikk til `model` og `collection`:
+class: middle
 
 ```javascript
 var TransactionsView = Backbone.View.extend({
 
     initialize: function(options) {
-        this.transactions = options.transaction;
+        this.transactions = options.transactions;
+        this.transactions.on('reset', this.render, this);
     },
 
     render: function() {
-        var json = this.transactions.
-          getTransactionsSortedByDateAndType().toJSON();
+        var sorted = this.transactions.getSortedByDateAndType();
 
-        this.$el.html(transactionsTemplate(json));
+        this.renderTemplate(sorted.toJSON()); // hjelpemetode
 
         return this;
     }
@@ -420,8 +445,6 @@ var TransactionsView = Backbone.View.extend({
 ---
 
 class: middle, center
-
-Kim tar over
 
 # View'ene mine blir alt for store
 
@@ -439,21 +462,19 @@ class: middle, center
 
 ---
 
-# View'ene mine blir alt for store
+class: middle, center
 
 Starter alltid små
 
-… men de vokser og vokser
+men de vokser og vokser
 
-… og blir mer og mer komplekse
+og blir mer og mer komplekse
 
-… og det blir vanskelig å få oversikt
+og det blir vanskelig å få oversikt
 
-… og det blir vanskelig å teste dem
+og det blir vanskelig å teste dem
 
 ---
-
-# Hvilken modell skal brukes?
 
 ```javascript
 var ProductsView = Backbone.View.extend({
@@ -468,14 +489,90 @@ var ProductsView = Backbone.View.extend({
     },
 
     render: function() {
-        // masse kode her
+        // for mye kode her
     },
 
     chooseProduct: function(e) {
         e.preventDefault();
+
+        // HVORDAN FINNER VI RETT MODELL?
+
+
+
+
+
+
+
+        product.doSomething();
+    }
+
+});
+```
+
+---
+
+```javascript
+var ProductsView = Backbone.View.extend({
+
+    events: {
+        'click .choose': 'chooseProduct'
+    },
+
+    initialize: function(options) {
+        this.products = options.products;
+        this.products.on('reset', this.render, this);
+    },
+
+    render: function() {
+        // for mye kode her
+    },
+
+    chooseProduct: function(e) {
+        e.preventDefault();
+
+        // HVORDAN FINNER VI RETT MODELL?
+
         // her må vi lete rundt i DOM-en
         var productId = $(e.target).attr('data-product-id');
+
+
+
+
+        product.doSomething();
+    }
+
+});
+```
+
+---
+
+```javascript
+var ProductsView = Backbone.View.extend({
+
+    events: {
+        'click .choose': 'chooseProduct'
+    },
+
+    initialize: function(options) {
+        this.products = options.products;
+        this.products.on('reset', this.render, this);
+    },
+
+    render: function() {
+        // for mye kode her
+    },
+
+    chooseProduct: function(e) {
+        e.preventDefault();
+
+        // HVORDAN FINNER VI RETT MODELL?
+
+        // her må vi lete rundt i DOM-en
+        var productId = $(e.target).attr('data-product-id');
+
+        // og så må vi slå opp i products
         var product = this.products.get(productId);
+
         product.doSomething();
     }
 
@@ -541,6 +638,9 @@ var ProductView = Backbone.View.extend({
 
     chooseProduct: function(e) {
         e.preventDefault();
+
+        // NÅ VET VI ALLEREDE HVILKEN MODELL VI SKAL BRUKE
+
         this.product.doSomething();
     }
 
@@ -549,12 +649,21 @@ var ProductView = Backbone.View.extend({
 
 ---
 
-# Fordel ansvar
+class: middle, center
+
+Tenk på ytelse
+
+Passer det for store collections?
+
+Avhengig av mengden logikk for hvert subview?
+
+Skriv for struktur, optimaliser ved behov
+
+---
+
+# Samleviews
 
 ```javascript
-var PersonView = Backbone.View.extend({});
-var AddressView = Backbone.View.extend({});
-
 var PersonalInformationView = Backbone.View.extend({
 
     initialize: function(options) {
@@ -584,15 +693,24 @@ class: middle, center
 
 ---
 
-# Jeg repeterer samme kode overalt
-
-Slik ser ofte `render` ut:
+class: middle
 
 ```javascript
 var UserView = Backbone.View.extend({
 
+    initialize: function(options) {
+      this.user = options.user;
+      this.address = options.address;
+    },
+
     render: function() {
-        var data = this.user.toJSON();
+        // Bygger json struktur
+        var data = _.extend({}, 
+          this.user.toJSON(),
+          this.address.toJSON()
+        );
+
+        // Kompilerer template og setter inn i DOM
         this.$el.html(Mustache.to_html(this.template, data));
         return this;
     }
@@ -600,28 +718,95 @@ var UserView = Backbone.View.extend({
 });
 ```
 
-Denne ser ofte helt lik ut:
-
-```javascript
-this.$el.html(Mustache.to_html(this.template, data));
-```
-
-Er ikke dette bedre?
-
-```javascript
-this.renderTemplate(data);
-```
-
 ---
 
-# Jeg repeterer samme kode overalt
+class: middle
 
 Kan bruke arv og lage et delt `BaseView`:
 
 ```javascript
 var BaseView = Backbone.View.extend({
 
-    renderTemplate: function(data) {
+
+
+
+
+
+
+
+
+
+
+});
+```
+
+Nå lager vi nye views fra `BaseView`:
+
+```javascript
+var UserView = BaseView.extend({
+
+
+
+
+
+
+
+
+});
+```
+
+---
+
+class: middle
+
+Kan bruke arv og lage et delt `BaseView`:
+
+```javascript
+var BaseView = Backbone.View.extend({
+
+    renderTemplate: function() {
+        var data = {};
+        _.each(arguments, function(arg) {
+            _.extend(data, arg);
+        });
+
+        this.$el.html(Mustache.to_html(this.template, data));
+        return this;
+    }
+
+});
+```
+
+Nå lager vi nye views fra `BaseView`:
+
+```javascript
+var UserView = BaseView.extend({
+
+
+
+
+
+
+
+
+});
+```
+
+---
+
+class: middle
+
+Kan bruke arv og lage et delt `BaseView`:
+
+```javascript
+var BaseView = Backbone.View.extend({
+
+    renderTemplate: function() {
+        var data = {};
+        _.each(arguments, function(arg) {
+            _.extend(data, arg);
+        });
+
         this.$el.html(Mustache.to_html(this.template, data));
         return this;
     }
@@ -635,26 +820,10 @@ Nå lager vi nye views fra `BaseView`:
 var UserView = BaseView.extend({
 
     this.render: function() {
-        return this.renderTemplate(this.user.toJSON());
-    }
-
-});
-```
-
----
-
-# Jeg repeterer samme kode overalt
-
-Og det er veldig enkelt å legge til litt ekstra funksjonalitet:
-
-```javascript
-var UserView = BaseView.extend({
-
-    this.render: function() {
-        return this.renderTemplate(this.user.toJSON(), {
-            company: 'BEKK',
-            is: 'the best'
-        });
+        return this.renderTemplate(
+            this.user.toJSON(), 
+            this.address.toJSON()
+        );
     }
 
 });
@@ -664,204 +833,17 @@ var UserView = BaseView.extend({
 
 class: middle, center
 
-# Det er viktig at det bare finnes én
-
----
-
-# Det er viktig at det bare finnes én
-
-Vi har en handlekurv for app-en:
-
-```javascript
-var Cart = Backbone.Model.extend({
-    url: '/api/cart'
-});
-
-```
-
----
-
-# Det er viktig at det bare finnes én
-
-Vi har en handlekurv for app-en:
-
-```javascript
-var Cart = Backbone.Model.extend({
-    url: '/api/cart'
-});
-
-```
-
-Vi lager en instans for handlekurv-siden
-
-```javascript
-var cart = new Cart();
-var cartView = new CartView({ cart: cart });
-```
-
----
-
-# Det er viktig at det bare finnes én
-
-Vi har en handlekurv for app-en:
-
-```javascript
-var Cart = Backbone.Model.extend({
-    url: '/api/cart'
-});
-
-```
-
-Vi lager en instans for handlekurv-siden
-
-```javascript
-var cart = new Cart();
-var cartView = new CartView({ cart: cart });
-```
-
-Og en instans for menyen
-
-```javascript
-var cart = new Cart();
-var menuView = new MenuView({ cart: cart });
-```
-
----
-
-# Det er viktig at det bare finnes én
-
-Vi har en handlekurv for app-en:
-
-```javascript
-var Cart = Backbone.Model.extend({
-    url: '/api/cart'
-});
-
-```
-
-Vi lager en instans for handlekurv-siden
-
-```javascript
-var cart = new Cart();
-var cartView = new CartView({ cart: cart });
-```
-
-Og en instans for menyen
-
-```javascript
-var cart = new Cart();
-var menuView = new MenuView({ cart: cart });
-```
-
-Hva skjer nå?
-
-```javascript
-cart.add({ ... })
-```
-
----
-
-# Det er viktig at det bare finnes én
-
-En mulig løsning når man bruker Require.js:
-
-```javascript
-define(['Backbone'], function(Backbone) {
-
-    var Cart = Backbone.Model.extend({
-        url: '/api/cart'
-    });
-
-    return new Cart();
-
-});
-```
-
----
-
-# Det er viktig at det bare finnes én
-
-En mulig løsning når man bruker Require.js:
-
-```javascript
-define(['Backbone'], function(Backbone) {
-
-    var Cart = Backbone.Model.extend({
-        url: '/api/cart'
-    });
-
-    return new Cart();
-
-});
-```
-
-Vi returnerer en *singleton*
-
-Nå vet vi at det bare finnes én
-
----
-
-# Det er viktig at det bare finnes én
-
-En mulig løsning når man bruker Require.js:
-
-```javascript
-define(['Backbone'], function(Backbone) {
-
-    var Cart = Backbone.Model.extend({
-        url: '/api/cart'
-    });
-
-    return new Cart();
-
-});
-```
-
-Vi returnerer en *singleton*
-
-Nå vet vi at det bare finnes én
-
-… men pass på: blir fort store, med for mye tilstand og liten testbarhet
-
----
-
-# Det er viktig at det bare finnes én
-
-En mulig løsning når man bruker Require.js:
-
-```javascript
-define(['Backbone'], function(Backbone) {
-
-    var Cart = Backbone.Model.extend({
-        url: '/api/cart'
-    });
-
-    return new Cart();
-
-});
-```
-
-Vi returnerer en *singleton*
-
-Nå vet vi at det bare finnes én
-
-… men pass på: blir fort store, med for mye tilstand og liten testbarhet
-
-Send den helst inn som en avhengighet til views
+# Backbone-plugins = jQuery-plugins
 
 ---
 
 class: middle, center
-
-# Backbone-plugins = jQuery-plugins
-
----
-
-# Backbone-plugins = jQuery-plugins
-
-Shitty kvalitet på det meste
 
 Ikke dra inn for store plugins for tidlig — forstå verdien de tilfører
+
+---
+
+class: middle
 
 Mange plugins tar over kode som ligger på `Backbone`
 
@@ -878,15 +860,11 @@ Backbone.sync = function(method, model, options) {
 
 ---
 
-# Backbone-plugins = jQuery-plugins
-
-Sjekk kodekvaliteten på pluginen du ønsker å dra inn
-
-Lett å dra inn — potensielt masse kompleksitet
+class: middle, center
 
 Ikke gjør applikasjonen din for avhengig, utvikling på pluginen kan plutselig slutte
 
-Plugins kan magisk, men husk at magien blir fort ødelagt
+Plugins kan vœre magiske, men husk at magien fort blir ødelagt
 
 ---
 
@@ -921,21 +899,108 @@ Du trenger én-til-mange-relasjon?
     .javascript
     var Inbox = Backbone.Model.extend({
 
-      initialize: function() {
-        this.messages = new Messages();
-      },
+        initialize: function() {
+            this.messages = new Messages();
+        },
 
-      parse: function(resp) {
-        this.messages.update(_.clone(resp.messages), { parse: true });
-        delete resp.messages;
-        return resp;
-      },
 
-      toJSON: function() {
-        var json = _.clone(this.attributes);
-        json.messages = this.messages.toJSON();
-        return json;
-      }
+
+
+
+
+
+
+
+
+
+
+
+    });
+
+---
+
+# Trenger du egentlig denne plugin-en?
+
+Backbone-relational er for eksempel større enn Backbone selv
+
+Du trenger én-til-mange-relasjon?
+
+    .javascript
+    var Inbox = Backbone.Model.extend({
+
+        initialize: function() {
+            this.messages = new Messages();
+        },
+
+        parse: function(resp) {
+
+
+
+        },
+
+        toJSON: function() {
+
+
+
+        }
+
+    });
+
+---
+
+# Trenger du egentlig denne plugin-en?
+
+Backbone-relational er for eksempel større enn Backbone selv
+
+Du trenger én-til-mange-relasjon?
+
+    .javascript
+    var Inbox = Backbone.Model.extend({
+
+        initialize: function() {
+            this.messages = new Messages();
+        },
+
+        parse: function(resp) {
+            this.messages.update(_.clone(resp.messages), { parse: true });
+            delete resp.messages;
+            return resp;
+        },
+
+        toJSON: function() {
+
+
+
+        }
+
+    });
+
+---
+
+# Trenger du egentlig denne plugin-en?
+
+Backbone-relational er for eksempel større enn Backbone selv
+
+Du trenger én-til-mange-relasjon?
+
+    .javascript
+    var Inbox = Backbone.Model.extend({
+
+        initialize: function() {
+            this.messages = new Messages();
+        },
+
+        parse: function(resp) {
+            this.messages.update(_.clone(resp.messages), { parse: true });
+            delete resp.messages;
+            return resp;
+        },
+
+        toJSON: function() {
+            var json = _.clone(this.attributes);
+            json.messages = this.messages.toJSON();
+            return json;
+        }
 
     });
 
@@ -956,9 +1021,15 @@ Det er lett å gjøre alt til en modell, collection eller view
 
 ---
 
+class: middle, center
+
 # Komponenter
 
-Komponenter som vi har valgt å kalle dem er et forsøk på å bidra til å gjøre plugins mer håndterbare
+Et forsøk på å bidra til å gjøre plugins mer håndterbare
+
+---
+
+class: middle, center
 
 De skal vœre små
 
@@ -966,39 +1037,35 @@ Løse enkle problemer
 
 Hindre duplisering av kode
 
-Backbone modeller og collections brukes der man trenger å hente data
+Ha få avhengigheter
 
-Views brukes til å vise dataen
+---
 
-Alle komponentene rundt trenger ikke vœre knyttet til rammeverket
+# Validator
 
-Komponenter skal vœre lette, løse små problemer og ha få avhengigheter
+TA INN EKSEMPEL
 
-Vi vil gå igjennom noen eksempler på komponenter
+---
+
+# SubViewHandler
+
+TA INN EKSEMPEL
+
+---
+
+# EventBus
+
+TA INN EKSEMPEL
 
 ---
 
 class: middle, center
 
-# Filer ligger overalt
+# Filer, avhengigheter og rot
 
 ---
 
-# Filer ligger overalt
-
-Kan virke banalt, men mappestruktur er viktig
-
-Ha feature-mapper istedenfor egne views-, models- og collections- mapper
-
-`=>` Samle moduler i egne mapper
-
-Veldig enkelt å få rask oversikt over hva app-en gjør (se på mappenavnene)
-
-Kode som hører sammen bør ligge sammen!
-
----
-
-class: middle
+# Mappestruktur
 
 ```sh
 $ tree
@@ -1025,19 +1092,89 @@ $ tree
 
 ---
 
-# Filer ligger overalt
+class: middle
 
-Nå ser det veldig fint ut med Require.js, for eksempel `paymentsView`:
+Kan virke banalt, men mappestruktur er viktig
+
+Ha feature-mapper istedenfor egne views-, models- og collections- mapper
+
+`=>` Samle moduler i egne mapper
+
+Veldig enkelt å få rask oversikt over hva app-en gjør (se på mappenavnene)
+
+Kode som hører sammen bør ligge sammen!
+
+---
+
+# Require.js
+
+Fil/modul-laster
+
+Dynamisk lasting i utvikling og en fil i produksjon på en enkel måte
+
+```javascript
+define(['Backbone'], function(Backbone) {
+
+    var Cart = Backbone.Model.extend({
+        url: '/api/cart'
+    });
+
+    return Cart;
+
+});
+```
+
+Gjør avhengigheter veldig synlige
+
+Lettere å se behov for struktur av filer (en fil per objekt)
+
+---
+
+# Templates med Require.js
+
+Require.js har støtte for plugins
+
+Det finnes plugins for å laste og kompilere templates
+
+Eksempel med Handlebars-plugin:
+
+```javascript
+define([
+    'hb!payment' // slår opp filen payment.hb
+], function(paymentTemplate) {
+
+  // paymentTemplate er en ferdig kompilert template funksjon
+
+});
+```
+
+---
+
+# Modules og Require.js
 
 ```javascript
 define([
     'backbone',
-    './payments',
     './paymentView',
-    'mustache!./payment'
-], function(Backbone, Payments, PaymentView, paymentTemplate) {
+    'hb!./payment'
+], function(Backbone, PaymentView, paymentTemplate) {
 
-    // ...
+    var PaymentsView = Backbone.View.extend({
+
+        template: paymentTemplate,
+
+        render: function() {
+
+            // bruker this.template
+            this.renderTemplate();
+
+            // rendre paymentView for hver payment 
+
+            return this;
+        }
+    });
+
+    return PaymentsView;
 
 });
 ```
@@ -1046,64 +1183,19 @@ define([
 
 class: middle, center
 
-# Huskeliste
+# Hvordan henger alt sammen?
 
 ---
 
-# Huskeliste
+class: middle, center
 
-Testbarhet ≈ struktur
-
-Følg rammeverket, ikke kjemp mot det
-
-Gjør det enkelt og forståelig
-
-Ikke gjør for masse magi, magi er kult,  ** men vanskelig å forstå **
-
-Ha en overordnet "filosofi"
+![](images/backbone_structure.png)
 
 ---
 
-# Backbone
+class: middle, center
 
-Ikke bruk View-ets `initialize` til noe annet enn å:
-
-  - sette instans variabler (modeller, collections, subViews)
-  - bind til events 
-
-Minst mulig data manipulering i views
-
-Bruk ARV eller MIXINS for gjenbrukbarhet
-
-Håndtering og endring av data gjøres i egne componenter, modeller eller collections
-
----
-
-# Du er ikke alene 
-
-Bruk tid på å lage beskrivende kode
-
-Skriv tester
-
-Selv med god kjennskap til Backbone, må det hintes for å få kjapt oversikt
-
- ```javascript
-//Enkle ting som
-var Transaction = Backbone.Model.extend({});
-```
-vs
-
-```javascript
-var Transaction = Backbone.Model.extend({
-    defaults: {
-        sum: undefined,
-        from: undefined,
-        to: undefined,
-        createdAt: undefined,
-        type: undefined
-    }
-});
-```
+.huge[Testbarhet ≈ struktur]
 
 ---
 
