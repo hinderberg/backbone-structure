@@ -1057,6 +1057,24 @@ TA INN EKSEMPEL
 
 TA INN EKSEMPEL
 
+`Backbone.Events` er en komponent som kan mikses inn i hvilke som helst objekt
+
+Gir komponenten egenskapen å `binde` til events og `trigge` events
+
+```javascript
+this.model.on(eventNavn, callback, context);
+
+var doSomething = function() {};
+
+this.transactions.on("reset", doSomething, this);
+```
+
+Ett event objekt kan brukes for å de-koble forskjellige deler/moduler av applikasjonen 
+```javascript
+var eventBus = _.clone(Backbone.Events)
+```
+
+
 ---
 
 class: middle, center
