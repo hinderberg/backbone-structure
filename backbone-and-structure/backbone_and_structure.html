@@ -1068,31 +1068,64 @@ TA INN EKSEMPEL
 
 # SubViewHandler
 
-TA INN EKSEMPEL
+```javascript
+define(['underscore'], function(_) {
+
+    var SubViewHandler = function() {
+        this.subViews = [];
+    };
+
+    _.extend(SubViewHandler.prototype, {
+        addSubView: function(subView) {
+            if (_.isUndefined(subView)) {
+                throw "Subview can't be undefined";
+            }
+
+            if (!_.contains(this.subViews, subView)) {
+                this.subViews.push(subView);
+            }
+        },
+        destroySubViews: function() {
+            _.invoke(this.subViews, 'destroy');
+            this.subViews.length = 0;
+        }
+    });
+
+    return SubViewHandler;
+});
+```
 
 ---
 
 # EventBus
 
-TA INN EKSEMPEL
-
 `Backbone.Events` er en komponent som kan mikses inn i hvilke som helst objekt
 
-Gir komponenten egenskapen å `binde` til events og `trigge` events
+Gir komponenten egenskapen å `binde` til og `trigge` events (for eksmepel modeller)
 
 ```javascript
-this.model.on(eventNavn, callback, context);
+// Kan brukes for å de-koble forskjellige deler/moduler av applikasjonen 
+define(['underscore', 'backbone'], function(_, Backbone) {
 
-var doSomething = function() {};
+    var events = _.clone(Backbone.Events);
 
-this.transactions.on("reset", doSomething, this);
+    var eventProxy = function(name) {
+        return function() {
+            events[name].apply(events, arguments);
+        };
+    };
+
+    return {
+        on: eventProxy('on'),
+        off: eventProxy('off'),
+        trigger: eventProxy('trigger'),
+        reset: function() {
+            events.off();
+        }
+    };
+});
+
 ```
-
-Ett event objekt kan brukes for å de-koble forskjellige deler/moduler av applikasjonen 
-```javascript
-var eventBus = _.clone(Backbone.Events)
-```
-
 
 ---
 
@@ -1186,6 +1219,9 @@ define([
 
 });
 ```
+&nbsp
+
+[https://github.com/hinderberg/requirejs-handlebars-plugin](https://github.com/hinderberg/requirejs-handlebars-plugin)
 
 ---
 
