@@ -22,10 +22,13 @@
         .green       { background-color: #79A700; color: #fff; }
         .blue        { background-color: #449BB5; color: #fff; }
         .dark-blue   { background-color: #043D5D; color: #fff; }
-        .yellow      { background-color: #F5E653; color: #fff; }
+        .yellow      { background-color: #F5E653; }
         .black       { background-color: #000000; color: #fff; }
         .orange      { background-color: #FB8B42; }
         .brown       { background-color: #E0C8AA; }
+        .purple      { background-color: #351330; color: #fff; }
+        .dark-gray   { background-color: #45484B; color: #fff; }
+        .dark-green  { background-color: #028F76; color: #fff; }
 
         .position { display: none; }
   </style>
@@ -82,7 +85,7 @@ Målet er å gi stuktur ved hjelp av et sett med byggeklosser
 
 class: middle, center
 
-# 10 problemer og misforståelser
+# 9 problemer og misforståelser
 
 ---
 
@@ -380,7 +383,7 @@ class: middle, center, brown
 
 # \#3
 
-# For mye logikk i viewene
+# For mye logikk i view'ene
 
 ---
 
@@ -444,7 +447,9 @@ var TransactionsView = Backbone.View.extend({
 
 ---
 
-class: middle, center
+class: middle, center, green
+
+# \#4
 
 # View'ene mine blir alt for store
 
@@ -589,7 +594,7 @@ Løsningen? Del viewet inn i **subviews**!
 
 class: middle, center
 
-Bildet med markering på hvor viewene er
+Bildet med markering på hvor view'ene er
 
 ---
 
@@ -687,7 +692,9 @@ var PersonalInformationView = Backbone.View.extend({
 
 ---
 
-class: middle, center
+class: middle, center, purple
+
+# \#5
 
 # Jeg repeterer samme kode overalt
 
@@ -832,6 +839,16 @@ var UserView = BaseView.extend({
 ---
 
 class: middle, center
+
+En annen måte å lage funksjonalitet gjenbrukbart, er å bruke mixins
+
+Mixins er et alternativ til arv der man fletter flere objekter og deres funksjoner sammen
+
+---
+
+class: middle, center, yellow
+
+# \#6
 
 # Backbone-plugins = jQuery-plugins
 
@@ -1007,7 +1024,9 @@ Du trenger én-til-mange-relasjon?
 
 ---
 
-class: middle, center
+class: middle, center, red
+
+# \#7
 
 # Backbone brukes der det ikke trengs
 
@@ -1077,7 +1096,9 @@ var eventBus = _.clone(Backbone.Events)
 
 ---
 
-class: middle, center
+class: middle, center, dark-gray
+
+# \#8
 
 # Filer, avhengigheter og rot
 
@@ -1199,7 +1220,9 @@ define([
 
 ---
 
-class: middle, center
+class: middle, center, dark-green
+
+# \#9
 
 # Hvordan henger alt sammen?
 
