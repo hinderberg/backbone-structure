@@ -99,14 +99,6 @@ class: middle, center, blue
 
 class: middle, center
 
-Kan fort bli mye som skjer overalt i en stor JavaScript-applikasjon
-
-Det blir vanskelig å få oversikt og det er lett å innføre bugs
-
----
-
-class: middle, center
-
 Backbone har et sett med byggeklosser som skal hjelpe til.
 
 ** Hver byggekloss har sitt spesifikke ansvarsområde **
@@ -835,11 +827,38 @@ var UserView = BaseView.extend({
 
 ---
 
-class: middle, center
+class: middle
+
+# Pass på
+
+Pass på mengden og nivåene i arv
+
+Ikke noen enkel måte å kalle foreldre
+
+Kan kun arve fra et annet objekt
 
 En annen måte å lage funksjonalitet gjenbrukbart, er å bruke mixins
 
+
+---
+
+class: middle
+
+# Mixins
+
 Mixins er et alternativ til arv der man fletter flere objekter og deres funksjoner sammen
+
+```javascript
+var Transactions = Backbone.Collection.extend({});
+
+var pagination = {
+    next: function() {
+        // ...
+    }
+};
+
+_.extend(Transactions.prototype, pagination);
+```
 
 ---
 
@@ -1057,6 +1076,35 @@ Ha få avhengigheter
 
 ---
 
+# EventBus
+
+`Backbone.Events` er en komponent som kan mikses inn i hvilke som helst objekt
+
+Gir komponenten egenskapen å `binde` til og `trigge` events (for eksmepel modeller)
+
+```javascript
+// Kan brukes for å de-koble forskjellige deler/moduler av applikasjonen 
+define(['underscore', 'backbone'], function(_, Backbone) {
+
+    return _.clone(Backbone.Events);
+
+});
+```
+
+Dra inn:
+
+```javascript
+require(['component/eventBus', function(eventBus) {
+
+    events.on('user:login', function() {
+        console.log('user logged in');
+    });
+
+});
+```
+
+---
+
 # Validator
 
 ```javascript
@@ -1112,38 +1160,6 @@ define(['underscore'], function(_) {
 
 ---
 
-# EventBus
-
-`Backbone.Events` er en komponent som kan mikses inn i hvilke som helst objekt
-
-Gir komponenten egenskapen å `binde` til og `trigge` events (for eksmepel modeller)
-
-```javascript
-// Kan brukes for å de-koble forskjellige deler/moduler av applikasjonen 
-define(['underscore', 'backbone'], function(_, Backbone) {
-
-    var events = _.clone(Backbone.Events);
-
-    var eventProxy = function(name) {
-        return function() {
-            events[name].apply(events, arguments);
-        };
-    };
-
-    return {
-        on: eventProxy('on'),
-        off: eventProxy('off'),
-        trigger: eventProxy('trigger'),
-        reset: function() {
-            events.off();
-        }
-    };
-});
-
-```
-
----
-
 class: middle, center, dark-gray
 
 # \#8
@@ -1186,8 +1202,6 @@ Kan virke banalt, men mappestruktur er viktig
 Ha feature-mapper istedenfor egne views-, models- og collections- mapper
 
 `=>` Samle moduler i egne mapper
-
-Veldig enkelt å få rask oversikt over hva app-en gjør (se på mappenavnene)
 
 Kode som hører sammen bør ligge sammen!
 
