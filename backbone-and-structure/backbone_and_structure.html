@@ -1059,7 +1059,25 @@ Ha få avhengigheter
 
 # Validator
 
-TA INN EKSEMPEL
+```javascript
+define(['underscore'], function(_) {
+
+    return {
+        validate: function(attributes, validationRules) {
+            var errors = [];
+
+            _.each(validationRules, function(rule, name) {
+                // ...
+            });
+
+            if (errors.length) {
+                return errors;
+            }
+        }
+    };
+
+});
+```
 
 ---
 
