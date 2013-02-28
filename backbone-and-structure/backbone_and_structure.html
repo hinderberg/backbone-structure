@@ -743,7 +743,6 @@ var BaseView = Backbone.View.extend({
 
 
 
-
 });
 ```
 
@@ -772,11 +771,10 @@ Kan bruke arv og lage et delt `BaseView`:
 var BaseView = Backbone.View.extend({
 
     renderTemplate: function() {
-        var data = {};
-        _.each(arguments, function(arg) {
-            _.extend(data, arg);
-        });
+        // godta flere argumenter som sammen bygger opp template-input
+        var data = _.extend.apply(null, arguments);
 
+        // Kompilerer template og setter inn i DOM
         this.$el.html(Mustache.to_html(this.template, data));
         return this;
     }
@@ -809,11 +807,10 @@ Kan bruke arv og lage et delt `BaseView`:
 var BaseView = Backbone.View.extend({
 
     renderTemplate: function() {
-        var data = {};
-        _.each(arguments, function(arg) {
-            _.extend(data, arg);
-        });
+        // godta flere argumenter som sammen bygger opp template-input
+        var data = _.extend.apply(null, arguments);
 
+        // Kompilerer template og setter inn i DOM
         this.$el.html(Mustache.to_html(this.template, data));
         return this;
     }
