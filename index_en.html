@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Backbone skal gi meg struktur, men alt er fortsatt bare rot</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script src="./remark-0.4.4.min.js" type="text/javascript"></script>
+    <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300italic,400|Dosis:300,400|Source+Code+Pro:200,300,400,400bold' rel='stylesheet' type='text/css'>
+
+    <style type="text/css" media="screen">
+        h1, h2, h3 { font-family: 'Dosis', sans-serif; }
+        h1 { font-weight: 300; font-size: 50px; }
+        p, li { font-family: 'Source Sans Pro', sans-serif; font-weight: 300; }
+        code { font-family: 'Source Code Pro', sans-serif !important; }
+        pre code { background-color: #fff; border-top: 5px solid #ddd; border-bottom: 5px solid #ddd; }
+        h1 code { font-weight: 300; font-size: 1em !important; background-color: #eee; padding: 0px 5px; border-radius: 5px; }
+        img { max-width: 100%; }
+        blockquote { font-style: italic; font-weight: 300; }
+
+        .huge { font-size: 3em; font-family: 'Dosis', sans-serif; }
+
+        .red         { background-color: #E8664E; color: #fff; }
+        .green       { background-color: #79A700; color: #fff; }
+        .blue        { background-color: #449BB5; color: #fff; }
+        .dark-blue   { background-color: #043D5D; color: #fff; }
+        .yellow      { background-color: #F5E653; }
+        .black       { background-color: #000000; color: #fff; }
+        .orange      { background-color: #FB8B42; }
+        .brown       { background-color: #E0C8AA; }
+        .purple      { background-color: #351330; color: #fff; }
+        .dark-gray   { background-color: #45484B; color: #fff; }
+        .dark-green  { background-color: #028F76; color: #fff; }
+
+        .position { display: none; }
+  </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: middle, center
+
+# Backbone skal gi meg struktur, 
+## men alt er fortsatt bare rot
+
+---
+
+class: middle, center
+
+# Hvem er vi?
+
+Kim Joar Bekkelund
+
+Hans Magnus Inderberg
+
+---
+
+class: middle, center
+
+# Hva skal vi snakke om i dag?
+
+Problemstillinger og misforståelser som er lett å gjøre med Backbone.js
+
+---
+
+# Hva er Backbone?
+
+Lite JavaScript-bibliotek på litt mer enn 1000 linjer (6,3kb pakket og gzip-et)
+
+Har blitt svært populært i løpet av de siste årene
+
+&nbsp;
+
+**Mye brukt på prosjekter i BEKK**
+
+---
+
+class: middle
+
+Målet er å gi stuktur ved hjelp av et sett med byggeklosser
+
+*… men Backbone klarer det ikke helt — og derfor er vi her idag!*
+
+---
+
+class: middle, center
+
+# 9 problemer og misforståelser
+
+---
+
+class: middle, center, blue
+
+# \#1
+
+# Hvem har ansvar for hva?
+
+---
+
+class: middle, center
+
+Backbone har et sett med byggeklosser som skal hjelpe til.
+
+** Hver byggekloss har sitt spesifikke ansvarsområde **
+
+---
+
+class: middle, center
+
+# Model
+
+Kommunikasjon med server + holde på og manipulere data
+
+---
+
+class: middle, center
+
+** Altså: Ingen forståelse eller kjennskap til DOM-en **
+
+---
+
+class: middle, center
+
+Flytt tilstand fra `data`-attributter i DOM-en til modellen
+
+---
+
+class: middle, center
+
+# Collection
+
+Ansvarlig for en liste med modeller
+
+---
+
+class: middle, center
+
+Har funksjoner som jobber på sine modeller
+
+Legg til, sorter, fjern, og finn modeller
+
+---
+
+class: middle, center
+
+** Altså: Ingen forståelse eller kjennskap til DOM-en **
+
+---
+
+class: middle, center
+
+# View
+
+Ansvarlig for ett HTML-element og alt det inneholder
+
+---
+
+class: middle, center
+
+Presenterer og oppdaterer data i HTML-elementet sitt
+
+Jobber med modeller, collection og DOM-en
+
+---
+
+class: middle, center
+
+Skal ** ikke ** inneholde logikk for endring og manipulering av data
+
+Det gjøres i modell eller collection
+
+---
+
+class: middle, center
+
+# Router
+
+Ansvarlig for håndtering av URL-er
+
+---
+
+class: middle, center
+
+Syr sammen applikasjonen
+
+"Tilstandsmaskin" for applikasjonen
+
+---
+
+class: middle, center
+
+# Events
+
+Kraftig teknikk for kommunikasjon mellom objekter
+
+---
+
+class: middle
+
+```javascript
+var user = new User();
+
+// kall funksjonen på hver endring
+user.on('change', function() { console.log('endring!'); }, this);
+
+// fjern alle eventer på user
+user.off()
+```
+
+---
+
+class: middle, center
+
+Alle komponentene i Backbone bruker events
+
+Mye av kommunikasjonen i applikasjonen kan gjøres med events
+
+---
+
+class: middle, center, orange
+
+# \#2
+
+# For mye skjer i `initialize`
+
+---
+
+class: middle
+
+```javascript
+var UserView = Backbone.View.extend({
+
+    initialize: function() {
+
+        // lager en modell
+        this.user = new User();
+
+        var self = this;
+
+        // henter data
+        this.user.fetch({
+
+            success: function() {
+                // rendrer view når data er mottatt
+                self.render();
+            }
+
+        });
+
+    }
+
+});
+```
+
+---
+
+class: middle
+
+```javascript
+var UserView = Backbone.View.extend({
+
+    initialize: function(options) {
+
+
+        this.user = options.user;
+
+        var self = this;
+
+        // henter data
+        this.user.fetch({
+
+            success: function() {
+                // rendrer view når data er mottatt
+                self.render();
+            }
+
+        });
+
+    }
+
+});
+```
+
+---
+
+class: middle
+
+```javascript
+var UserView = Backbone.View.extend({
+
+    initialize: function(options) {
+
+
+        this.user = options.user;
+
+        var self = this;
+        this.user.on('change', this.render, this);
+        // henter data
+        this.user.fetch(
+
+
+
+
+
+
+        );
+
+    }
+
+});
+```
+
+---
+
+class: middle
+
+```javascript
+var UserView = Backbone.View.extend({
+
+    initialize: function(options) {
+
+
+        this.user = options.user;
+
+
+        this.user.on('change', this.render, this);
+
+
+
+
+
+
+
+
+
+
+    }
+
+});
+```
+
+---
+
+class: middle
+
+```javascript
+var UserView = Backbone.View.extend({
+
+    initialize: function(options) {
+        this.user = options.user;
+        this.user.on('change', this.render, this);
+    }
+
+});
+```
+
+```javascript
+var Router = Backbone.Router.extend({
+    routes: {
+      'user': 'user' 
+    },
+    user: function() {
+        var user = new User();
+        var userView = new UserView({ 
+            user: user 
+        });
+        user.fetch(); // hent data utenfor viewet!
+    }
+});
+```
+
+---
+
+class: middle, center, brown
+
+# \#3
+
+# For mye logikk i view'ene
+
+---
+
+class: middle
+
+```javascript
+var TransactionsView = Backbone.View.extend({
+
+    initialize: function(options) {
+        this.transactions = options.transactions;
+        this.transactions.on('reset', this.render, this);
+    },
+
+    render: function() {
+        var sortedTransactions = this.transactions.sortBy(
+          function(transaction) {
+            var timestamp = Date.parse(transaction.get('createdAt')) * 1000;
+            if (transaction.get("type") === transactionType.ONE_TYPE) {
+                timestamp += "B";
+            } else if (transaction.get("type") === 
+              transactionType.ANOTHER_TYPE) {
+                timestamp += "A";
+            } 
+
+            return timestamp;
+        });
+
+        var json = _.map(sortedTransactions, function(transaction){ 
+          return transaction.toJSON(); 
+        });
+
+        this.renderTemplate(json); // hjelpemetode
+
+        return this;
+    }
+});
+```
+
+---
+
+class: middle
+
+```javascript
+var TransactionsView = Backbone.View.extend({
+
+    initialize: function(options) {
+        this.transactions = options.transactions;
+        this.transactions.on('reset', this.render, this);
+    },
+
+    render: function() {
+        var sorted = this.transactions.getSortedByDateAndType();
+
+        this.renderTemplate(sorted.toJSON()); // hjelpemetode
+
+        return this;
+    }
+
+});
+```
+
+---
+
+class: middle, center, green
+
+# \#4
+
+# View'ene mine blir alt for store
+
+---
+
+class: middle, center
+
+![](images/store-views.png)
+
+---
+
+class: middle, center
+
+![](images/store-views2.png)
+
+---
+
+class: middle, center
+
+Starter alltid små
+
+men de vokser og vokser
+
+og blir mer og mer komplekse
+
+og det blir vanskelig å få oversikt
+
+og det blir vanskelig å teste dem
+
+---
+
+```javascript
+var ProductsView = Backbone.View.extend({
+
+    events: {
+        'click .choose': 'chooseProduct'
+    },
+
+    initialize: function(options) {
+        this.products = options.products;
+        this.products.on('reset', this.render, this);
+    },
+
+    render: function() {
+        // for mye kode her
+    },
+
+    chooseProduct: function(e) {
+        e.preventDefault();
+
+        // HVORDAN FINNER VI RETT MODELL?
+
+
+
+
+
+
+
+        product.doSomething();
+    }
+
+});
+```
+
+---
+
+```javascript
+var ProductsView = Backbone.View.extend({
+
+    events: {
+        'click .choose': 'chooseProduct'
+    },
+
+    initialize: function(options) {
+        this.products = options.products;
+        this.products.on('reset', this.render, this);
+    },
+
+    render: function() {
+        // for mye kode her
+    },
+
+    chooseProduct: function(e) {
+        e.preventDefault();
+
+        // HVORDAN FINNER VI RETT MODELL?
+
+        // her må vi lete rundt i DOM-en
+        var productId = $(e.target).attr('data-product-id');
+
+
+
+
+        product.doSomething();
+    }
+
+});
+```
+
+---
+
+```javascript
+var ProductsView = Backbone.View.extend({
+
+    events: {
+        'click .choose': 'chooseProduct'
+    },
+
+    initialize: function(options) {
+        this.products = options.products;
+        this.products.on('reset', this.render, this);
+    },
+
+    render: function() {
+        // for mye kode her
+    },
+
+    chooseProduct: function(e) {
+        e.preventDefault();
+
+        // HVORDAN FINNER VI RETT MODELL?
+
+        // her må vi lete rundt i DOM-en
+        var productId = $(e.target).attr('data-product-id');
+
+        // og så må vi slå opp i products
+        var product = this.products.get(productId);
+
+        product.doSomething();
+    }
+
+});
+```
+
+---
+
+class: middle, center
+
+Løsningen? Del viewet inn i **subviews**!
+
+---
+
+class: middle, center
+
+![](images/subviews.png)
+
+---
+
+# Et view per model i en collection?
+
+```javascript
+var ProductsView = Backbone.View.extend({
+
+    initialize: function(options) {
+        this.products = options.products;
+        this.products.on('reset', this.render, this);
+    },
+
+    render: function() {
+        this.renderTemplate(); // hjelpemetode for å rendre viewet
+
+        this.products.each(function(product) {
+            var productView = new ProductView({ product: product });
+            this.$('.products').append(productView.render().el);
+        }, this);
+
+        return this;
+    }
+
+});
+```
+
+---
+
+# Et view per model i en collection?
+
+Nå kan `ProductView` gjøres veldig enkel:
+
+```javascript
+var ProductView = Backbone.View.extend({
+
+    tagName: 'li',
+
+    events: {
+        'click .choose': 'chooseProduct'
+    },
+
+    initialize: function(options) {
+        this.product = options.product;
+    },
+
+    chooseProduct: function(e) {
+        e.preventDefault();
+
+        // NÅ VET VI ALLEREDE HVILKEN MODELL VI SKAL BRUKE
+
+        this.product.doSomething();
+    }
+
+});
+```
+
+---
+
+class: middle, center
+
+Tenk på ytelse
+
+Passer det for store collections?
+
+Avhengig av mengden logikk for hvert subview?
+
+Skriv for struktur, optimaliser ved behov
+
+---
+
+# Samleviews
+
+```javascript
+var PersonalInformationView = Backbone.View.extend({
+
+    initialize: function(options) {
+        this.addressView = new AddressView({ address: options.address });
+        this.personView = new PersonView({ person: options.person });
+    },
+
+    render: function() {
+        this.renderTemplate();
+
+        this.personView.setElement(this.$('.person'));
+        this.personView.render();
+
+        this.addressView.setElement(this.$('.address'));
+        this.addressView.render();
+
+        return this;
+    }
+});
+```
+
+---
+
+class: middle, center, purple
+
+# \#5
+
+# Jeg repeterer samme kode overalt
+
+---
+
+class: middle
+
+```javascript
+var UserView = Backbone.View.extend({
+
+    initialize: function(options) {
+      this.user = options.user;
+      this.address = options.address;
+    },
+
+    render: function() {
+        // Bygger json struktur
+        var data = _.extend({}, 
+          this.user.toJSON(),
+          this.address.toJSON()
+        );
+
+        // Kompilerer template og setter inn i DOM
+        this.$el.html(Mustache.to_html(this.template, data));
+        return this;
+    }
+
+});
+```
+
+---
+
+class: middle
+
+Kan bruke arv og lage et delt `BaseView`:
+
+```javascript
+var BaseView = Backbone.View.extend({
+
+
+
+
+
+
+
+
+
+
+});
+```
+
+Nå lager vi nye views fra `BaseView`:
+
+```javascript
+var UserView = BaseView.extend({
+
+
+
+
+
+
+
+
+});
+```
+
+---
+
+class: middle
+
+Kan bruke arv og lage et delt `BaseView`:
+
+```javascript
+var BaseView = Backbone.View.extend({
+
+    renderTemplate: function() {
+        // godta flere argumenter som sammen bygger opp template-input
+        var data = _.extend.apply(null, arguments);
+
+        // Kompilerer template og setter inn i DOM
+        this.$el.html(Mustache.to_html(this.template, data));
+        return this;
+    }
+
+});
+```
+
+Nå lager vi nye views fra `BaseView`:
+
+```javascript
+var UserView = BaseView.extend({
+
+
+
+
+
+
+
+
+});
+```
+
+---
+
+class: middle
+
+Kan bruke arv og lage et delt `BaseView`:
+
+```javascript
+var BaseView = Backbone.View.extend({
+
+    renderTemplate: function() {
+        // godta flere argumenter som sammen bygger opp template-input
+        var data = _.extend.apply(null, arguments);
+
+        // Kompilerer template og setter inn i DOM
+        this.$el.html(Mustache.to_html(this.template, data));
+        return this;
+    }
+
+});
+```
+
+Nå lager vi nye views fra `BaseView`:
+
+```javascript
+var UserView = BaseView.extend({
+
+    this.render: function() {
+        return this.renderTemplate(
+            this.user.toJSON(), 
+            this.address.toJSON()
+        );
+    }
+
+});
+```
+
+---
+
+class: middle
+
+# Pass på
+
+Pass på mengden og nivåene i arv
+
+Ikke noen enkel måte å kalle foreldre
+
+Kan kun arve fra et annet objekt
+
+En annen måte å lage funksjonalitet gjenbrukbart, er å bruke mixins
+
+
+---
+
+class: middle
+
+# Mixins
+
+Mixins er et alternativ til arv der man fletter flere objekter og deres funksjoner sammen
+
+```javascript
+var Transactions = Backbone.Collection.extend({});
+
+var pagination = {
+    next: function() {
+        // ...
+    }
+};
+
+_.extend(Transactions.prototype, pagination);
+```
+
+---
+
+class: middle, center, yellow
+
+# \#6
+
+# Backbone-plugins = jQuery-plugins
+
+---
+
+class: middle, center
+
+Ikke dra inn for store plugins for tidlig — forstå verdien de tilfører
+
+---
+
+class: middle
+
+Mange plugins tar over kode som ligger på `Backbone`
+
+Eksempel fra `Backbone.localStorage`:
+
+```javascript
+// Override 'Backbone.sync' to default to localSync,
+// the original 'Backbone.sync' is still available in 'Backbone.ajaxSync'
+
+Backbone.sync = function(method, model, options) {
+    return Backbone.getSyncMethod(model).apply(this, [method, model, options]);
+};
+```
+
+---
+
+class: middle, center
+
+Ikke gjør applikasjonen din for avhengig, utvikling på pluginen kan plutselig slutte
+
+Plugins kan vœre magiske, men husk at magien fort blir ødelagt
+
+---
+
+class: middle, center
+
+Husk Hollywood-prinsippet:
+
+.huge[Don't call me, I'll call you]
+
+---
+
+# Trenger du egentlig denne plugin-en?
+
+Backbone-relational er for eksempel større enn Backbone selv
+
+---
+
+# Trenger du egentlig denne plugin-en?
+
+Backbone-relational er for eksempel større enn Backbone selv
+
+Du trenger én-til-mange-relasjon?
+
+---
+
+# Trenger du egentlig denne plugin-en?
+
+Backbone-relational er for eksempel større enn Backbone selv
+
+Du trenger én-til-mange-relasjon?
+
+    .javascript
+    var Inbox = Backbone.Model.extend({
+
+        initialize: function() {
+            this.messages = new Messages();
+        },
+
+
+
+
+
+
+
+
+
+
+
+
+
+    });
+
+---
+
+# Trenger du egentlig denne plugin-en?
+
+Backbone-relational er for eksempel større enn Backbone selv
+
+Du trenger én-til-mange-relasjon?
+
+    .javascript
+    var Inbox = Backbone.Model.extend({
+
+        initialize: function() {
+            this.messages = new Messages();
+        },
+
+        parse: function(resp) {
+
+
+
+        },
+
+        toJSON: function() {
+
+
+
+        }
+
+    });
+
+---
+
+# Trenger du egentlig denne plugin-en?
+
+Backbone-relational er for eksempel større enn Backbone selv
+
+Du trenger én-til-mange-relasjon?
+
+    .javascript
+    var Inbox = Backbone.Model.extend({
+
+        initialize: function() {
+            this.messages = new Messages();
+        },
+
+        parse: function(resp) {
+            this.messages.update(_.clone(resp.messages), { parse: true });
+            delete resp.messages;
+            return resp;
+        },
+
+        toJSON: function() {
+
+
+
+        }
+
+    });
+
+---
+
+# Trenger du egentlig denne plugin-en?
+
+Backbone-relational er for eksempel større enn Backbone selv
+
+Du trenger én-til-mange-relasjon?
+
+    .javascript
+    var Inbox = Backbone.Model.extend({
+
+        initialize: function() {
+            this.messages = new Messages();
+        },
+
+        parse: function(resp) {
+            this.messages.update(_.clone(resp.messages), { parse: true });
+            delete resp.messages;
+            return resp;
+        },
+
+        toJSON: function() {
+            var json = _.clone(this.attributes);
+            json.messages = this.messages.toJSON();
+            return json;
+        }
+
+    });
+
+
+---
+
+class: middle, center, red
+
+# \#7
+
+# Backbone brukes der det ikke trengs
+
+---
+
+class: middle, center
+
+Det er lett å gjøre alt til en modell, collection eller view
+
+… bruk ren JavaScript når du ikke trenger Backbone-features
+
+---
+
+class: middle, center
+
+# Komponenter
+
+Et forsøk på å bidra til å gjøre plugins mer håndterbare
+
+---
+
+class: middle, center
+
+De skal vœre små
+
+Løse enkle problemer
+
+Hindre duplisering av kode
+
+Ha få avhengigheter
+
+---
+
+# EventBus
+
+`Backbone.Events` er en komponent som kan mikses inn i hvilke som helst objekt
+
+Gir komponenten egenskapen å `binde` til og `trigge` events (for eksmepel modeller)
+
+```javascript
+// Kan brukes for å de-koble forskjellige deler/moduler av applikasjonen 
+define(['underscore', 'backbone'], function(_, Backbone) {
+
+    return _.clone(Backbone.Events);
+
+});
+```
+
+Dra inn:
+
+```javascript
+require(['component/eventBus', function(eventBus) {
+
+    events.on('user:login', function() {
+        console.log('user logged in');
+    });
+
+});
+```
+
+---
+
+# Validator
+
+```javascript
+define(['underscore'], function(_) {
+
+    return {
+        validate: function(attributes, validationRules) {
+            var errors = [];
+
+            _.each(validationRules, function(rule, name) {
+                // ...
+            });
+
+            if (errors.length) {
+                return errors;
+            }
+        }
+    };
+
+});
+```
+
+---
+
+# SubViewHandler
+
+```javascript
+define(['underscore'], function(_) {
+
+    var SubViewHandler = function() {
+        this.subViews = [];
+    };
+
+    _.extend(SubViewHandler.prototype, {
+        addSubView: function(subView) {
+            if (_.isUndefined(subView)) {
+                throw "Subview can't be undefined";
+            }
+
+            if (!_.contains(this.subViews, subView)) {
+                this.subViews.push(subView);
+            }
+        },
+        destroySubViews: function() {
+            _.invoke(this.subViews, 'destroy');
+            this.subViews.length = 0;
+        }
+    });
+
+    return SubViewHandler;
+});
+```
+
+---
+
+class: middle, center, dark-gray
+
+# \#8
+
+# Filer, avhengigheter og rot
+
+---
+
+# Mappestruktur
+
+```sh
+$ tree
+.
+├── app.js
+├── components
+│   ├── subViewHandler.js
+│   └── validation.js
+├── index.html
+├── libs
+│   ├── backbone-0.9.10.js
+│   ├── jquery-1.9.1.js
+│   └── underscore-1.4.4.js
+└── modules
+    └── payments
+        ├── payment.js
+        ├── payment.mustache
+        ├── paymentView.js
+        ├── payments.js
+        └── paymentsView.js
+
+4 directories, 12 files
+```
+
+---
+
+class: middle
+
+Kan virke banalt, men mappestruktur er viktig
+
+Ha feature-mapper istedenfor egne views-, models- og collections- mapper
+
+`=>` Samle moduler i egne mapper
+
+Kode som hører sammen bør ligge sammen!
+
+---
+
+# Require.js
+
+Fil/modul-laster
+
+Dynamisk lasting i utvikling og en fil i produksjon på en enkel måte
+
+```javascript
+define(['Backbone'], function(Backbone) {
+
+    var Cart = Backbone.Model.extend({
+        url: '/api/cart'
+    });
+
+    return Cart;
+
+});
+```
+
+Gjør avhengigheter veldig synlige
+
+Lettere å se behov for struktur av filer (en fil per objekt)
+
+---
+
+# Templates med Require.js
+
+Require.js har støtte for plugins
+
+Det finnes plugins for å laste og kompilere templates
+
+Eksempel med Handlebars-plugin:
+
+```javascript
+define([
+    'hb!payment' // slår opp filen payment.hb
+], function(paymentTemplate) {
+
+  // paymentTemplate er en ferdig kompilert template funksjon
+
+});
+```
+&nbsp
+
+[https://github.com/hinderberg/requirejs-handlebars-plugin](https://github.com/hinderberg/requirejs-handlebars-plugin)
+
+---
+
+# Modules og Require.js
+
+```javascript
+define([
+    'backbone',
+    './paymentView',
+    'hb!./payment'
+], function(Backbone, PaymentView, paymentTemplate) {
+
+    var PaymentsView = Backbone.View.extend({
+
+        template: paymentTemplate,
+
+        render: function() {
+
+            // bruker this.template
+            this.renderTemplate();
+
+            // rendre paymentView for hver payment 
+
+            return this;
+        }
+    });
+
+    return PaymentsView;
+
+});
+```
+
+---
+
+class: middle, center, dark-green
+
+# \#9
+
+# Hvordan henger alt sammen?
+
+---
+
+class: middle, center
+
+![](images/backbone_structure.png)
+
+---
+
+class: middle, center
+
+.huge[Testbarhet ≈ struktur]
+
+---
+
+class: middle, center, black
+
+# Spørsmål?
+
+# Uenig?
+
+    </textarea>
+    <div id="slideshow"></div>
+  </body>
+</html>
