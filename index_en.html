@@ -373,7 +373,7 @@ class: middle, center, brown
 
 # \#3
 
-# For mye logikk i view'ene
+# Logic and views
 
 ---
 
@@ -405,7 +405,7 @@ var TransactionsView = Backbone.View.extend({
           return transaction.toJSON(); 
         });
 
-        this.renderTemplate(json); // hjelpemetode
+        this.renderTemplate(json); // helper
 
         return this;
     }
@@ -427,7 +427,7 @@ var TransactionsView = Backbone.View.extend({
     render: function() {
         var sorted = this.transactions.getSortedByDateAndType();
 
-        this.renderTemplate(sorted.toJSON()); // hjelpemetode
+        this.renderTemplate(sorted.toJSON()); // helper
 
         return this;
     }
@@ -686,7 +686,7 @@ class: middle, center, purple
 
 # \#5
 
-# Jeg repeterer samme kode overalt
+# I repeat my code to often
 
 ---
 
@@ -701,13 +701,13 @@ var UserView = Backbone.View.extend({
     },
 
     render: function() {
-        // Bygger json struktur
+        // Building json
         var data = _.extend({}, 
           this.user.toJSON(),
           this.address.toJSON()
         );
 
-        // Kompilerer template og setter inn i DOM
+        // Compiles template and adds it to the DOM
         this.$el.html(Mustache.to_html(this.template, data));
         return this;
     }
@@ -719,7 +719,7 @@ var UserView = Backbone.View.extend({
 
 class: middle
 
-Kan bruke arv og lage et delt `BaseView`:
+Can use inheritance and make a `BaseView`:
 
 ```javascript
 var BaseView = Backbone.View.extend({
@@ -736,7 +736,7 @@ var BaseView = Backbone.View.extend({
 });
 ```
 
-Nå lager vi nye views fra `BaseView`:
+Make new views inherit from `BaseView`:
 
 ```javascript
 var UserView = BaseView.extend({
@@ -755,16 +755,16 @@ var UserView = BaseView.extend({
 
 class: middle
 
-Kan bruke arv og lage et delt `BaseView`:
+Can use inheritance and make a `BaseView`:
 
 ```javascript
 var BaseView = Backbone.View.extend({
 
     renderTemplate: function() {
-        // godta flere argumenter som sammen bygger opp template-input
+        // takes N arugments and building data for template-input
         var data = _.extend.apply(null, arguments);
 
-        // Kompilerer template og setter inn i DOM
+        // Compiles the template and insert in into the DOM
         this.$el.html(Mustache.to_html(this.template, data));
         return this;
     }
@@ -772,7 +772,7 @@ var BaseView = Backbone.View.extend({
 });
 ```
 
-Nå lager vi nye views fra `BaseView`:
+Make new views inherit from `BaseView`:
 
 ```javascript
 var UserView = BaseView.extend({
@@ -791,16 +791,16 @@ var UserView = BaseView.extend({
 
 class: middle
 
-Kan bruke arv og lage et delt `BaseView`:
+Can use inheritance and make a `BaseView`:
 
 ```javascript
 var BaseView = Backbone.View.extend({
 
     renderTemplate: function() {
-        // godta flere argumenter som sammen bygger opp template-input
+        // takes N arugments and building data for template-input
         var data = _.extend.apply(null, arguments);
 
-        // Kompilerer template og setter inn i DOM
+        // Compiles the template and insert in into the DOM
         this.$el.html(Mustache.to_html(this.template, data));
         return this;
     }
@@ -808,7 +808,7 @@ var BaseView = Backbone.View.extend({
 });
 ```
 
-Nå lager vi nye views fra `BaseView`:
+Make new views inherit from `BaseView`:
 
 ```javascript
 var UserView = BaseView.extend({
@@ -827,15 +827,15 @@ var UserView = BaseView.extend({
 
 class: middle
 
-# Pass på
+# Be aware of
 
-Pass på mengden og nivåene i arv
+The usage and levels of inheritance
 
-Ikke noen enkel måte å kalle foreldre
+No easy way to call a parent
 
-Kan kun arve fra et annet objekt
+Can only inherit from one object at the time
 
-En annen måte å lage funksjonalitet gjenbrukbart, er å bruke mixins
+Another way to share functionality between objects is to use mixins
 
 
 ---
@@ -844,7 +844,7 @@ class: middle
 
 # Mixins
 
-Mixins er et alternativ til arv der man fletter flere objekter og deres funksjoner sammen
+Mixins is an alternative to inheritance where the objects are meltet to combine functionality
 
 ```javascript
 var Transactions = Backbone.Collection.extend({});
@@ -1042,46 +1042,46 @@ class: middle, center, red
 
 # \#7
 
-# Backbone brukes der det ikke trengs
+# Backbone is used when it is not needed
 
 ---
 
 class: middle, center
 
-Det er lett å gjøre alt til en modell, collection eller view
+It's easy to make the mistake and make a model, collection or view for everything
 
-… bruk ren JavaScript når du ikke trenger Backbone-features
-
----
-
-class: middle, center
-
-# Komponenter
-
-Et forsøk på å bidra til å gjøre plugins mer håndterbare
+… use vanilla JavaScript when you don't need the functionality
 
 ---
 
 class: middle, center
 
-De skal vœre små
+# Components
 
-Løse enkle problemer
+An attempt to make plugins more manageable
 
-Hindre duplisering av kode
+---
 
-Ha få avhengigheter
+class: middle, center
+
+They shall be as small as possible
+
+Solve simple problems
+
+Prevent duplication of code
+
+Few dependencies
 
 ---
 
 # EventBus
 
-`Backbone.Events` er en komponent som kan mikses inn i hvilke som helst objekt
+`Backbone.Events` is a component which can be mixed into whatever object
 
-Gir komponenten egenskapen å `binde` til og `trigge` events (for eksmepel modeller)
+Gives the component the ability to `bind` and `trigger` events (for example models)
 
 ```javascript
-// Kan brukes for å de-koble forskjellige deler/moduler av applikasjonen 
+// The EventBus can be used to decouple different parts and modules in the application 
 define(['underscore', 'backbone'], function(_, Backbone) {
 
     return _.clone(Backbone.Events);
@@ -1089,7 +1089,7 @@ define(['underscore', 'backbone'], function(_, Backbone) {
 });
 ```
 
-Dra inn:
+Usage:
 
 ```javascript
 require(['component/eventBus', function(eventBus) {
@@ -1287,7 +1287,7 @@ class: middle, center, dark-green
 
 # \#9
 
-# Hvordan henger alt sammen?
+# How does it all come together
 
 ---
 
