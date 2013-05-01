@@ -38,14 +38,14 @@
 
 class: middle, center
 
-# Backbone skal gi meg struktur, 
-## men alt er fortsatt bare rot
+# Backbone is supposed to give me structure, 
+## but everything is still just a mess
 
 ---
 
 class: middle, center
 
-# Hvem er vi?
+# Who are we?
 
 Kim Joar Bekkelund
 
@@ -55,35 +55,35 @@ Hans Magnus Inderberg
 
 class: middle, center
 
-# Hva skal vi snakke om i dag?
+# What shall we talk about today?
 
-Problemstillinger og misforståelser som er lett å gjøre med Backbone.js
+Problems and misunderstandings that are easy to do with Backbone.js
 
 ---
 
-# Hva er Backbone?
+# What is Backbone?
 
-Lite JavaScript-bibliotek på litt mer enn 1000 linjer (6,3kb pakket og gzip-et)
+A small JavaScript library with about 1000 lines of kode. (6,3kb packet and g-ziped)
 
-Har blitt svært populært i løpet av de siste årene
+Have become really popular the last few years
 
 &nbsp;
 
-**Mye brukt på prosjekter i BEKK**
+** Used in many projects where BEKK is involved **
 
 ---
 
 class: middle
 
-Målet er å gi stuktur ved hjelp av et sett med byggeklosser
+The goal is to give structure with a few simple building blocks
 
-*… men Backbone klarer det ikke helt — og derfor er vi her idag!*
+*… Backbone do not get you there alone — thats why we are here today!*
 
 ---
 
 class: middle, center
 
-# 9 problemer og misforståelser
+# 9 problems and misunderstandings
 
 ---
 
@@ -91,15 +91,15 @@ class: middle, center, blue
 
 # \#1
 
-# Hvem har ansvar for hva?
+# Responsibility of the building blocks
 
 ---
 
 class: middle, center
 
-Backbone har et sett med byggeklosser som skal hjelpe til.
+Backbone has its building blocks to give structure.
 
-** Hver byggekloss har sitt spesifikke ansvarsområde **
+** and each block has an area of responsibility **
 
 ---
 
@@ -107,19 +107,19 @@ class: middle, center
 
 # Model
 
-Kommunikasjon med server + holde på og manipulere data
+Communicates with the server + contains and manipulate the data
 
 ---
 
 class: middle, center
 
-** Altså: Ingen forståelse eller kjennskap til DOM-en **
+** Does not understand or has knowlegde of the DOM **
 
 ---
 
 class: middle, center
 
-Flytt tilstand fra `data`-attributter i DOM-en til modellen
+Move condition from the `data`-attribute in the DOM to the Backbone model
 
 ---
 
@@ -127,21 +127,21 @@ class: middle, center
 
 # Collection
 
-Ansvarlig for en liste med modeller
+Responsible for a list of models
 
 ---
 
 class: middle, center
 
-Har funksjoner som jobber på sine modeller
+Implements functions to manipulate it's models
 
-Legg til, sorter, fjern, og finn modeller
+Example: Add, remove, sort and/or find
 
 ---
 
 class: middle, center
 
-** Altså: Ingen forståelse eller kjennskap til DOM-en **
+** Does not understand or has knowlegde of the DOM **
 
 ---
 
@@ -149,23 +149,23 @@ class: middle, center
 
 # View
 
-Ansvarlig for ett HTML-element og alt det inneholder
+Responsible a spesific HTML-element and all children
 
 ---
 
 class: middle, center
 
-Presenterer og oppdaterer data i HTML-elementet sitt
+Presents and updates the data in its HTML-element
 
-Jobber med modeller, collection og DOM-en
+Talks to models, collections and the DOM
 
 ---
 
 class: middle, center
 
-Skal ** ikke ** inneholde logikk for endring og manipulering av data
+Should ** not ** include logic for changing og manipultating data
 
-Det gjøres i modell eller collection
+Execute these operations a model, collection or some other JavaScript object
 
 ---
 
@@ -173,15 +173,15 @@ class: middle, center
 
 # Router
 
-Ansvarlig for håndtering av URL-er
+Responsible for handling URL changes
 
 ---
 
 class: middle, center
 
-Syr sammen applikasjonen
+Tailors the application
 
-"Tilstandsmaskin" for applikasjonen
+Works like a "state machine"
 
 ---
 
@@ -189,7 +189,7 @@ class: middle, center
 
 # Events
 
-Kraftig teknikk for kommunikasjon mellom objekter
+Used to communicate between objects
 
 ---
 
@@ -198,10 +198,10 @@ class: middle
 ```javascript
 var user = new User();
 
-// kall funksjonen på hver endring
+// call this function on every change of the user
 user.on('change', function() { console.log('endring!'); }, this);
 
-// fjern alle eventer på user
+// removes all that listens to the user
 user.off()
 ```
 
@@ -209,9 +209,9 @@ user.off()
 
 class: middle, center
 
-Alle komponentene i Backbone bruker events
+All built in Backbone components has events and make use of events
 
-Mye av kommunikasjonen i applikasjonen kan gjøres med events
+Much used in communication
 
 ---
 
