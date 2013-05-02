@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Backbone skal gi meg struktur, men alt er fortsatt bare rot</title>
+    <title>Backbone is supposed to give me structure, but everything is still just a mess</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <script src="./remark-0.4.4.min.js" type="text/javascript"></script>
     <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300italic,400|Dosis:300,400|Source+Code+Pro:200,300,400,400bold' rel='stylesheet' type='text/css'>
@@ -38,7 +38,7 @@
 
 class: middle, center
 
-# Backbone is supposed to give me structure, 
+# Backbone is supposed to give me structure,
 ## but everything is still just a mess
 
 ---
@@ -219,7 +219,7 @@ class: middle, center, orange
 
 # \#2
 
-# For mye skjer i `initialize`
+# Too much stuff in `initialize`
 
 ---
 
@@ -230,16 +230,16 @@ var UserView = Backbone.View.extend({
 
     initialize: function() {
 
-        // lager en modell
+        // create a model
         this.user = new User();
 
         var self = this;
 
-        // henter data
+        // fetch data
         this.user.fetch({
 
             success: function() {
-                // rendrer view når data er mottatt
+                // render view when data is received
                 self.render();
             }
 
@@ -264,11 +264,11 @@ var UserView = Backbone.View.extend({
 
         var self = this;
 
-        // henter data
+        // fetch data
         this.user.fetch({
 
             success: function() {
-                // rendrer view når data er mottatt
+                // render view when data is received
                 self.render();
             }
 
@@ -293,7 +293,7 @@ var UserView = Backbone.View.extend({
 
         var self = this;
         this.user.on('change', this.render, this);
-        // henter data
+        // fetch data
         this.user.fetch(
 
 
@@ -355,14 +355,14 @@ var UserView = Backbone.View.extend({
 ```javascript
 var Router = Backbone.Router.extend({
     routes: {
-      'user': 'user' 
+      'user': 'user'
     },
     user: function() {
         var user = new User();
-        var userView = new UserView({ 
-            user: user 
+        var userView = new UserView({
+            user: user
         });
-        user.fetch(); // hent data utenfor viewet!
+        user.fetch(); // fetching data outside the view!
     }
 });
 ```
@@ -393,16 +393,16 @@ var TransactionsView = Backbone.View.extend({
             var timestamp = Date.parse(transaction.get('createdAt')) * 1000;
             if (transaction.get("type") === transactionType.ONE_TYPE) {
                 timestamp += "B";
-            } else if (transaction.get("type") === 
+            } else if (transaction.get("type") ===
               transactionType.ANOTHER_TYPE) {
                 timestamp += "A";
-            } 
+            }
 
             return timestamp;
         });
 
-        var json = _.map(sortedTransactions, function(transaction){ 
-          return transaction.toJSON(); 
+        var json = _.map(sortedTransactions, function(transaction){
+          return transaction.toJSON();
         });
 
         this.renderTemplate(json); // helper
@@ -441,7 +441,7 @@ class: middle, center, green
 
 # \#4
 
-# View'ene mine blir alt for store
+# My views are too large
 
 ---
 
@@ -459,15 +459,15 @@ class: middle, center
 
 class: middle, center
 
-Starter alltid små
+They always start out small
 
-men de vokser og vokser
+but they grow and grow
 
-og blir mer og mer komplekse
+and become increasingly complex
 
-og det blir vanskelig å få oversikt
+so it becomes difficult to understand them
 
-og det blir vanskelig å teste dem
+and it becomes difficult to test them
 
 ---
 
@@ -484,13 +484,13 @@ var ProductsView = Backbone.View.extend({
     },
 
     render: function() {
-        // for mye kode her
+        // too much code here
     },
 
     chooseProduct: function(e) {
         e.preventDefault();
 
-        // HVORDAN FINNER VI RETT MODELL?
+        // HOW DO WE FIND THE CORRECT MODEL?
 
 
 
@@ -519,15 +519,15 @@ var ProductsView = Backbone.View.extend({
     },
 
     render: function() {
-        // for mye kode her
+        // too much code here
     },
 
     chooseProduct: function(e) {
         e.preventDefault();
 
-        // HVORDAN FINNER VI RETT MODELL?
+        // HOW DO WE FIND THE CORRECT MODEL?
 
-        // her må vi lete rundt i DOM-en
+        // we have to go looking in the DOM
         var productId = $(e.target).attr('data-product-id');
 
 
@@ -560,12 +560,12 @@ var ProductsView = Backbone.View.extend({
     chooseProduct: function(e) {
         e.preventDefault();
 
-        // HVORDAN FINNER VI RETT MODELL?
+        // HOW DO WE FIND THE CORRECT MODEL?
 
-        // her må vi lete rundt i DOM-en
+        // we have to go looking in the DOM
         var productId = $(e.target).attr('data-product-id');
 
-        // og så må vi slå opp i products
+        // and then we have to find it in the products collection
         var product = this.products.get(productId);
 
         product.doSomething();
@@ -578,7 +578,7 @@ var ProductsView = Backbone.View.extend({
 
 class: middle, center
 
-Løsningen? Del viewet inn i **subviews**!
+The solution? Split your view into **subviews**
 
 ---
 
@@ -588,7 +588,7 @@ class: middle, center
 
 ---
 
-# Et view per model i en collection?
+# A view per model in the collection?
 
 ```javascript
 var ProductsView = Backbone.View.extend({
@@ -599,7 +599,7 @@ var ProductsView = Backbone.View.extend({
     },
 
     render: function() {
-        this.renderTemplate(); // hjelpemetode for å rendre viewet
+        this.renderTemplate(); // a helper to render the template
 
         this.products.each(function(product) {
             var productView = new ProductView({ product: product });
@@ -614,9 +614,9 @@ var ProductsView = Backbone.View.extend({
 
 ---
 
-# Et view per model i en collection?
+# A view per model in the collection?
 
-Nå kan `ProductView` gjøres veldig enkel:
+Now the `ProductView` is very simple:
 
 ```javascript
 var ProductView = Backbone.View.extend({
@@ -634,7 +634,7 @@ var ProductView = Backbone.View.extend({
     chooseProduct: function(e) {
         e.preventDefault();
 
-        // NÅ VET VI ALLEREDE HVILKEN MODELL VI SKAL BRUKE
+        // NOW WE ALREADY KNOW WHICH MODEL TO USE
 
         this.product.doSomething();
     }
@@ -646,17 +646,17 @@ var ProductView = Backbone.View.extend({
 
 class: middle, center
 
-Tenk på ytelse
+Think about performance
 
-Passer det for store collections?
+How does this work for larger collection?
 
-Avhengig av mengden logikk for hvert subview?
+Does it depend on the amount of logic in every subview?
 
-Skriv for struktur, optimaliser ved behov
+Write for structure, optimize when needed
 
 ---
 
-# Samleviews
+# Samleviews //TODO
 
 ```javascript
 var PersonalInformationView = Backbone.View.extend({
@@ -702,7 +702,7 @@ var UserView = Backbone.View.extend({
 
     render: function() {
         // Building json
-        var data = _.extend({}, 
+        var data = _.extend({},
           this.user.toJSON(),
           this.address.toJSON()
         );
@@ -815,7 +815,7 @@ var UserView = BaseView.extend({
 
     this.render: function() {
         return this.renderTemplate(
-            this.user.toJSON(), 
+            this.user.toJSON(),
             this.address.toJSON()
         );
     }
@@ -864,21 +864,21 @@ class: middle, center, yellow
 
 # \#6
 
-# Backbone-plugins = jQuery-plugins
+# Backbone plugins = jQuery plugins
 
 ---
 
 class: middle, center
 
-Ikke dra inn for store plugins for tidlig — forstå verdien de tilfører
+Don't pull in too large plugins too early — understand the value they add first
 
 ---
 
 class: middle
 
-Mange plugins tar over kode som ligger på `Backbone`
+Lot's of plugins override code on the `Backbone` namespace
 
-Eksempel fra `Backbone.localStorage`:
+For example `Backbone.localStorage`:
 
 ```javascript
 // Override 'Backbone.sync' to default to localSync,
@@ -893,39 +893,39 @@ Backbone.sync = function(method, model, options) {
 
 class: middle, center
 
-Ikke gjør applikasjonen din for avhengig, utvikling på pluginen kan plutselig slutte
+Don't become to dependent on a plugin, the development might suddenly stop
 
-Plugins kan vœre magiske, men husk at magien fort blir ødelagt
+Plugins can be magical, but remember that the magic is easily destroyed
 
 ---
 
 class: middle, center
 
-Husk Hollywood-prinsippet:
+Remember the Hollywood principle:
 
 .huge[Don't call me, I'll call you]
 
 ---
 
-# Trenger du egentlig denne plugin-en?
+# Do you really need this plugin?
 
-Backbone-relational er for eksempel større enn Backbone selv
-
----
-
-# Trenger du egentlig denne plugin-en?
-
-Backbone-relational er for eksempel større enn Backbone selv
-
-Du trenger én-til-mange-relasjon?
+For exampl, Backbone-relational is larger than Backbone itself
 
 ---
 
-# Trenger du egentlig denne plugin-en?
+# Do you really need this plugin?
 
-Backbone-relational er for eksempel større enn Backbone selv
+For exampl, Backbone-relational is larger than Backbone itself
 
-Du trenger én-til-mange-relasjon?
+So, you need one to many relations?
+
+---
+
+# Do you really need this plugin?
+
+For exampl, Backbone-relational is larger than Backbone itself
+
+So, you need one to many relations?
 
     .javascript
     var Inbox = Backbone.Model.extend({
@@ -950,11 +950,11 @@ Du trenger én-til-mange-relasjon?
 
 ---
 
-# Trenger du egentlig denne plugin-en?
+# Do you really need this plugin?
 
-Backbone-relational er for eksempel større enn Backbone selv
+For exampl, Backbone-relational is larger than Backbone itself
 
-Du trenger én-til-mange-relasjon?
+So, you need one to many relations?
 
     .javascript
     var Inbox = Backbone.Model.extend({
@@ -979,11 +979,11 @@ Du trenger én-til-mange-relasjon?
 
 ---
 
-# Trenger du egentlig denne plugin-en?
+# Do you really need this plugin?
 
-Backbone-relational er for eksempel større enn Backbone selv
+For exampl, Backbone-relational is larger than Backbone itself
 
-Du trenger én-til-mange-relasjon?
+So, you need one to many relations?
 
     .javascript
     var Inbox = Backbone.Model.extend({
@@ -1008,11 +1008,11 @@ Du trenger én-til-mange-relasjon?
 
 ---
 
-# Trenger du egentlig denne plugin-en?
+# Do you really need this plugin?
 
-Backbone-relational er for eksempel større enn Backbone selv
+For exampl, Backbone-relational is larger than Backbone itself
 
-Du trenger én-til-mange-relasjon?
+So, you need one to many relations?
 
     .javascript
     var Inbox = Backbone.Model.extend({
@@ -1081,7 +1081,7 @@ Few dependencies
 Gives the component the ability to `bind` and `trigger` events (for example models)
 
 ```javascript
-// The EventBus can be used to decouple different parts and modules in the application 
+// The EventBus can be used to decouple different parts and modules in the application
 define(['underscore', 'backbone'], function(_, Backbone) {
 
     return _.clone(Backbone.Events);
@@ -1162,11 +1162,11 @@ class: middle, center, dark-gray
 
 # \#8
 
-# Filer, avhengigheter og rot
+# Files, dependencies and mess
 
 ---
 
-# Mappestruktur
+# Folder structure
 
 ```sh
 $ tree
@@ -1195,21 +1195,21 @@ $ tree
 
 class: middle
 
-Kan virke banalt, men mappestruktur er viktig
+It can seem trivial, but folder structure is important
 
-Ha feature-mapper istedenfor egne views-, models- og collections- mapper
+We prefer feature folders over having `views`, `models` and `collections` folders
 
-`=>` Samle moduler i egne mapper
+`=>` Collect modules in their own folders
 
-Kode som hører sammen bør ligge sammen!
+Code that belongs together should be close to each other.
 
 ---
 
 # Require.js
 
-Fil/modul-laster
+File/module loader
 
-Dynamisk lasting i utvikling og en fil i produksjon på en enkel måte
+Dynamically load files in development and easily create a minified file for production
 
 ```javascript
 define(['Backbone'], function(Backbone) {
@@ -1223,36 +1223,37 @@ define(['Backbone'], function(Backbone) {
 });
 ```
 
-Gjør avhengigheter veldig synlige
+Gjør avhengigheter veldig synlige //TODO
 
-Lettere å se behov for struktur av filer (en fil per objekt)
+Easier to see the need for one file per object
 
 ---
 
-# Templates med Require.js
+# Templates with Require.js
 
-Require.js har støtte for plugins
+Require.js has suppoprt for plugins
 
-Det finnes plugins for å laste og kompilere templates
+There are several plugins for loading and compiling templates
 
-Eksempel med Handlebars-plugin:
+An example with a Handlebars plugin:
 
 ```javascript
 define([
     'hb!payment' // slår opp filen payment.hb
 ], function(paymentTemplate) {
 
-  // paymentTemplate er en ferdig kompilert template funksjon
+  // paymentTemplate is now a compiled template function
 
 });
 ```
+
 &nbsp
 
 [https://github.com/hinderberg/requirejs-handlebars-plugin](https://github.com/hinderberg/requirejs-handlebars-plugin)
 
 ---
 
-# Modules og Require.js
+# Modules and Require.js
 
 ```javascript
 define([
@@ -1267,10 +1268,10 @@ define([
 
         render: function() {
 
-            // bruker this.template
+            // uses this.template
             this.renderTemplate();
 
-            // rendre paymentView for hver payment 
+            // render paymentView for every payment
 
             return this;
         }
@@ -1305,9 +1306,9 @@ class: middle, center
 
 class: middle, center, black
 
-# Spørsmål?
+# Questions?
 
-# Uenig?
+# Do you disagree?
 
     </textarea>
     <div id="slideshow"></div>
