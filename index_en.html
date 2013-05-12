@@ -69,7 +69,7 @@ Have become really popular the last few years
 
 &nbsp;
 
-** Used in many projects where BEKK is involved **
+**  **
 
 ---
 
@@ -1284,9 +1284,69 @@ define([
 
 ---
 
+class: middle, center
+
+# \#9 Not all Backbone convensions av good convensions
+
+---
+
+```javascript
+
+var ComplexView = Backbone.View.extend({
+    
+    initialize: function() {
+      
+
+
+    }
+
+    render: function() {
+
+        var json = this.model.toJSON();
+        this.renderTemplate(json);
+
+    }
+
+});
+
+```
+
+I'm new on the project and I want to find out what attributes and methods this model includes?
+
+I could find out where this view is initialized and find out what `this.model` is and then open the file
+
+Or I could use `console.log(this.model)` and refresh the browser
+
+Both of these are really inefficient
+
+---
+
+ var TaskView = Backbone.View.extend({
+    
+    initialize: function(options) {
+      
+        this.task = options.task;
+
+    }
+
+    render: function() {
+
+        var json = this.task.toJSON();
+        this.renderTemplate(json);
+
+    }
+
+});
+
+# Do not be afraid to call it for what it really is
+
+```
+
+---
+
 class: middle, center, dark-green
 
-# \#9
+# \#10
 
 # How does it all come together
 
