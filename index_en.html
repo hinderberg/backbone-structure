@@ -55,49 +55,47 @@ Hans Magnus Inderberg
 
 class: middle, center
 
-# What shall we talk about today?
+Today we'll talk about
 
-Problems and misunderstandings that are easy to do with Backbone.js
+# how we have improved the structure of our Backbone.js apps
 
 ---
 
 # What is Backbone?
 
-A small JavaScript library with about 1000 lines of kode. (6,3kb packet and g-ziped)
+A small JavaScript library with about 1000 lines of kode (6.3kB packed and gziped)
 
 Have become really popular the last few years
 
 ---
 
-# Who use Backbone?
+class: middle, center
 
-There are a wide specter of apps that use Backbone today
-
-Why?
-
-Lightweight, Lightweight, Lightweight 
-
-Easy to integrate into existing solutions
-
-It does not try to solve everything, just give some structure
+There is a wide range of apps that uses Backbone
 
 ---
 
-# Disqus
+class: middle, center
 
-** picture **
+Disqus
+
+![](images/disqus.png)
 
 ---
 
-# Trello
+class: middle, center
+
+Inatur
+
+![](images/inatur.png)
+
+---
+
+class: middle, center
+
+Trello
 
 ![](images/trello.png)
-
----
-
-# SpareBank 1
-
-** picture **
 
 ---
 
@@ -105,15 +103,13 @@ class: middle
 
 The goal is to give structure with a few simple building blocks
 
-** Better practices in a set of reasonably small components  **
-
-*… Backbone do not get you there alone — thats why we are here today! *
+*… Backbone does not get you there alone — thats why we are here today! *
 
 ---
 
 class: middle, center
 
-# 9 problems and misunderstandings
+# 10 problems and misunderstandings
 
 ---
 
@@ -127,9 +123,7 @@ class: middle, center, blue
 
 class: middle, center
 
-Backbone has its building blocks to give structure.
-
-** and each block has an area of responsibility **
+[figur som viser server til venstre og html til høyre]
 
 ---
 
@@ -139,17 +133,19 @@ class: middle, center
 
 Communicates with the server + contains and manipulate the data
 
----
-
-class: middle, center
-
-** Does not understand or has knowlegde of the DOM **
+[plasser modell i figur med kommunikasjon mellom modell og server]
 
 ---
 
 class: middle, center
 
-Move condition from the `data`-attribute in the DOM to the Backbone model
+** Has no knowlegde of the DOM **
+
+---
+
+class: middle, center
+
+Move state from `data`-attributes in the DOM to models
 
 ---
 
@@ -159,11 +155,13 @@ class: middle, center
 
 Responsible for a list of models
 
+[plasser collection i figur med kommunikasjon mellom modell, collection og server]
+
 ---
 
 class: middle, center
 
-Implements functions to manipulate it's models
+Contains functions to manipulate its models
 
 Example: Add, remove, sort and/or find
 
@@ -171,7 +169,7 @@ Example: Add, remove, sort and/or find
 
 class: middle, center
 
-** Does not understand or has knowlegde of the DOM **
+** Has no knowlegde of the DOM **
 
 ---
 
@@ -181,21 +179,23 @@ class: middle, center
 
 Responsible a spesific HTML-element and all children
 
----
-
-class: middle, center
-
-Presents and updates the data in its HTML-element
-
-Talks to models, collections and the DOM
+[plasser i figur med kommunikasjon mellom dom og view, samt mellom modell/collection og view]
 
 ---
 
 class: middle, center
 
-Should ** not ** include logic for changing og manipultating data
+Presents and updates the data in its HTML element
 
-Execute these operations a model, collection or some other JavaScript object
+Communicates with models, collections and the DOM
+
+---
+
+class: middle, center
+
+Should **not** change or manipulate data
+
+Perform these operations in a model, collection or some other JavaScript object
 
 ---
 
@@ -205,11 +205,13 @@ class: middle, center
 
 Responsible for handling URL changes
 
+[plasser i figur]
+
 ---
 
 class: middle, center
 
-Tailors the application
+Tailors the application (??)
 
 Works like a "state machine"
 
@@ -229,7 +231,7 @@ class: middle
 var user = new User();
 
 // call this function on every change of the user
-user.on('change', function() { console.log('endring!'); }, this);
+user.on('change', function() { console.log('changed!'); }, this);
 
 // removes all that listens to the user
 user.off()
@@ -239,9 +241,9 @@ user.off()
 
 class: middle, center
 
-All built in Backbone components has events and make use of events
+All built-in Backbone components has events and make use of events
 
-Much used in communication
+Used for communication between components
 
 ---
 
@@ -392,7 +394,7 @@ var Router = Backbone.Router.extend({
         var userView = new UserView({
             user: user
         });
-        user.fetch(); // fetching data outside the view!
+        user.fetch(); // we fetc data outside the view!
     }
 });
 ```
@@ -403,7 +405,7 @@ class: middle, center, brown
 
 # \#3
 
-# Logic and views
+# Less logic in views
 
 ---
 
@@ -728,13 +730,13 @@ var UserView = Backbone.View.extend({
     },
 
     render: function() {
-        // Building json
+        // Build json
         var data = _.extend({},
           this.user.toJSON(),
           this.address.toJSON()
         );
 
-        // Compiles template and adds it to the DOM
+        // Compile template and add it to the DOM
         this.$el.html(Mustache.to_html(this.template, data));
         return this;
     }
@@ -791,7 +793,7 @@ var BaseView = Backbone.View.extend({
         // takes N arguments and building data for template-input
         var data = _.extend.apply(null, arguments);
 
-        // Compiles the template and insert in into the DOM
+        // Compile template and insert in into the DOM
         this.$el.html(Mustache.to_html(this.template, data));
         return this;
     }
@@ -827,7 +829,7 @@ var BaseView = Backbone.View.extend({
         // takes N arguments and building data for template-input
         var data = _.extend.apply(null, arguments);
 
-        // Compiles the template and insert in into the DOM
+        // Compile template and insert in into the DOM
         this.$el.html(Mustache.to_html(this.template, data));
         return this;
     }
@@ -856,7 +858,7 @@ class: middle
 
 # Be aware of
 
-The usage and levels of inheritance
+Too much inheritance
 
 No easy way to call a parent
 
@@ -864,14 +866,13 @@ Can only inherit from one object at the time
 
 Another way to share functionality between objects is to use mixins
 
-
 ---
 
 class: middle
 
 # Mixins
 
-Mixins is an alternative to inheritance where the objects are meltet to combine functionality
+Mixins is an alternative to inheritance where the objects are melted to combine functionality
 
 ```javascript
 var pagination = {
@@ -1077,7 +1078,7 @@ class: middle, center, red
 
 class: middle, center
 
-It's easy to make the mistake and make a model, collection or view for everything
+It's easy to create a model, collection or view for everything
 
 … use vanilla JavaScript when you don't need the functionality
 
@@ -1093,13 +1094,15 @@ An attempt to make plugins more manageable
 
 class: middle, center
 
-They shall be as small as possible
+Keep them as small as possible
 
 Solve simple problems
 
 Prevent duplication of code
 
 Few dependencies
+
+"Unix Philosophy"
 
 ---
 
@@ -1217,8 +1220,6 @@ $ tree
         ├── paymentView.js
         ├── payments.js
         └── paymentsView.js
-
-4 directories, 12 files
 ```
 
 ---
@@ -1232,6 +1233,8 @@ We prefer feature folders over having `views`, `models` and `collections` folder
 `=>` Collect modules in their own folders
 
 Code that belongs together should be close to each other.
+
+What about including the tests in the same folder?
 
 ---
 
@@ -1261,7 +1264,7 @@ Easier to see the need for one file per object
 
 # Templates with Require.js
 
-Require.js has suppoprt for plugins
+Require.js has support for plugins
 
 There are several plugins for loading and compiling templates
 
@@ -1316,19 +1319,17 @@ define([
 
 class: middle, center
 
-# \#9 Not all Backbone convensions av good convensions
+# \#9
+
+# Don't blindly follow<br> Backbone conventions
 
 ---
 
 ```javascript
 
 var ComplexView = Backbone.View.extend({
-    
-    initialize: function() {
-      
 
-
-    }
+    // lots of code
 
     render: function() {
 
@@ -1341,28 +1342,22 @@ var ComplexView = Backbone.View.extend({
 
 ```
 
----
+What is `this.model`?
 
-class: middle
+Must look for where it's initialized to find out
 
-I'm new on the project and I want to find out what attributes and methods this model includes?
+Or maybe `console.log(this.model)` and refresh the browser
 
-I could find out where this view is initialized and find out what `this.model` is and then open the file
-
-Or I could use `console.log(this.model)` and refresh the browser
-
-Both of these are really inefficient
-
-Solution?
+What if I need to pass in two models?
 
 ---
 
 ```javascript
 
 var TaskView = Backbone.View.extend({
-    
+
     initialize: function(options) {
-      
+
         this.task = options.task;
 
     }
@@ -1378,7 +1373,7 @@ var TaskView = Backbone.View.extend({
 
 ```
 
-## Do not be afraid to call it for what it really is 
+Do not be afraid to call it for what it really is
 
 ---
 
@@ -1386,7 +1381,7 @@ class: middle, center, dark-green
 
 # \#10
 
-# How does it all come together
+# How it all fits together
 
 ---
 
@@ -1398,7 +1393,7 @@ class: middle, center
 
 class: middle, center
 
-.huge[Testbarhet ≈ struktur]
+.huge[Testability ≈ structure]
 
 ---
 
