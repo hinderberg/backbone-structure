@@ -99,9 +99,15 @@ Trello
 
 ---
 
-class: middle
+class: middle, center
 
-The goal is to give structure with a few simple building blocks
+Good practices in a set of reasonably small components
+
+with a goal of improving structure
+
+---
+
+class: middle, center
 
 *… Backbone does not get you there alone — thats why we are here today! *
 
@@ -939,13 +945,13 @@ Remember the Hollywood principle:
 
 # Do you really need this plugin?
 
-For exampl, Backbone-relational is larger than Backbone itself
+For example, Backbone-relational is larger than Backbone itself
 
 ---
 
 # Do you really need this plugin?
 
-For exampl, Backbone-relational is larger than Backbone itself
+For example, Backbone-relational is larger than Backbone itself
 
 So, you need one to many relations?
 
@@ -953,7 +959,7 @@ So, you need one to many relations?
 
 # Do you really need this plugin?
 
-For exampl, Backbone-relational is larger than Backbone itself
+For example, Backbone-relational is larger than Backbone itself
 
 So, you need one to many relations?
 
@@ -982,7 +988,7 @@ So, you need one to many relations?
 
 # Do you really need this plugin?
 
-For exampl, Backbone-relational is larger than Backbone itself
+For example, Backbone-relational is larger than Backbone itself
 
 So, you need one to many relations?
 
@@ -1011,7 +1017,7 @@ So, you need one to many relations?
 
 # Do you really need this plugin?
 
-For exampl, Backbone-relational is larger than Backbone itself
+For example, Backbone-relational is larger than Backbone itself
 
 So, you need one to many relations?
 
@@ -1040,7 +1046,7 @@ So, you need one to many relations?
 
 # Do you really need this plugin?
 
-For exampl, Backbone-relational is larger than Backbone itself
+For example, Backbone-relational is larger than Backbone itself
 
 So, you need one to many relations?
 
@@ -1102,7 +1108,7 @@ Prevent duplication of code
 
 Few dependencies
 
-"Unix Philosophy"
+Unix Philosophy
 
 ---
 
@@ -1110,7 +1116,7 @@ Few dependencies
 
 `Backbone.Events` is a component which can be mixed into whatever object
 
-Gives the component the ability to `bind` and `trigger` events (for example models)
+Gives the component the ability to bind and trigger events (for example models)
 
 ```javascript
 // The EventBus can be used to decouple different
@@ -1125,7 +1131,7 @@ define(['underscore', 'backbone'], function(_, Backbone) {
 Usage:
 
 ```javascript
-require(['component/eventBus', function(eventBus) {
+define(['component/eventBus'], function(events) {
 
     events.on('user:login', function() {
         console.log('user logged in');
@@ -1170,19 +1176,18 @@ define(['underscore'], function(_) {
     };
 
     _.extend(SubViewHandler.prototype, {
-        addSubView: function(subView) {
-            if (_.isUndefined(subView)) {
-                throw "Subview can't be undefined";
-            }
 
+        addSubView: function(subView) {
             if (!_.contains(this.subViews, subView)) {
                 this.subViews.push(subView);
             }
         },
+
         destroySubViews: function() {
             _.invoke(this.subViews, 'destroy');
             this.subViews.length = 0;
         }
+
     });
 
     return SubViewHandler;
@@ -1245,7 +1250,7 @@ File/module loader
 Dynamically load files in development and easily create a minified file for production
 
 ```javascript
-define(['Backbone'], function(Backbone) {
+define(['backbone'], function(Backbone) {
 
     var Cart = Backbone.Model.extend({
         url: '/api/cart'
@@ -1272,7 +1277,7 @@ An example with a Handlebars plugin:
 
 ```javascript
 define([
-    'hb!payment' // slår opp filen payment.hb
+    'hb!./payment' // slår opp filen ./payment.hb
 ], function(paymentTemplate) {
 
   // paymentTemplate is now a compiled template function
@@ -1292,12 +1297,12 @@ define([
 define([
     'backbone',
     './paymentView',
-    'hb!./payment'
-], function(Backbone, PaymentView, paymentTemplate) {
+    'hb!./payments'
+], function(Backbone, PaymentView, paymentsTemplate) {
 
     var PaymentsView = Backbone.View.extend({
 
-        template: paymentTemplate,
+        template: paymentsTemplate,
 
         render: function() {
 
