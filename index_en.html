@@ -584,7 +584,7 @@ var ProductsView = Backbone.View.extend({
     },
 
     render: function() {
-        // for mye kode her
+        // too much code here
     },
 
     chooseProduct: function(e) {
@@ -699,11 +699,8 @@ var PersonalInformationView = Backbone.View.extend({
     render: function() {
         this.renderTemplate();
 
-        this.personView.setElement(this.$('.person'));
-        this.personView.render();
-
-        this.addressView.setElement(this.$('.address'));
-        this.addressView.render();
+        this.personView.setElement(this.$('.person')).render();
+        this.addressView.setElement(this.$('.address')).render();
 
         return this;
     }
@@ -791,7 +788,7 @@ Can use inheritance and make a `BaseView`:
 var BaseView = Backbone.View.extend({
 
     renderTemplate: function() {
-        // takes N arugments and building data for template-input
+        // takes N arguments and building data for template-input
         var data = _.extend.apply(null, arguments);
 
         // Compiles the template and insert in into the DOM
@@ -827,7 +824,7 @@ Can use inheritance and make a `BaseView`:
 var BaseView = Backbone.View.extend({
 
     renderTemplate: function() {
-        // takes N arugments and building data for template-input
+        // takes N arguments and building data for template-input
         var data = _.extend.apply(null, arguments);
 
         // Compiles the template and insert in into the DOM
@@ -877,15 +874,17 @@ class: middle
 Mixins is an alternative to inheritance where the objects are meltet to combine functionality
 
 ```javascript
-var Transactions = Backbone.Collection.extend({});
-
 var pagination = {
     next: function() {
         // ...
     }
 };
 
+var Transactions = Backbone.Collection.extend({});
 _.extend(Transactions.prototype, pagination);
+
+var transactions = new Transactions();
+transactions.next();
 ```
 
 ---
@@ -1111,7 +1110,8 @@ Few dependencies
 Gives the component the ability to `bind` and `trigger` events (for example models)
 
 ```javascript
-// The EventBus can be used to decouple different parts and modules in the application
+// The EventBus can be used to decouple different
+// parts and modules in the application
 define(['underscore', 'backbone'], function(_, Backbone) {
 
     return _.clone(Backbone.Events);
