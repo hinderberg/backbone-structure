@@ -16,7 +16,8 @@
         img { max-width: 100%; }
         blockquote { font-style: italic; font-weight: 300; }
 
-        .huge { font-size: 3em; font-family: 'Dosis', sans-serif; }
+        .huge   { font-size: 3em; font-family: 'Dosis', sans-serif; }
+        .mediumtext p { font-size: 2em; display: block; padding-bottom: 0.5em; font-family: 'Dosis', sans-serif; }
 
         .red         { background-color: #E8664E; color: #fff; }
         .green       { background-color: #79A700; color: #fff; }
@@ -61,9 +62,11 @@ Today we'll talk about
 
 ---
 
+class: middle, center
+
 # What is Backbone?
 
-A small JavaScript library with about 1000 lines of kode (6.3kB packed and gziped)
+A small JavaScript library with less than 1000 lines of kode (6.3kB packed and gziped)
 
 Have become really popular the last few years
 
@@ -215,7 +218,7 @@ class: middle, center
 
 # View
 
-Responsible for a spesific HTML-element and all children
+Responsible for a specific HTML-element and all its children
 
 ---
 
@@ -265,7 +268,7 @@ class: middle, center
 
 class: middle, center
 
-Should **not** change or manipulate data
+Should not contain business logic
 
 Perform these operations in a model, collection or some other JavaScript object
 
@@ -494,7 +497,7 @@ var Router = Backbone.Router.extend({
         var userView = new UserView({
             user: user
         });
-        user.fetch(); // we fetc data outside the view!
+        user.fetch(); // we fetch data outside the view's constructor!
     }
 });
 ```
@@ -733,10 +736,12 @@ var ProductsView = Backbone.View.extend({
     render: function() {
         this.renderTemplate(); // a helper to render the template
 
-        this.products.each(function(product) {
+        var els = this.products.map(function(product) {
             var productView = new ProductView({ product: product });
-            this.$('.products').append(productView.render().el);
+            return productView.render().el;
         }, this);
+
+        this.$('.products').html(els);
 
         return this;
     }
@@ -788,7 +793,7 @@ Write for structure, optimize when needed
 
 ---
 
-# Samleviews //TODO
+# Simplify by collecting views
 
 ```javascript
 var PersonalInformationView = Backbone.View.extend({
@@ -809,13 +814,19 @@ var PersonalInformationView = Backbone.View.extend({
 });
 ```
 
+Now we have:
+
+```javascript
+new PersonalInformationView({ address: address, person: person });
+```
+
 ---
 
 class: middle, center, purple
 
 # \#5
 
-# I repeat my code to often
+# My code is not DRY
 
 ---
 
@@ -972,7 +983,51 @@ class: middle
 
 # Mixins
 
-Mixins is an alternative to inheritance where the objects are melted to combine functionality
+Mixins is an alternative to inheritance where the objects are combined
+
+```javascript
+var pagination = {
+    next: function() {
+        // ...
+    }
+};
+
+
+
+
+
+&nbsp;
+```
+
+---
+
+class: middle
+
+# Mixins
+
+Mixins is an alternative to inheritance where the objects are combined
+
+```javascript
+var pagination = {
+    next: function() {
+        // ...
+    }
+};
+
+var Transactions = Backbone.Collection.extend({});
+_.extend(Transactions.prototype, pagination);
+
+
+&nbsp;
+```
+
+---
+
+class: middle
+
+# Mixins
+
+Mixins is an alternative to inheritance where the objects are combined
 
 ```javascript
 var pagination = {
@@ -1015,7 +1070,8 @@ For example `Backbone.localStorage`:
 // the original 'Backbone.sync' is still available in 'Backbone.ajaxSync'
 
 Backbone.sync = function(method, model, options) {
-    return Backbone.getSyncMethod(model).apply(this, [method, model, options]);
+    return Backbone.getSyncMethod(model).apply(this,
+        [method, model, options]);
 };
 ```
 
@@ -1060,8 +1116,9 @@ So, you need one to many relations?
     .javascript
     var Inbox = Backbone.Model.extend({
 
-        initialize: function() {
+        constructor: function() {
             this.messages = new Messages();
+            Inbox.apply(this, arguments);
         },
 
 
@@ -1089,8 +1146,9 @@ So, you need one to many relations?
     .javascript
     var Inbox = Backbone.Model.extend({
 
-        initialize: function() {
+        constructor: function() {
             this.messages = new Messages();
+            Inbox.apply(this, arguments);
         },
 
         parse: function(resp) {
@@ -1118,12 +1176,13 @@ So, you need one to many relations?
     .javascript
     var Inbox = Backbone.Model.extend({
 
-        initialize: function() {
+        constructor: function() {
             this.messages = new Messages();
+            Inbox.apply(this, arguments);
         },
 
         parse: function(resp) {
-            this.messages.update(_.clone(resp.messages), { parse: true });
+            this.messages.set(_.clone(resp.messages), { parse: true });
             delete resp.messages;
             return resp;
         },
@@ -1147,12 +1206,13 @@ So, you need one to many relations?
     .javascript
     var Inbox = Backbone.Model.extend({
 
-        initialize: function() {
+        constructor: function() {
             this.messages = new Messages();
+            Inbox.apply(this, arguments);
         },
 
         parse: function(resp) {
-            this.messages.update(_.clone(resp.messages), { parse: true });
+            this.messages.set(_.clone(resp.messages), { parse: true });
             delete resp.messages;
             return resp;
         },
@@ -1355,7 +1415,7 @@ define(['backbone'], function(Backbone) {
 });
 ```
 
-Gjør avhengigheter veldig synlige //TODO
+Makes dependencies more visible
 
 Easier to see the need for one file per object
 
@@ -1371,7 +1431,7 @@ An example with a Handlebars plugin:
 
 ```javascript
 define([
-    'hb!./payment' // slår opp filen ./payment.hb
+    'hb!./payment' // finds the file ./payment.hb
 ], function(paymentTemplate) {
 
   // paymentTemplate is now a compiled template function
@@ -1424,8 +1484,9 @@ class: middle, center
 
 ---
 
-```javascript
+class: middle
 
+```javascript
 var ComplexView = Backbone.View.extend({
 
     // lots of code
@@ -1451,8 +1512,9 @@ What if I need to pass in two models?
 
 ---
 
-```javascript
+class: middle
 
+```javascript
 var TaskView = Backbone.View.extend({
 
     initialize: function(options) {
@@ -1474,25 +1536,27 @@ var TaskView = Backbone.View.extend({
 
 Do not be afraid to call it for what it really is
 
+Easier for others to understand what's going on
+
 ---
 
 class: middle, center, dark-green
 
-# \#10
-
-# How it all fits together
+# In conclusion
 
 ---
 
-class: middle, center
+class: middle, mediumtext
 
-![](images/backbone_structure.png)
+simplify your views with subviews
 
----
+beware of plugins
 
-class: middle, center
+keep busiess logic out of the view
 
-.huge[Testability ≈ structure]
+build decoupled and focused modules
+
+testability ≈ structure
 
 ---
 
