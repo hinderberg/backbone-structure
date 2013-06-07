@@ -146,12 +146,6 @@ Communicates with the server + contains and manipulate the data
 
 class: middle, center
 
-![](images/2overview.jpg)
-
----
-
-class: middle, center
-
 ![](images/3overview.jpg)
 
 ---
@@ -174,17 +168,6 @@ class: middle, center
 
 Responsible for a list of models
 
----
-
-class: middle, center
-
-![](images/4overview.jpg)
-
----
-
-class: middle, center
-
-![](images/5overview.jpg)
 
 ---
 
@@ -224,33 +207,13 @@ Responsible for a specific HTML-element and all its children
 
 class: middle, center
 
-![](images/8overview.jpg)
-
----
-
-class: middle, center
-
-Presents and updates the data in its HTML element
-
-Communicates with models, collections and the DOM
-
----
-
-class: middle, center
-
-![](images/9overview.jpg)
+![](images/twitter.png)
 
 ---
 
 class: middle, center
 
 ![](images/10overview.jpg)
-
----
-
-class: middle, center
-
-![](images/11overview.jpg)
 
 ---
 
@@ -280,43 +243,7 @@ class: middle, center
 
 Responsible for handling URL changes
 
----
-
-class: middle, center
-
-![](images/14overview.jpg)
-
----
-
-class: middle, center
-
-Tailors the application
-
-Works like a "state machine"
-
----
-
-class: middle, center
-
-![](images/15overview.jpg)
-
----
-
-class: middle, center
-
-![](images/16overview.jpg)
-
----
-
-class: middle, center
-
-![](images/17overview.jpg)
-
----
-
-class: middle, center
-
-![](images/18overview.jpg)
+Think of it as a state machine for the applicaiton
 
 ---
 
@@ -336,8 +263,6 @@ var user = new User();
 // call this function on every change of the user
 user.on('change', function() { console.log('changed!'); }, this);
 
-// removes all that listens to the user
-user.off()
 ```
 
 ---
@@ -504,6 +429,12 @@ var Router = Backbone.Router.extend({
 
 ---
 
+class: middle, center
+
+![](images/18overview.jpg)
+
+---
+
 class: middle, center, brown
 
 # \#3
@@ -536,11 +467,11 @@ var TransactionsView = Backbone.View.extend({
             return timestamp;
         });
 
-        var json = _.map(sortedTransactions, function(transaction){
+        var data = _.map(sortedTransactions, function(transaction){
           return transaction.toJSON();
         });
 
-        this.renderTemplate(json); // helper
+        this.$el.html(Mustache.to_html(this.template, data));
 
         return this;
     }
@@ -561,8 +492,9 @@ var TransactionsView = Backbone.View.extend({
 
     render: function() {
         var sorted = this.transactions.getSortedByDateAndType();
+        var data = sorted.toJSON();
 
-        this.renderTemplate(sorted.toJSON()); // helper
+        this.$el.html(Mustache.to_html(this.template, data));
 
         return this;
     }
@@ -734,7 +666,7 @@ var ProductsView = Backbone.View.extend({
     },
 
     render: function() {
-        this.renderTemplate(); // a helper to render the template
+        this.$el.html(Mustache.to_html(this.template));
 
         var els = this.products.map(function(product) {
             var productView = new ProductView({ product: product });
@@ -804,7 +736,7 @@ var PersonalInformationView = Backbone.View.extend({
     },
 
     render: function() {
-        this.renderTemplate();
+        this.$el.html(Mustache.to_html(this.template));
 
         this.personView.setElement(this.$('.person')).render();
         this.addressView.setElement(this.$('.address')).render();
@@ -850,6 +782,28 @@ var UserView = Backbone.View.extend({
         // Compile template and add it to the DOM
         this.$el.html(Mustache.to_html(this.template, data));
         return this;
+    }
+
+});
+```
+
+---
+
+class: middle
+
+```javascript
+var UserView = BaseView.extend({
+
+    initialize: function(options) {
+      this.user = options.user;
+      this.address = options.address;
+    },
+
+    render: function() {
+        return this.renderTemplate(
+            this.user.toJSON(),
+            this.address.toJSON()
+        );
     }
 
 });
@@ -1061,7 +1015,7 @@ Don't pull in too large plugins too early — understand the value they add firs
 
 class: middle
 
-Lot's of plugins override code on the `Backbone` namespace
+Lots of plugins override code on the `Backbone` namespace
 
 For example `Backbone.localStorage`:
 
@@ -1182,7 +1136,7 @@ So, you need one to many relations?
         },
 
         parse: function(resp) {
-            this.messages.set(_.clone(resp.messages), { parse: true });
+            this.messages.set(resp.messages, { parse: true });
             delete resp.messages;
             return resp;
         },
@@ -1212,7 +1166,7 @@ So, you need one to many relations?
         },
 
         parse: function(resp) {
-            this.messages.set(_.clone(resp.messages), { parse: true });
+            this.messages.set(resp.messages, { parse: true });
             delete resp.messages;
             return resp;
         },
@@ -1487,54 +1441,52 @@ class: middle, center
 class: middle
 
 ```javascript
-var ComplexView = Backbone.View.extend({
+var TransactionsView = Backbone.View.extend({
 
-    // lots of code
+    initialize: function() {
+        this.collection.on('reset', this.render, this);
+    },
 
     render: function() {
-
-        var json = this.model.toJSON();
-        this.renderTemplate(json);
-
+        // what is `this.collection`?
+        var sorted = this.collection.getSortedByDateAndType();        
+        return this.renderTemplate(sorted.toJSON());
     }
 
 });
 
+// Somewhere else in the code:
+new TransactionsView({ collection: transactions });
 ```
-
-What is `this.model`?
 
 Must look for where it's initialized to find out
 
-Or maybe `console.log(this.model)` and refresh the browser
+Or maybe `console.log(this.collection)` and refresh the browser
 
-What if I need to pass in two models?
+What if I need to pass in two models and a collection?
 
 ---
 
 class: middle
 
 ```javascript
-var TaskView = Backbone.View.extend({
+var TransactionsView = Backbone.View.extend({
 
     initialize: function(options) {
-
-        this.task = options.task;
-
-    }
+        this.transactions = options.transaction;
+        this.transactions.on('reset', this.render, this);
+    },
 
     render: function() {
-
-        var json = this.task.toJSON();
-        this.renderTemplate(json);
-
+        var sorted = this.transactions.getSortedByDateAndType();        
+        return this.renderTemplate(sorted.toJSON());
     }
 
 });
 
 ```
 
-Do not be afraid to call it for what it really is
+Explicit is sometimes better than implicit
 
 Easier for others to understand what's going on
 
@@ -1550,7 +1502,7 @@ class: middle, mediumtext
 
 simplify your views with subviews
 
-beware of plugins
+beware of plugins and use components
 
 keep busiess logic out of the view
 
