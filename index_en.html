@@ -663,7 +663,7 @@ var ProductsView = Backbone.View.extend({
         // HOW DO WE FIND THE CORRECT MODEL?
 
         // we have to go looking in the DOM
-        var productId = $(e.target).attr('data-product-id');
+        var productId = $(e.currentTarget).attr('data-product-id');
 
 
 
@@ -698,7 +698,7 @@ var ProductsView = Backbone.View.extend({
         // HOW DO WE FIND THE CORRECT MODEL?
 
         // we have to go looking in the DOM
-        var productId = $(e.target).attr('data-product-id');
+        var productId = $(e.currentTarget).attr('data-product-id');
 
         // and then we have to find it in the products collection
         var product = this.products.get(productId);
@@ -723,7 +723,7 @@ class: middle, center
 
 ---
 
-# A view per model in the collection?
+# A view per model in the collection
 
 ```javascript
 var ProductsView = Backbone.View.extend({
@@ -751,7 +751,7 @@ var ProductsView = Backbone.View.extend({
 
 ---
 
-# A view per model in the collection?
+# A view per model in the collection
 
 Now the `ProductView` is very simple:
 
