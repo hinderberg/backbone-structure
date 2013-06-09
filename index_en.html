@@ -107,6 +107,12 @@ Good practices in a set of reasonably small components
 
 with a goal of improving structure
 
+&nbsp;
+
+&nbsp;
+
+*"The essential premise at the heart of Backbone has always been to try and discover the minimal set of data-structuring (Models and Collections) and user interface (Views and URLs) primitives that are useful when building web applications with JavaScript."*
+
 ---
 
 class: middle, center
@@ -166,7 +172,6 @@ class: middle, center
 # Collection
 
 Responsible for a list of models
-
 
 ---
 
@@ -419,7 +424,8 @@ var Router = Backbone.Router.extend({
     user: function() {
         var user = new User();
         var userView = new UserView({
-            user: user
+            user: user,
+            el: $('.user') // inject where the view should be placed
         });
         user.fetch(); // we fetch data outside the view's constructor!
     }
@@ -1368,6 +1374,22 @@ define(['backbone'], function(Backbone) {
 });
 ```
 
+Use `cart`:
+
+```javascript
+define(['./cart'], function(Cart) {
+
+    new Cart();
+
+});
+```
+
+---
+
+class: middle
+
+Less need for globals
+
 Makes dependencies more visible
 
 Easier to see the need for one file per object
@@ -1503,7 +1525,7 @@ simplify your views with subviews
 
 beware of plugins and use components
 
-keep busiess logic out of the view
+keep business logic out of the view
 
 build decoupled and focused modules
 
