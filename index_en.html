@@ -39,7 +39,16 @@
 class: middle, center
 
 # Backbone is supposed to give me structure,
+
 ## but everything is still just a mess
+
+---
+
+class: middle, center
+
+Today we'll talk about
+
+# how we have improved the structure of our Backbone.js apps
 
 ---
 
@@ -50,14 +59,6 @@ class: middle, center
 Kim Joar Bekkelund
 
 Hans Magnus Inderberg
-
----
-
-class: middle, center
-
-Today we'll talk about
-
-# how we have improved the structure of our Backbone.js apps
 
 ---
 
@@ -257,6 +258,8 @@ class: middle, center
 
 Used to communicate between objects
 
+All built-in Backbone components has events and make use of events
+
 ---
 
 class: middle
@@ -268,14 +271,6 @@ var user = new User();
 user.on('change', function() { console.log('changed!'); }, this);
 
 ```
-
----
-
-class: middle, center
-
-All built-in Backbone components has events and make use of events
-
-Used for communication between components
 
 ---
 
@@ -861,7 +856,7 @@ var BaseView = Backbone.View.extend({
 
     renderTemplate: function() {
         // takes N arguments and building data for template-input
-        var data = _.extend.apply(null, arguments);
+        var data = merge(arguments);
 
         // Compile template and insert in into the DOM
         this.$el.html(Mustache.to_html(this.template, data));
@@ -897,7 +892,7 @@ var BaseView = Backbone.View.extend({
 
     renderTemplate: function() {
         // takes N arguments and building data for template-input
-        var data = _.extend.apply(null, arguments);
+        var data = merge(arguments);
 
         // Compile template and insert in into the DOM
         this.$el.html(Mustache.to_html(this.template, data));
@@ -1523,9 +1518,9 @@ class: middle, mediumtext
 
 simplify your views with subviews
 
-beware of plugins and use components
-
 keep business logic out of the view
+
+beware of plugins and use components
 
 build decoupled and focused modules
 
