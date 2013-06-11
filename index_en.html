@@ -1270,14 +1270,14 @@ Unix Philosophy
 
 ---
 
-# EventBus
+# Global events
 
 `Backbone.Events` is a component which can be mixed into whatever object
 
 Gives the component the ability to bind and trigger events (for example models)
 
 ```javascript
-// The EventBus can be used to decouple different
+// The global events can be used to decouple different
 // parts and modules in the application
 define(['underscore', 'backbone'], function(_, Backbone) {
 
@@ -1289,7 +1289,7 @@ define(['underscore', 'backbone'], function(_, Backbone) {
 Usage:
 
 ```javascript
-define(['component/eventBus'], function(events) {
+define(['component/events'], function(events) {
 
     events.on('user:login', function() {
         console.log('user logged in');
@@ -1539,7 +1539,7 @@ class: middle
 var TransactionsView = Backbone.View.extend({
 
     initialize: function(options) {
-        this.transactions = options.transaction;
+        this.transactions = options.transactions;
         this.transactions.on('reset', this.render, this);
     },
 
