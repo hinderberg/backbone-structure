@@ -350,7 +350,7 @@ var UserView = Backbone.View.extend({
 
         this.user = options.user;
 
-        var self = this;
+
         this.user.on('change', this.render, this);
         // fetch data
         this.user.fetch(
@@ -725,7 +725,53 @@ Write for structure, optimize when needed
 
 ---
 
-# Simplify by collecting views
+# Simplify by splitting views
+
+```javascript
+var PersonalInformationView = Backbone.View.extend({
+
+    initialize: function(options) {
+        this.addressView = new AddressView({ address: options.address });
+        this.personView = new PersonView({ person: options.person });
+    },
+
+    render: function() {
+        this.$el.html(Mustache.to_html(this.template));
+
+
+
+
+        return this;
+    }
+});
+```
+
+---
+
+# Simplify by splitting views
+
+```javascript
+var PersonalInformationView = Backbone.View.extend({
+
+    initialize: function(options) {
+        this.addressView = new AddressView({ address: options.address });
+        this.personView = new PersonView({ person: options.person });
+    },
+
+    render: function() {
+        this.$el.html(Mustache.to_html(this.template));
+
+        this.personView.setElement(this.$('.person')).render();
+        this.addressView.setElement(this.$('.address')).render();
+
+        return this;
+    }
+});
+```
+
+---
+
+# Simplify by splitting views
 
 ```javascript
 var PersonalInformationView = Backbone.View.extend({
@@ -855,7 +901,7 @@ Can use inheritance and make a `BaseView`:
 var BaseView = Backbone.View.extend({
 
     renderTemplate: function() {
-        // takes N arguments and building data for template-input
+        // merges all arguments into one object
         var data = merge(arguments);
 
         // Compile template and insert in into the DOM
@@ -891,7 +937,7 @@ Can use inheritance and make a `BaseView`:
 var BaseView = Backbone.View.extend({
 
     renderTemplate: function() {
-        // takes N arguments and building data for template-input
+        // merges all arguments into one object
         var data = merge(arguments);
 
         // Compile template and insert in into the DOM
@@ -1009,11 +1055,15 @@ class: middle, center, yellow
 
 class: middle, center
 
-Don't pull in too large plugins too early — understand the value they add first
+Don't pull in too large plugins too early — get to know Backbone first
+
+Understand the value they add
 
 ---
 
 class: middle
+
+# Plugin antipatterns
 
 Lots of plugins override code on the `Backbone` namespace
 
