@@ -767,35 +767,6 @@ var PersonalInformationView = Backbone.View.extend({
 
 ---
 
-# Simplify by splitting views
-
-```javascript
-var PersonalInformationView = Backbone.View.extend({
-
-    initialize: function(options) {
-        this.addressView = new AddressView({ address: options.address });
-        this.personView = new PersonView({ person: options.person });
-    },
-
-    render: function() {
-        this.$el.html(Mustache.to_html(this.template));
-
-        this.personView.setElement(this.$('.person')).render();
-        this.addressView.setElement(this.$('.address')).render();
-
-        return this;
-    }
-});
-```
-
-Now we have:
-
-```javascript
-new PersonalInformationView({ address: address, person: person });
-```
-
----
-
 class: middle, center, purple
 
 # \#5
